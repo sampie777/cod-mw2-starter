@@ -1,6 +1,7 @@
 package nl.sajansen.codmw2starter.config
 
 import nl.sajansen.codmw2starter.ApplicationInfo
+import nl.sajansen.codmw2starter.io.CoD
 import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
 import org.slf4j.LoggerFactory
 import java.lang.reflect.Field
@@ -21,6 +22,10 @@ object Config {
     var serverExePath: String = getCurrentJarDirectory(ApplicationInfo).absolutePath
     var clientExeFile: String = "iw4mp.exe"
     var clientExePath: String = getCurrentJarDirectory(ApplicationInfo).absolutePath
+
+    // Execution
+    val availableExecutioners: String = CoD.Executioner.values().joinToString(";")
+    var executioner: CoD.Executioner = CoD.Executioner.Runtime
 
 
     fun load() {

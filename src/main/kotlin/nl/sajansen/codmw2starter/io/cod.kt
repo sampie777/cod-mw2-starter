@@ -5,11 +5,19 @@ import nl.sajansen.codmw2starter.exitApplication
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import org.ini4j.Ini
 import org.slf4j.LoggerFactory
+import java.awt.Desktop
 import java.io.File
 import java.nio.file.Paths
 
 
 object CoD {
+    enum class Executioner {
+        Runtime,
+        Desktop,
+        ProcessBuilder1,
+        ProcessBuilder2,
+    }
+
     private val logger = LoggerFactory.getLogger(CoD::class.java)
 
     private fun loadProperties(): Ini {
@@ -49,27 +57,35 @@ object CoD {
 
     fun startServer() {
         logger.info("Starting server...")
-        try {
-            val directory = File(Config.serverExePath)
-            val file = Paths.get(directory.absolutePath, Config.serverExeFile)
-            Runtime.getRuntime().exec(file.toString(), null, directory)
-        } catch (t: Throwable) {
-            logger.error("Failed to start server")
-            t.printStackTrace()
-            Notifications.popup("Failed to start server: ${t.localizedMessage}", "CoD")
-        }
+        execute("server", Config.serverExePath, Config.serverExeFile)
     }
 
     fun startClient() {
         logger.info("Starting client...")
+        execute("client", Config.clientExePath, Config.clientExeFile)
+    }
+
+    private fun execute(type: String, exePath: String, exeFile: String) {
         try {
-            val directory = File(Config.clientExePath)
-            val file = Paths.get(directory.absolutePath, Config.clientExeFile)
-            Runtime.getRuntime().exec(file.toString(), null, directory)
+            val directory = File(exePath)
+            val file = Paths.get(directory.absolutePath, exeFile)
+
+            logger.info("Using executioner: ${Config.executioner}")
+            when (Config.executioner) {
+                Executioner.Runtime -> Runtime.getRuntime().exec(file.toString(), null, directory)
+                Executioner.Desktop -> Desktop.getDesktop().open(file.toFile())
+                Executioner.ProcessBuilder1 -> {
+                    val processBuilder = ProcessBuilder(exeFile)
+                    processBuilder.directory(directory)
+                    processBuilder.start()
+                }
+                Executioner.ProcessBuilder2 -> ProcessBuilder(file.toString()).start()
+                else -> throw IllegalArgumentException("Invalid executioner defined: ${Config.executioner}")
+            }
         } catch (t: Throwable) {
-            logger.error("Failed to start client")
+            logger.error("Failed to start $type")
             t.printStackTrace()
-            Notifications.popup("Failed to start client: ${t.localizedMessage}", "CoD")
+            Notifications.popup("Failed to start $type: ${t.localizedMessage}", "CoD")
         }
     }
 }

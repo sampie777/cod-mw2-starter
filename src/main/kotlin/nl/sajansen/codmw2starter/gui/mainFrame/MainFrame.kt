@@ -38,7 +38,7 @@ class MainFrame : JFrame(), Refreshable {
     private fun initGUI() {
         add(MainFramePanel())
 
-        setSize(500, 650)
+        setSize(580, 650)
         setLocationRelativeTo(null)
 
         isAlwaysOnTop = Config.mainWindowAlwaysOnTop
