@@ -1,6 +1,6 @@
 package nl.sajansen.codmw2starter.ipScanner
 
-interface WebsocketScannerInitiator {
+interface IpScannerInitiator {
     fun processScanStatus(status: String)
     fun addScanResult(scanResult: ScanResult)
     fun onScanFinished()

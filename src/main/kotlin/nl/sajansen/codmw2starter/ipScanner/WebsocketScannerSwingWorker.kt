@@ -1,16 +1,16 @@
 package nl.sajansen.codmw2starter.ipScanner
 
+import org.slf4j.LoggerFactory
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
-import java.util.logging.Logger
 import javax.swing.SwingWorker
 
 class WebsocketScannerSwingWorker(
-    private val initiator: WebsocketScannerInitiator,
+    private val initiator: IpScannerInitiator,
     private val timeout: Int = 500
 ) : SwingWorker<Boolean, Void>(),
     PropertyChangeListener {
-    private val logger = Logger.getLogger(WebsocketScannerSwingWorker::class.java.name)
+    private val logger = LoggerFactory.getLogger(WebsocketScannerSwingWorker::class.java.name)
 
     override fun doInBackground(): Boolean {
         val processStatus = WebsocketScannerProcessStatus(this)

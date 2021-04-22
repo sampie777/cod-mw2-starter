@@ -1,17 +1,17 @@
 package nl.sajansen.codmw2starter.gui.ipScanner
 
+import nl.sajansen.codmw2starter.ipScanner.IpScannerInitiator
 import nl.sajansen.codmw2starter.ipScanner.ScanResult
-import nl.sajansen.codmw2starter.ipScanner.WebsocketScannerInitiator
 import nl.sajansen.codmw2starter.ipScanner.WebsocketScannerSwingWorker
+import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
-import java.util.logging.Logger
 import javax.swing.JPanel
 import javax.swing.border.EmptyBorder
 
-open class WebsocketScannerPanel(private val onHostClick: ((host: String) -> Unit)) : JPanel(), WebsocketScannerInitiator {
-    private val logger = Logger.getLogger(WebsocketScannerPanel::class.java.name)
+open class IpScannerPanel(private val onHostClick: ((host: String) -> Unit)) : JPanel(), IpScannerInitiator {
+    private val logger = LoggerFactory.getLogger(IpScannerPanel::class.java.name)
 
-    val websocketScannerTable = WebsocketScannerTable(onHostClick)
+    private val ipScannerTable = IpScannerTable(onHostClick)
     private val websocketScannerStatusPanel = WebsocketScannerStatusPanel()
     private lateinit var websocketScannerActionPanel: WebsocketScannerActionPanel
     private var worker: WebsocketScannerSwingWorker? = null
@@ -31,14 +31,14 @@ open class WebsocketScannerPanel(private val onHostClick: ((host: String) -> Uni
         bottomPanel.add(websocketScannerStatusPanel, BorderLayout.LINE_START)
         bottomPanel.add(websocketScannerActionPanel, BorderLayout.LINE_END)
 
-        mainPanel.add(websocketScannerTable, BorderLayout.CENTER)
+        mainPanel.add(ipScannerTable, BorderLayout.CENTER)
         mainPanel.add(bottomPanel, BorderLayout.PAGE_END)
     }
 
     fun scan(timeout: Int) {
         websocketScannerActionPanel.buttonsEnable(false)
 
-        websocketScannerTable.clearTable()
+        ipScannerTable.clearTable()
 
         worker = WebsocketScannerSwingWorker(this, timeout)
         worker!!.execute()
@@ -49,11 +49,11 @@ open class WebsocketScannerPanel(private val onHostClick: ((host: String) -> Uni
     }
 
     fun processScanResults(scanResults: List<ScanResult>) {
-        websocketScannerTable.setScanResults(scanResults)
+        ipScannerTable.setScanResults(scanResults)
     }
 
     override fun addScanResult(scanResult: ScanResult) {
-        websocketScannerTable.addScanResult(scanResult)
+        ipScannerTable.addScanResult(scanResult)
     }
 
     override fun onScanFinished() {

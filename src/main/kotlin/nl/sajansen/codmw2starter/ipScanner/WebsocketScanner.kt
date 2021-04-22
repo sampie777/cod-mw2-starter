@@ -1,12 +1,12 @@
 package nl.sajansen.codmw2starter.ipScanner
 
+import getLocalNetworkIpAddresses
+import org.slf4j.LoggerFactory
 import java.net.InetAddress
-import java.net.NetworkInterface
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
-import java.util.logging.Logger
 
 
 class ScanResult(
@@ -20,17 +20,15 @@ class ScanResult(
 
 
 class WebsocketScanner(private val processStatus: WebsocketScannerProcessStatus, private val timeout: Int = 500, private val port: Int = 4444) {
-    private val logger = Logger.getLogger(WebsocketScanner::class.java.name)
+    private val logger = LoggerFactory.getLogger(WebsocketScanner::class.java.name)
 
     private val threadPoolSize = 20
 
     fun scan(): List<ScanResult> {
         logger.info("Creating websocket scanner with timeout: $timeout ms for ports: $port")
-        val networkIpAddresses = getNetworkIpAddresses()
 
-        val localNetworkIpAddresses = networkIpAddresses
-            .filter { it.startsWith("192.168.") }
-            .distinct()
+        processStatus.setState("Getting network IP addresses")
+        val localNetworkIpAddresses = getLocalNetworkIpAddresses()
 
         val scanResultFutures: ArrayList<Future<ScanResult>> = scanIpAddresses(localNetworkIpAddresses)
 
@@ -45,22 +43,6 @@ class WebsocketScanner(private val processStatus: WebsocketScannerProcessStatus,
         }
 
         return addressesFound
-    }
-
-    private fun getNetworkIpAddresses(): List<String> {
-        logger.info("Getting network IP addresses from host")
-        processStatus.setState("Getting network IP addresses")
-        val networkIpAddresses = ArrayList<String>()
-
-        NetworkInterface.getNetworkInterfaces()
-            .iterator()
-            .forEach { networkInterface ->
-                networkInterface.inetAddresses
-                    .iterator()
-                    .forEach { networkIpAddresses.add(it.hostAddress) }
-            }
-
-        return networkIpAddresses
     }
 
     private fun scanIpAddresses(localNetworkIpAddresses: List<String>): ArrayList<Future<ScanResult>> {
@@ -84,7 +66,7 @@ class WebsocketScanner(private val processStatus: WebsocketScannerProcessStatus,
     private fun scanAddressPort(es: ExecutorService, ip: String, port: Int, timeout: Int): Future<ScanResult> {
         return es.submit(Callable {
             try {
-                logger.fine("Probing: $ip:$port")
+                logger.debug("Probing: $ip:$port")
                 processStatus.setState("Probing: $ip:$port")
 
                 val ipArray = ip.split(".")

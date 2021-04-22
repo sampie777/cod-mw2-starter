@@ -1,7 +1,9 @@
 package nl.sajansen.codmw2starter.gui.ipScanner
 
+import nl.sajansen.codmw2starter.gui.mainFrame.MainFrame
 import nl.sajansen.codmw2starter.ipScanner.ScanResult
 import java.awt.BorderLayout
+import java.awt.Dimension
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.util.*
@@ -11,7 +13,7 @@ import javax.swing.JTable
 import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableModel
 
-class WebsocketScannerTable(private val onHostClick: ((host: String) -> Unit)) : JPanel() {
+class IpScannerTable(private val onHostClick: ((host: String) -> Unit)) : JPanel() {
 
     private val tableHeader = arrayOf("Name", "Address")
     val table = JTable(ReadOnlyTableModel(tableHeader, 0))
@@ -31,7 +33,10 @@ class WebsocketScannerTable(private val onHostClick: ((host: String) -> Unit)) :
             }
         })
 
-        add(JScrollPane(table), BorderLayout.CENTER)
+        val scrollPane = JScrollPane(table)
+        scrollPane.preferredSize = Dimension(MainFrame.getInstance()!!.width - 20, 140)
+
+        add(scrollPane, BorderLayout.CENTER)
     }
 
     fun clearTable() {

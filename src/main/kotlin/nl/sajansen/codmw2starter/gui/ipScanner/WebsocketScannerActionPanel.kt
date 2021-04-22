@@ -6,7 +6,7 @@ import java.awt.Font
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
-class WebsocketScannerActionPanel(private val panel: WebsocketScannerPanel) : JPanel() {
+class WebsocketScannerActionPanel(private val panel: IpScannerPanel) : JPanel() {
     private val logger = LoggerFactory.getLogger(WebsocketScannerActionPanel::class.java.name)
 
     private val buttonsToEnable = ArrayList<JButton>()
