@@ -1,6 +1,7 @@
 package nl.sajansen.codmw2starter.config
 
 import nl.sajansen.codmw2starter.ApplicationInfo
+import nl.sajansen.codmw2starter.io.CoD
 import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
 import org.slf4j.LoggerFactory
 import java.awt.Color
@@ -114,7 +115,7 @@ object PropertyLoader {
 
         try {
             for (field in configClass.declaredFields) {
-                if (field.name == "INSTANCE" || field.name == "logger") {
+                if (Modifier.isFinal(field.modifiers)) {
                     continue
                 }
 
@@ -172,6 +173,9 @@ object PropertyLoader {
                 throw IllegalArgumentException("Configuration parameter '$name' has invalid value: $value")
             }
             return Dimension(values[0].toInt(), values[1].toInt())
+        }
+        if (type == CoD.Executioner::class.java) {
+            return CoD.Executioner.valueOf(value)
         }
 
         throw IllegalArgumentException("Unknown configuration value type: " + type.name)

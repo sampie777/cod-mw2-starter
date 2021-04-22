@@ -1,9 +1,7 @@
 package nl.sajansen.codmw2starter.gui.ipScanner
 
-import nl.sajansen.codmw2starter.gui.mainFrame.MainFrame
 import nl.sajansen.codmw2starter.ipScanner.ScanResult
 import java.awt.BorderLayout
-import java.awt.Dimension
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.util.*
@@ -34,8 +32,6 @@ class IpScannerTable(private val onHostClick: ((host: String) -> Unit)) : JPanel
         })
 
         val scrollPane = JScrollPane(table)
-        scrollPane.preferredSize = Dimension(MainFrame.getInstance()!!.width - 20, 140)
-
         add(scrollPane, BorderLayout.CENTER)
     }
 

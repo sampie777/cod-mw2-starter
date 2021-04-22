@@ -6,9 +6,7 @@ import nl.sajansen.codmw2starter.gui.Refreshable
 import nl.sajansen.codmw2starter.gui.ipScanner.IpScannerPanel
 import nl.sajansen.codmw2starter.io.CoD
 import org.slf4j.LoggerFactory
-import java.awt.Component
-import java.awt.Cursor
-import java.awt.Dimension
+import java.awt.*
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.*
@@ -29,13 +27,17 @@ class HostPanel : JPanel(), Refreshable {
     }
 
     private fun createGui() {
-        layout = BoxLayout(this, BoxLayout.PAGE_AXIS)
+        layout = BorderLayout(10, 10)
         border = EmptyBorder(10, 10, 10, 10)
 
         currentHostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
         currentHostLabel.toolTipText = "Click to set host address"
+        currentHostLabel.font = Font("Dialog", Font.PLAIN, 12)
         localHostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
         localHostLabel.toolTipText = "Click to set host address"
+        localHostLabel.font = Font("Dialog", Font.PLAIN, 12)
+
+        val customHostLabel = JLabel("Use host:")
 
         val labelPanel = JPanel()
         labelPanel.alignmentX = Component.LEFT_ALIGNMENT
@@ -44,14 +46,14 @@ class HostPanel : JPanel(), Refreshable {
         labelPanel.add(Box.createRigidArea(Dimension(0, 5)))
         labelPanel.add(localHostLabel)
 
-        ipScannerPanel.alignmentX = Component.LEFT_ALIGNMENT
-        customHostField.alignmentX = Component.LEFT_ALIGNMENT
+        val customHostPanel = JPanel()
+        customHostPanel.layout = BorderLayout(10, 10)
+        customHostPanel.add(customHostLabel, BorderLayout.LINE_START)
+        customHostPanel.add(customHostField, BorderLayout.CENTER)
 
-        add(labelPanel)
-        add(Box.createRigidArea(Dimension(0, 10)))
-        add(ipScannerPanel)
-        add(Box.createRigidArea(Dimension(0, 10)))
-        add(customHostField)
+        add(labelPanel, BorderLayout.PAGE_START)
+        add(ipScannerPanel, BorderLayout.CENTER)
+        add(customHostPanel, BorderLayout.PAGE_END)
     }
 
     private fun refreshHosts() {
@@ -73,7 +75,7 @@ class HostPanel : JPanel(), Refreshable {
 
     private fun refreshLocalHost() {
         val localNetworkIpAddresses = getLocalNetworkIpAddresses()
-        localHostLabel.text = "Local IP: ${localNetworkIpAddresses.joinToString(", ")}"
+        localHostLabel.text = "Local host(s): ${localNetworkIpAddresses.joinToString(", ")}"
 
         localHostLabel.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {

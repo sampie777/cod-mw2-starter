@@ -6,7 +6,6 @@ import nl.sajansen.codmw2starter.ipScanner.WebsocketScannerSwingWorker
 import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
 import javax.swing.JPanel
-import javax.swing.border.EmptyBorder
 
 open class IpScannerPanel(private val onHostClick: ((host: String) -> Unit)) : JPanel(), IpScannerInitiator {
     private val logger = LoggerFactory.getLogger(IpScannerPanel::class.java.name)
@@ -21,18 +20,16 @@ open class IpScannerPanel(private val onHostClick: ((host: String) -> Unit)) : J
     }
 
     private fun createGui() {
+        layout = BorderLayout(10, 10)
+
         websocketScannerActionPanel = WebsocketScannerActionPanel(this)
 
-        val mainPanel = JPanel(BorderLayout(10, 10))
-        mainPanel.border = EmptyBorder(10, 10, 10, 10)
-        add(mainPanel)
-
-        val bottomPanel = JPanel(BorderLayout())
+        val bottomPanel = JPanel(BorderLayout(10, 10))
         bottomPanel.add(websocketScannerStatusPanel, BorderLayout.LINE_START)
         bottomPanel.add(websocketScannerActionPanel, BorderLayout.LINE_END)
 
-        mainPanel.add(ipScannerTable, BorderLayout.CENTER)
-        mainPanel.add(bottomPanel, BorderLayout.PAGE_END)
+        add(ipScannerTable, BorderLayout.CENTER)
+        add(bottomPanel, BorderLayout.PAGE_END)
     }
 
     fun scan(timeout: Int) {

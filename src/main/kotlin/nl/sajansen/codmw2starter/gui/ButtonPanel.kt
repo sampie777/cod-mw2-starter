@@ -27,6 +27,7 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
         frame.rootPane.defaultButton = startServerButton
 
         val executionerSelector = JComboBox(CoD.Executioner.values())
+        executionerSelector.selectedItem = Config.executioner
         executionerSelector.toolTipText = "Select preferred executioner"
         executionerSelector.addActionListener { setExecutioner(it) }
 
