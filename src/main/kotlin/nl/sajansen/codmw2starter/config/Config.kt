@@ -1,6 +1,9 @@
 package nl.sajansen.codmw2starter.config
 
 import nl.sajansen.codmw2starter.ApplicationInfo
+import nl.sajansen.codmw2starter.gui.mapConfig.GameType
+import nl.sajansen.codmw2starter.gui.mapConfig.MapName
+import nl.sajansen.codmw2starter.gui.mapConfig.Spectate
 import nl.sajansen.codmw2starter.io.CoD
 import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
 import org.slf4j.LoggerFactory
@@ -25,8 +28,28 @@ object Config {
 
     // Execution
     val availableExecutioners: String = CoD.Executioner.values().joinToString(";")
-    var executioner: CoD.Executioner = CoD.Executioner.Runtime
+    var executioner: CoD.Executioner = CoD.Executioner.Desktop
 
+    // Map config
+    var consoleTitle: String = "IW4 Console"
+    var map: MapName = MapName.Afghan
+    var gameType: GameType = GameType.Free_For_All
+    var timeLimit: Int = 5
+    var scoreLimit: Int = 500
+    var minPlayers: Int = 2
+    var maxPlayers: Int = 2
+    var killcam: Boolean = true
+    var spectate: Spectate = Spectate.Free
+    var codeTemplate: String = "party_hostmigration 0; " +
+            "party_connecttimeout 1; " +
+            "ui_mapname {{map}}; " +
+            "ui_gametype {{gameType}}; " +
+            "scr_{{gameType}}_timelimit {{timeLimit}}; " +
+            "scr_{{gameType}}_scorelimit {{scoreLimit}}; " +
+            "party_maxplayers {{maxPlayers}}; " +
+            "party_minplayers {{minPlayers}}; " +
+            "scr_game_spectatetype {{spectate}}; " +
+            "scr_game_allowkillcam {{killcam}}"
 
     fun load() {
         try {
@@ -59,16 +82,9 @@ object Config {
         return null
     }
 
-    fun set(key: String, value: String?) {
+    fun set(key: String, value: Any?) {
         try {
-            val field = javaClass.getDeclaredField(key)
-            field.isAccessible = true
-
-            if (value == null) {
-                field.set(null, null)
-            } else {
-                field.set(null, PropertyLoader.stringToTypedValue(value, field.name, field.type))
-            }
+            javaClass.getDeclaredField(key).set(this, value)
         } catch (e: Exception) {
             logger.error("Could not set config key $key")
             e.printStackTrace()

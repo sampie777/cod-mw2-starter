@@ -2,8 +2,10 @@ package nl.sajansen.codmw2starter.gui
 
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.exitApplication
+import nl.sajansen.codmw2starter.gui.mapConfig.MapConfigFrame
 import nl.sajansen.codmw2starter.io.CoD
 import nl.sajansen.codmw2starter.utils.addHotKeyMapping
+import nl.sajansen.codmw2starter.utils.getMainFrameComponent
 import org.slf4j.LoggerFactory
 import java.awt.Dimension
 import java.awt.event.ActionEvent
@@ -21,10 +23,13 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
         layout = BoxLayout(this, BoxLayout.LINE_AXIS)
         border = EmptyBorder(0, 10, 10, 10)
 
+        val mapConfigButton = JButton("Maps")
+        mapConfigButton.addActionListener { MapConfigFrame.createAndShow(getMainFrameComponent(this)) }
+        mapConfigButton.addHotKeyMapping(HotKeysMapping.OpenMapConfig)
+
         val startServerButton = JButton("Start server")
         startServerButton.addActionListener { startServer() }
         startServerButton.addHotKeyMapping(HotKeysMapping.StartServer)
-        frame.rootPane.defaultButton = startServerButton
 
         val executionerSelector = JComboBox(CoD.Executioner.values())
         executionerSelector.selectedItem = Config.executioner
@@ -34,12 +39,14 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
         val startClientButton = JButton("Start client")
         startClientButton.addActionListener { startClient() }
         startClientButton.addHotKeyMapping(HotKeysMapping.StartClient)
+        frame.rootPane.defaultButton = startClientButton
 
         val quitButton = JButton("Quit")
         quitButton.addActionListener { exitApplication() }
         quitButton.addHotKeyMapping(HotKeysMapping.QuitApplication)
 
-        add(quitButton)
+//        add(quitButton)
+        add(mapConfigButton)
         add(Box.createHorizontalGlue())
         add(Box.createRigidArea(Dimension(50, 0)))
         add(executionerSelector)

@@ -1,10 +1,13 @@
 package nl.sajansen.codmw2starter.io
 
+import copyString
+import focusWindow
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.exitApplication
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import org.ini4j.Ini
 import org.slf4j.LoggerFactory
+import pasteText
 import java.awt.Desktop
 import java.io.File
 import java.nio.file.Paths
@@ -12,8 +15,8 @@ import java.nio.file.Paths
 
 object CoD {
     enum class Executioner {
-        Runtime,
         Desktop,
+        Runtime,
         ProcessBuilder1,
         ProcessBuilder2,
     }
@@ -63,6 +66,13 @@ object CoD {
     fun startClient() {
         logger.info("Starting client...")
         execute("client", Config.clientExePath, Config.clientExeFile)
+    }
+
+    fun sendCommand(string: String) {
+        copyString(string)
+        if (focusWindow(Config.consoleTitle)) {
+            pasteText(string)
+        }
     }
 
     private fun execute(type: String, exePath: String, exeFile: String) {

@@ -15,8 +15,9 @@ import javax.swing.border.EmptyBorder
 class HostPanel : JPanel(), Refreshable {
     private val logger = LoggerFactory.getLogger(HostPanel::class.java)
 
-    private val localHostLabel = JLabel()
     private val currentHostLabel = JLabel()
+    private val localHostsPanel = JPanel()
+    private val localHostLabel = JLabel("Local host(s): ")
     private val ipScannerPanel = IpScannerPanel { onHostClick(it) }
     private val customHostField = JTextField()
 
@@ -30,21 +31,33 @@ class HostPanel : JPanel(), Refreshable {
         layout = BorderLayout(10, 10)
         border = EmptyBorder(10, 10, 10, 10)
 
+        val currentHostTextLabel = JLabel("Current host: ")
+        currentHostTextLabel.toolTipText = "Click to set host address"
+        currentHostTextLabel.font = Font("Dialog", Font.PLAIN, 12)
+
         currentHostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
         currentHostLabel.toolTipText = "Click to set host address"
         currentHostLabel.font = Font("Dialog", Font.PLAIN, 12)
-        localHostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+
+        val currentHostsPanel = JPanel()
+        currentHostsPanel.layout = FlowLayout(FlowLayout.LEFT)
+        currentHostsPanel.add(currentHostTextLabel)
+        currentHostsPanel.add(currentHostLabel)
+
         localHostLabel.toolTipText = "Click to set host address"
         localHostLabel.font = Font("Dialog", Font.PLAIN, 12)
+
+        localHostsPanel.layout = FlowLayout(FlowLayout.LEFT)
+        localHostsPanel.add(localHostLabel)
 
         val customHostLabel = JLabel("Use host:")
 
         val labelPanel = JPanel()
         labelPanel.alignmentX = Component.LEFT_ALIGNMENT
         labelPanel.layout = BoxLayout(labelPanel, BoxLayout.PAGE_AXIS)
-        labelPanel.add(currentHostLabel)
+        labelPanel.add(currentHostsPanel)
         labelPanel.add(Box.createRigidArea(Dimension(0, 5)))
-        labelPanel.add(localHostLabel)
+        labelPanel.add(localHostsPanel)
 
         val customHostPanel = JPanel()
         customHostPanel.layout = BorderLayout(10, 10)
@@ -63,9 +76,9 @@ class HostPanel : JPanel(), Refreshable {
 
     private fun refreshCurrentHost() {
         val host = CoD.getHost()
-        currentHostLabel.text = "Current host: ${host ?: "unknown"}"
         customHostField.text = host
 
+        currentHostLabel.text = host ?: "unknown"
         currentHostLabel.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
                 customHostField.text = host ?: "127.0.0.1"
@@ -74,14 +87,26 @@ class HostPanel : JPanel(), Refreshable {
     }
 
     private fun refreshLocalHost() {
-        val localNetworkIpAddresses = getLocalNetworkIpAddresses()
-        localHostLabel.text = "Local host(s): ${localNetworkIpAddresses.joinToString(", ")}"
+        localHostsPanel.removeAll()
+        localHostsPanel.add(localHostLabel)
 
-        localHostLabel.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                customHostField.text = localNetworkIpAddresses.firstOrNull() ?: "127.0.0.1"
+        val localNetworkIpAddresses = getLocalNetworkIpAddresses()
+        localNetworkIpAddresses.forEach {
+            val hostLabel = JLabel(it)
+            if (localNetworkIpAddresses.size > 1 && localNetworkIpAddresses.last() != it) {
+                hostLabel.text = hostLabel.text + ","
             }
-        })
+            hostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+            hostLabel.font = Font("Dialog", Font.PLAIN, 12)
+            hostLabel.toolTipText = "Click to set host address"
+            hostLabel.addMouseListener(object : MouseAdapter() {
+                override fun mouseClicked(e: MouseEvent) {
+                    customHostField.text = it
+                }
+            })
+
+            localHostsPanel.add(hostLabel)
+        }
     }
 
     override fun serverStarted() = refreshHosts()
