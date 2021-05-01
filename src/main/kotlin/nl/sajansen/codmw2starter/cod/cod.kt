@@ -78,8 +78,8 @@ object CoD {
         } else {
             logger.info("Pausing lobby")
             sendCommand(
-                "party_maxplayers 64; " +
-                        "party_minplayers 64; "
+                "party_maxplayers ${Config.pauseSetPlayers}; " +
+                        "party_minplayers ${Config.pauseSetPlayers}; "
             )
         }
         isLobbyPaused = !isLobbyPaused

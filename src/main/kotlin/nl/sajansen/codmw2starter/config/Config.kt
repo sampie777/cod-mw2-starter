@@ -50,9 +50,13 @@ object Config {
             "scr_game_spectatetype {{spectate}}; " +
             "scr_game_allowkillcam {{killcam}}"
     var sendPasteDelayMs: Int = 100
+    var pauseSetPlayers: Int = 18
 
     // Key bindings
     var globalKeyEventPauseLobby: NativeKeyEventJson? = null
+
+    // Other
+    var updatesCheckForUpdates: Boolean = true
 
     fun load() {
         try {

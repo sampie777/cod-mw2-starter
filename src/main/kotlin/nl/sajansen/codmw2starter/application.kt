@@ -4,6 +4,7 @@ import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.GUI
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFrame
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
+import nl.sajansen.codmw2starter.updater.UpdateChecker
 import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
 import org.slf4j.LoggerFactory
 import java.awt.EventQueue
@@ -26,6 +27,11 @@ fun main(args: Array<String>) {
     EventQueue.invokeLater {
         MainFrame.createAndShow()
     }
+
+    if ("--clear-update-history" in args) {
+        UpdateChecker().clearUpdateHistory()
+    }
+    UpdateChecker().checkForUpdates()
 }
 
 fun exitApplication() {

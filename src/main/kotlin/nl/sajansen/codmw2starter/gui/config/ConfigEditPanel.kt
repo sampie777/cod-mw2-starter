@@ -28,7 +28,8 @@ class ConfigEditPanel : JPanel() {
         formComponents.add(StringFormInput("clientExeFile", "MW2 multiplayer execution file", false))
 
         formComponents.add(HeaderFormComponent("In-game Server"))
-        formComponents.add(NumberFormInput("sendPasteDelayMs", "Command paste delay", 0, 10000, 100))
+        formComponents.add(NumberFormInput("sendPasteDelayMs", "Command paste delay (ms)", 0, 10000, 100))
+        formComponents.add(NumberFormInput("pauseSetPlayers", "Pause lobby by setting players to", 1, 999, 1))
         formComponents.add(
             NativeKeyEventFormInput(
                 "globalKeyEventPauseLobby",
@@ -37,14 +38,21 @@ class ConfigEditPanel : JPanel() {
                 toolTipText = "Click the Assign button and hit your keys. Click again to clear."
             )
         )
-        formComponents.add(StringFormInput("codeTemplate", "Command template", true, toolTipText = "Available variables: {{map}}, \n" +
-                "{{gameType}}, \n" +
-                "{{timeLimit}}, \n" +
-                "{{scoreLimit}}, \n" +
-                "{{maxPlayers}}, \n" +
-                "{{minPlayers}}, \n" +
-                "{{spectate}}, \n" +
-                "{{killcam}}"))
+        formComponents.add(
+            StringFormInput(
+                "codeTemplate", "Command template", true, toolTipText = "Available variables: {{map}}, \n" +
+                        "{{gameType}}, \n" +
+                        "{{timeLimit}}, \n" +
+                        "{{scoreLimit}}, \n" +
+                        "{{maxPlayers}}, \n" +
+                        "{{minPlayers}}, \n" +
+                        "{{spectate}}, \n" +
+                        "{{killcam}}"
+            )
+        )
+
+        formComponents.add(HeaderFormComponent("Other"))
+        formComponents.add(BooleanFormInput("updatesCheckForUpdates", "Check for updates"))
     }
 
     private fun createGui() {

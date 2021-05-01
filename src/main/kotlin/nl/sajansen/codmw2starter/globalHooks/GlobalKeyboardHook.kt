@@ -63,7 +63,7 @@ object GlobalKeyboardHook : NativeKeyListener {
         }
 
         if (Config.globalKeyEventPauseLobby?.isEqualTo(e) == true) {
-            logger.info("[NativeKeyEvent] Activate next Queue Item")
+            logger.info("[NativeKeyEvent] Pause lobby")
             CoD.pauseLobby()
         }
     }

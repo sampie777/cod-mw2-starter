@@ -4,7 +4,7 @@ package nl.sajansen.codmw2starter.globalHooks
 import com.google.gson.Gson
 import jsonBuilder
 import org.jnativehook.keyboard.NativeKeyEvent
-import java.util.logging.Logger
+import org.slf4j.LoggerFactory
 
 class NativeKeyEventJson(
     val modifiers: Int,
@@ -13,7 +13,7 @@ class NativeKeyEventJson(
     val keyChar: Char
 ) {
     companion object {
-        private val logger = Logger.getLogger(NativeKeyEventJson::class.java.name)
+        private val logger = LoggerFactory.getLogger(NativeKeyEventJson::class.java.name)
 
         fun fromEvent(e: NativeKeyEvent): NativeKeyEventJson {
             return NativeKeyEventJson(
@@ -28,7 +28,7 @@ class NativeKeyEventJson(
             return try {
                 Gson().fromJson(json, NativeKeyEventJson::class.java)
             } catch (e: Exception) {
-                logger.warning("Failed to convert json to NativeKeyEventJson: $json")
+                logger.warn("Failed to convert json to NativeKeyEventJson: $json")
                 e.printStackTrace()
                 null
             }

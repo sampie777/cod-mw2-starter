@@ -5,11 +5,11 @@ import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.globalHooks.GlobalKeyboardHook
 import nl.sajansen.codmw2starter.globalHooks.NativeKeyEventJson
 import org.jnativehook.keyboard.NativeKeyEvent
+import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
 import java.awt.Component
 import java.awt.Dimension
 import java.awt.Font
-import java.util.logging.Logger
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
@@ -21,7 +21,7 @@ class NativeKeyEventFormInput(
     private val toolTipText: String = ""
 ) : FormInput {
 
-    private val logger = Logger.getLogger(NativeKeyEventFormInput::class.java.name)
+    private val logger = LoggerFactory.getLogger(NativeKeyEventFormInput::class.java.name)
 
     private val button = JButton()
     private var keyEvent: NativeKeyEvent? = null

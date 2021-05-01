@@ -34,7 +34,7 @@ class ConfigFrame(internal val parentFrame: JFrame?) : JDialog(parentFrame) {
         configActionPanel.saveButton.requestFocusInWindow()
 
         title = "Settings"
-        setSize(560, 520)
+        setSize(560, 460)
         setLocationRelativeTo(parentFrame)
         modalityType = ModalityType.APPLICATION_MODAL
         isVisible = true

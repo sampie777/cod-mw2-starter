@@ -5,17 +5,17 @@ import nl.sajansen.codmw2starter.gui.HotKeysMapping
 import nl.sajansen.codmw2starter.gui.config.ConfigFrame
 import nl.sajansen.codmw2starter.utils.addHotKeyMapping
 import nl.sajansen.codmw2starter.utils.getMainFrameComponent
+import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.awt.event.InputEvent
 import java.awt.event.KeyEvent
-import java.util.logging.Logger
 import javax.swing.BorderFactory
 import javax.swing.JMenu
 import javax.swing.JMenuItem
 import javax.swing.KeyStroke
 
 class ApplicationMenu : JMenu("Application") {
-    private val logger = Logger.getLogger(ApplicationMenu::class.java.name)
+    private val logger = LoggerFactory.getLogger(ApplicationMenu::class.java.name)
 
     init {
         initGui()

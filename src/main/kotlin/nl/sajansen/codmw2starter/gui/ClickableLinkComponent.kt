@@ -1,16 +1,16 @@
 package nl.sajansen.codmw2starter.gui
 
 import openWebURL
+import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.awt.Cursor
-import java.util.logging.Logger
 import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.SwingConstants
 
 
 class ClickableLinkComponent(linkText: String, private val url: String) : JButton() {
-    private val logger = Logger.getLogger(ClickableLinkComponent::class.java.name)
+    private val logger = LoggerFactory.getLogger(ClickableLinkComponent::class.java.name)
 
     init {
         text = linkText
