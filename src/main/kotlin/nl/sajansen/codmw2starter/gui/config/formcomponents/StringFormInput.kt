@@ -3,10 +3,7 @@ package nl.sajansen.codmw2starter.gui.config.formcomponents
 import nl.sajansen.codmw2starter.config.Config
 import org.slf4j.LoggerFactory
 import java.awt.*
-import javax.swing.BorderFactory
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.JTextField
+import javax.swing.*
 
 class StringFormInput(
     override val key: String,
@@ -29,6 +26,7 @@ class StringFormInput(
         input.preferredSize = Dimension(100, 20)
         input.border = BorderFactory.createLineBorder(Color(168, 168, 168))
         input.toolTipText = toolTipText
+        input.horizontalAlignment = SwingConstants.RIGHT
 
         val panel = JPanel()
         panel.layout = BorderLayout(10, 10)

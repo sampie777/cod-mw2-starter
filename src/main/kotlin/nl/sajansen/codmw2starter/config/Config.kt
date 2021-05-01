@@ -22,10 +22,8 @@ object Config {
 
     // File paths
     var serverPropertiesFile: String = Paths.get(getCurrentJarDirectory(ApplicationInfo).absolutePath, "alterIWnet.ini").toString()
-    var serverExeFile: String = "IWNetServer.exe"
-    var serverExePath: String = getCurrentJarDirectory(ApplicationInfo).absolutePath
-    var clientExeFile: String = "iw4mp.exe"
-    var clientExePath: String = getCurrentJarDirectory(ApplicationInfo).absolutePath
+    var serverExeFile: String = Paths.get(getCurrentJarDirectory(ApplicationInfo).absolutePath, "IWNetServer.exe").toString()
+    var clientExeFile: String = Paths.get(getCurrentJarDirectory(ApplicationInfo).absolutePath, "iw4mp.exe").toString()
 
     // Execution
     val availableExecutioners: String = CoD.Executioner.values().joinToString(";")

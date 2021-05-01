@@ -25,9 +25,7 @@ class ConfigEditPanel : JPanel() {
         formComponents.add(HeaderFormComponent("Game Execution"))
         formComponents.add(StringFormInput("serverPropertiesFile", "alterIWnet properties file", false))
         formComponents.add(StringFormInput("serverExeFile", "IWNetServer execution file", false))
-        formComponents.add(StringFormInput("serverExePath", "Directory of IWNetServer execution file", false))
         formComponents.add(StringFormInput("clientExeFile", "MW2 multiplayer execution file", false))
-        formComponents.add(StringFormInput("clientExePath", "Directory MW2 multiplayer execution file", false))
 
         formComponents.add(HeaderFormComponent("In-game Server"))
         formComponents.add(NumberFormInput("sendPasteDelayMs", "Command paste delay", 0, 10000, 100))
@@ -39,7 +37,14 @@ class ConfigEditPanel : JPanel() {
                 toolTipText = "Click the Assign button and hit your keys. Click again to clear."
             )
         )
-        formComponents.add(StringFormInput("codeTemplate", "Command template", true))
+        formComponents.add(StringFormInput("codeTemplate", "Command template", true, toolTipText = "Available variables: {{map}}, \n" +
+                "{{gameType}}, \n" +
+                "{{timeLimit}}, \n" +
+                "{{scoreLimit}}, \n" +
+                "{{maxPlayers}}, \n" +
+                "{{minPlayers}}, \n" +
+                "{{spectate}}, \n" +
+                "{{killcam}}"))
     }
 
     private fun createGui() {

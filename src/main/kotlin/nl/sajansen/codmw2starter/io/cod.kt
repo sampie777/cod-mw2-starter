@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory
 import pasteText
 import java.awt.Desktop
 import java.io.File
-import java.nio.file.Paths
 
 
 object CoD {
@@ -61,12 +60,12 @@ object CoD {
 
     fun startServer() {
         logger.info("Starting server...")
-        execute("server", Config.serverExePath, Config.serverExeFile)
+        execute("server", Config.serverExeFile)
     }
 
     fun startClient() {
         logger.info("Starting client...")
-        execute("client", Config.clientExePath, Config.clientExeFile)
+        execute("client", Config.clientExeFile)
     }
 
     fun pauseLobby() {
@@ -93,15 +92,15 @@ object CoD {
         }
     }
 
-    private fun execute(type: String, exePath: String, exeFile: String) {
+    private fun execute(type: String, exeFile: String) {
         try {
-            val directory = File(exePath)
-            val file = Paths.get(directory.absolutePath, exeFile)
+            val file = File(exeFile)
+            val directory = file.parentFile
 
-            logger.info("Using executioner: ${Config.executioner}")
+            logger.info("Using executioner: ${Config.executioner} for file '${file.name}' in '${directory.absolutePath}'")
             when (Config.executioner) {
                 Executioner.Runtime -> Runtime.getRuntime().exec(file.toString(), null, directory)
-                Executioner.Desktop -> Desktop.getDesktop().open(file.toFile())
+                Executioner.Desktop -> Desktop.getDesktop().open(file)
                 Executioner.ProcessBuilder1 -> {
                     val processBuilder = ProcessBuilder(exeFile)
                     processBuilder.directory(directory)
