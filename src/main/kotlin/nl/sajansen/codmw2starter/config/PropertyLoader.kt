@@ -1,11 +1,11 @@
 package nl.sajansen.codmw2starter.config
 
 import nl.sajansen.codmw2starter.ApplicationInfo
+import nl.sajansen.codmw2starter.cod.CoD
+import nl.sajansen.codmw2starter.cod.GameType
+import nl.sajansen.codmw2starter.cod.MapName
+import nl.sajansen.codmw2starter.cod.Spectate
 import nl.sajansen.codmw2starter.globalHooks.NativeKeyEventJson
-import nl.sajansen.codmw2starter.gui.mapConfig.GameType
-import nl.sajansen.codmw2starter.gui.mapConfig.MapName
-import nl.sajansen.codmw2starter.gui.mapConfig.Spectate
-import nl.sajansen.codmw2starter.io.CoD
 import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
 import org.slf4j.LoggerFactory
 import java.awt.Color

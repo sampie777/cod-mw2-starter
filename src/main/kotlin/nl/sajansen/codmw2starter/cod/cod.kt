@@ -1,4 +1,4 @@
-package nl.sajansen.codmw2starter.io
+package nl.sajansen.codmw2starter.cod
 
 import copyString
 import focusWindow

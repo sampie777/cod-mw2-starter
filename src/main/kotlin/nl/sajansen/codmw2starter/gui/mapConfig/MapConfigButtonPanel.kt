@@ -1,8 +1,8 @@
 package nl.sajansen.codmw2starter.gui.mapConfig
 
+import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.HotKeysMapping
-import nl.sajansen.codmw2starter.io.CoD
 import nl.sajansen.codmw2starter.utils.addHotKeyMapping
 import org.slf4j.LoggerFactory
 import java.awt.Dimension

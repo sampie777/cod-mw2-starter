@@ -1,8 +1,8 @@
 package nl.sajansen.codmw2starter.globalHooks
 
 
+import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.config.Config
-import nl.sajansen.codmw2starter.io.CoD
 import org.jnativehook.GlobalScreen
 import org.jnativehook.NativeHookException
 import org.jnativehook.keyboard.NativeKeyEvent

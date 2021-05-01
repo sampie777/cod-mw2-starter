@@ -1,5 +1,8 @@
 package nl.sajansen.codmw2starter.gui.mapConfig
 
+import nl.sajansen.codmw2starter.cod.GameType
+import nl.sajansen.codmw2starter.cod.MapName
+import nl.sajansen.codmw2starter.cod.Spectate
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.config.PropertyLoader
 import nl.sajansen.codmw2starter.gui.config.formcomponents.*

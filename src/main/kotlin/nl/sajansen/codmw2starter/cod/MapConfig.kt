@@ -1,22 +1,22 @@
-package nl.sajansen.codmw2starter.gui.mapConfig
+package nl.sajansen.codmw2starter.cod
 
 enum class MapName(val codeName: String) {
     Afghan("mp_afghan"),
-    Scrapyard("mp_boneyard"),
-    Karachi("mp_checkpoint"),
     Derail("mp_derail"),
     Estate("mp_estate"),
     Favela("mp_favela"),
     Highrise("mp_highrise"),
     Invasion("mp_invasion"),
-    Wasteland("mp_brecourt"),
+    Karachi("mp_checkpoint"),
     Quarry("mp_quarry"),
     Rundown("mp_rundown"),
     Rust("mp_rust"),
+    Scrapyard("mp_boneyard"),
     Skidrow("mp_nightshift"),
     Subbase("mp_subbase"),
     Terminal("mp_terminal"),
     Underpass("mp_underpass"),
+    Wasteland("mp_brecourt"),
 }
 
 enum class GameType(val codeName: String) {

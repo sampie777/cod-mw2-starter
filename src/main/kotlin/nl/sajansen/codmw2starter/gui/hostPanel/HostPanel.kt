@@ -1,10 +1,10 @@
 package nl.sajansen.codmw2starter.gui.hostPanel
 
 import getLocalNetworkIpAddresses
+import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.gui.GUI
 import nl.sajansen.codmw2starter.gui.Refreshable
 import nl.sajansen.codmw2starter.gui.ipScanner.IpScannerPanel
-import nl.sajansen.codmw2starter.io.CoD
 import org.slf4j.LoggerFactory
 import java.awt.*
 import java.awt.event.MouseAdapter
