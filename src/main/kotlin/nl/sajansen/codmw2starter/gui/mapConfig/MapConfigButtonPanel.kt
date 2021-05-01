@@ -20,16 +20,23 @@ class MapConfigButtonPanel(private val frame: JDialog, private val getCommand: (
         layout = BoxLayout(this, BoxLayout.LINE_AXIS)
         border = EmptyBorder(0, 10, 10, 10)
 
+        val pauseLobbyButton = JButton("Pause")
+        pauseLobbyButton.addHotKeyMapping(HotKeysMapping.PauseLobby)
+        pauseLobbyButton.addActionListener { CoD.pauseLobby() }
+
+        val cancelButton = JButton("Cancel")
+        cancelButton.addHotKeyMapping(HotKeysMapping.Close)
+        cancelButton.addActionListener { frame.dispose() }
+
         val sendButton = JButton("Send")
         sendButton.addActionListener { sendConfig() }
         sendButton.addHotKeyMapping(HotKeysMapping.SendMapConfig)
         frame.rootPane.defaultButton = sendButton
 
-        val cancelButton = JButton("Cancel")
-        cancelButton.addHotKeyMapping(HotKeysMapping.CloseButton)
-        cancelButton.addActionListener { frame.dispose() }
-
         add(cancelButton)
+        add(Box.createHorizontalGlue())
+        add(Box.createRigidArea(Dimension(10, 0)))
+        add(pauseLobbyButton)
         add(Box.createRigidArea(Dimension(10, 0)))
         add(sendButton)
     }
@@ -39,5 +46,6 @@ class MapConfigButtonPanel(private val frame: JDialog, private val getCommand: (
         Config.save()
         logger.info("Sending commands: $command")
         CoD.sendCommand(command)
+        CoD.isLobbyPaused = false
     }
 }

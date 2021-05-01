@@ -3,13 +3,16 @@ import com.sun.jna.Pointer
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinUser
+import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import org.slf4j.LoggerFactory
+import java.awt.Desktop
 import java.awt.Robot
 import java.awt.Toolkit
 import java.awt.datatransfer.Clipboard
 import java.awt.datatransfer.StringSelection
 import java.awt.event.KeyEvent
+import java.net.URI
 
 
 private val logger = LoggerFactory.getLogger("utils.jna")
@@ -75,6 +78,7 @@ fun copyString(string: String) {
 fun pasteText(string: String) {
     logger.info("Pasting text from clipboard")
     val robot = Robot()
+    robot.delay(Config.sendPasteDelayMs)
     robot.keyPress(KeyEvent.VK_CONTROL)
     robot.keyPress(KeyEvent.VK_V)
     robot.keyRelease(KeyEvent.VK_V)
@@ -82,4 +86,20 @@ fun pasteText(string: String) {
     robot.delay(100)
     robot.keyPress(KeyEvent.VK_ENTER)
     robot.keyRelease(KeyEvent.VK_ENTER)
+}
+
+fun openWebURL(url: String, subject: String = "Webbrowser"): Boolean {
+    if (!Desktop.isDesktopSupported()) {
+        logger.warn("Cannot open link '$url': not supported by host")
+        return false
+    }
+    try {
+        Desktop.getDesktop().browse(URI(url))
+        return true
+    } catch (t: Throwable) {
+        logger.error("Error during opening link '$url'")
+        t.printStackTrace()
+        Notifications.popup("Failed to open link: $url", subject)
+    }
+    return false
 }

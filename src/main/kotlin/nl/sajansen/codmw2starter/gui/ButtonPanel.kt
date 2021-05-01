@@ -25,7 +25,7 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
 
         val mapConfigButton = JButton("Maps")
         mapConfigButton.addActionListener { MapConfigFrame.createAndShow(getMainFrameComponent(this)) }
-        mapConfigButton.addHotKeyMapping(HotKeysMapping.OpenMapConfig)
+        mapConfigButton.addHotKeyMapping(HotKeysMapping.OpenMap)
 
         val startServerButton = JButton("Start server")
         startServerButton.addActionListener { startServer() }

@@ -1,6 +1,7 @@
 package nl.sajansen.codmw2starter.config
 
 import nl.sajansen.codmw2starter.ApplicationInfo
+import nl.sajansen.codmw2starter.globalHooks.NativeKeyEventJson
 import nl.sajansen.codmw2starter.gui.mapConfig.GameType
 import nl.sajansen.codmw2starter.gui.mapConfig.MapName
 import nl.sajansen.codmw2starter.gui.mapConfig.Spectate
@@ -34,10 +35,10 @@ object Config {
     var consoleTitle: String = "IW4 Console"
     var map: MapName = MapName.Afghan
     var gameType: GameType = GameType.Free_For_All
-    var timeLimit: Int = 5
-    var scoreLimit: Int = 500
+    var timeLimit: Int = 10
+    var scoreLimit: Int = 750
     var minPlayers: Int = 2
-    var maxPlayers: Int = 2
+    var maxPlayers: Int = 16
     var killcam: Boolean = true
     var spectate: Spectate = Spectate.Free
     var codeTemplate: String = "party_hostmigration 0; " +
@@ -50,6 +51,10 @@ object Config {
             "party_minplayers {{minPlayers}}; " +
             "scr_game_spectatetype {{spectate}}; " +
             "scr_game_allowkillcam {{killcam}}"
+    var sendPasteDelayMs: Int = 300
+
+    // Key bindings
+    var globalKeyEventPauseLobby: NativeKeyEventJson? = null
 
     fun load() {
         try {

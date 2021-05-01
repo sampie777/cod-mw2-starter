@@ -2,7 +2,7 @@ package nl.sajansen.codmw2starter.gui.mapConfig
 
 enum class MapName(val codeName: String) {
     Afghan("mp_afghan"),
-    Boneyard("mp_boneyard"),
+    Scrapyard("mp_boneyard"),
     Karachi("mp_checkpoint"),
     Derail("mp_derail"),
     Estate("mp_estate"),

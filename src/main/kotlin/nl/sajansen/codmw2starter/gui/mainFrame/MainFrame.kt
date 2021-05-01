@@ -2,8 +2,10 @@ package nl.sajansen.codmw2starter.gui.mainFrame
 
 import nl.sajansen.codmw2starter.ApplicationInfo
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.globalHooks.GlobalKeyboardHook
 import nl.sajansen.codmw2starter.gui.GUI
 import nl.sajansen.codmw2starter.gui.Refreshable
+import nl.sajansen.codmw2starter.gui.menu.MenuBar
 import nl.sajansen.codmw2starter.utils.loadIcon
 import org.slf4j.LoggerFactory
 import javax.swing.JFrame
@@ -33,6 +35,8 @@ class MainFrame : JFrame(), Refreshable {
         addWindowListener(MainFrameWindowAdapter(this))
 
         initGUI()
+
+        GlobalKeyboardHook.register()
     }
 
     private fun initGUI() {
@@ -43,6 +47,7 @@ class MainFrame : JFrame(), Refreshable {
 
         isAlwaysOnTop = Config.mainWindowAlwaysOnTop
 
+        jMenuBar = MenuBar()
         defaultCloseOperation = EXIT_ON_CLOSE
         iconImage = loadIcon("/icon-512.png")
         title = ApplicationInfo.name

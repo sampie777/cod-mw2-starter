@@ -25,17 +25,17 @@ class ConfigActionPanel(private val frame: ConfigFrame) : JPanel() {
         border = EmptyBorder(0, 10, 10, 10)
 
         saveButton.addActionListener { saveConfigAndClose() }
-        saveButton.addHotKeyMapping(HotKeysMapping.SaveButton)
+        saveButton.addHotKeyMapping(HotKeysMapping.Save)
         frame.rootPane.defaultButton = saveButton
 
         val cancelButton = JButton("Cancel")
         cancelButton.addActionListener { cancelWindow() }
-        cancelButton.addHotKeyMapping(HotKeysMapping.CloseButton)
+        cancelButton.addHotKeyMapping(HotKeysMapping.Close)
 
         add(Box.createHorizontalGlue())
-        add(saveButton)
-        add(Box.createRigidArea(Dimension(10, 0)))
         add(cancelButton)
+        add(Box.createRigidArea(Dimension(10, 0)))
+        add(saveButton)
     }
 
     private fun cancelWindow() {

@@ -1,6 +1,7 @@
 package nl.sajansen.codmw2starter.config
 
 import nl.sajansen.codmw2starter.ApplicationInfo
+import nl.sajansen.codmw2starter.globalHooks.NativeKeyEventJson
 import nl.sajansen.codmw2starter.gui.mapConfig.GameType
 import nl.sajansen.codmw2starter.gui.mapConfig.MapName
 import nl.sajansen.codmw2starter.gui.mapConfig.Spectate
@@ -150,47 +151,42 @@ object PropertyLoader {
     }
 
     fun stringToTypedValue(value: String, name: String, type: Class<*>): Any? {
-        if (type == String::class.java) return value
-        if (type == Boolean::class.javaPrimitiveType) return java.lang.Boolean.parseBoolean(value)
-        if (type == Int::class.javaPrimitiveType) return value.toInt()
-        if (type == Float::class.javaPrimitiveType) return value.toFloat()
-        if (type == Long::class.javaPrimitiveType) return value.toLong()
-        if (type == Double::class.javaPrimitiveType) return value.toDouble()
-        if (type == Color::class.java) {
-            val rgb = value.split(defaultValueDelimiter)
-            if (rgb.size < 3) {
-                throw IllegalArgumentException("Configuration parameter '$name' has invalid value: $value")
+        return when (type) {
+            String::class.java -> value
+            Boolean::class.javaPrimitiveType -> java.lang.Boolean.parseBoolean(value)
+            Int::class.javaPrimitiveType -> value.toInt()
+            Float::class.javaPrimitiveType -> value.toFloat()
+            Long::class.javaPrimitiveType -> value.toLong()
+            Double::class.javaPrimitiveType -> value.toDouble()
+            Color::class.java -> {
+                val rgb = value.split(defaultValueDelimiter)
+                if (rgb.size < 3) {
+                    throw IllegalArgumentException("Configuration parameter '$name' has invalid value: $value")
+                }
+                Color(rgb[0].toInt(), rgb[1].toInt(), rgb[2].toInt())
             }
-            return Color(rgb[0].toInt(), rgb[1].toInt(), rgb[2].toInt())
-        }
-        if (type == Point::class.java) {
-            val values = value.split(defaultValueDelimiter)
-            if (values.size != 2) {
-                throw IllegalArgumentException("Configuration parameter '$name' has invalid value: $value")
+            Point::class.java -> {
+                val values = value.split(defaultValueDelimiter)
+                if (values.size != 2) {
+                    throw IllegalArgumentException("Configuration parameter '$name' has invalid value: $value")
+                }
+                Point(values[0].toInt(), values[1].toInt())
             }
-            return Point(values[0].toInt(), values[1].toInt())
-        }
-        if (type == Dimension::class.java) {
-            val values = value.split(defaultValueDelimiter)
-            if (values.size != 2) {
-                throw IllegalArgumentException("Configuration parameter '$name' has invalid value: $value")
+            Dimension::class.java -> {
+                val values = value.split(defaultValueDelimiter)
+                if (values.size != 2) {
+                    throw IllegalArgumentException("Configuration parameter '$name' has invalid value: $value")
+                }
+                Dimension(values[0].toInt(), values[1].toInt())
             }
-            return Dimension(values[0].toInt(), values[1].toInt())
-        }
-        if (type == CoD.Executioner::class.java) {
-            return CoD.Executioner.valueOf(value)
-        }
-        if (type == MapName::class.java) {
-            return MapName.valueOf(value)
-        }
-        if (type == GameType::class.java) {
-            return MapName.valueOf(value)
-        }
-        if (type == Spectate::class.java) {
-            return MapName.valueOf(value)
+            CoD.Executioner::class.java -> CoD.Executioner.valueOf(value)
+            MapName::class.java -> MapName.valueOf(value)
+            GameType::class.java -> MapName.valueOf(value)
+            Spectate::class.java -> MapName.valueOf(value)
+            NativeKeyEventJson::class.java -> NativeKeyEventJson.fromJson(value)
+            else -> throw IllegalArgumentException("Unknown configuration value type: " + type.name)
         }
 
-        throw IllegalArgumentException("Unknown configuration value type: " + type.name)
     }
 
     private fun typedValueToPropertyValue(props: Properties, name: String, type: Class<*>, value: Any?) {
@@ -199,28 +195,24 @@ object PropertyLoader {
             return
         }
 
-        if (type == Color::class.java) {
-            val color = value as Color
-            val stringValue = listOf(color.red, color.green, color.blue).joinToString(defaultValueDelimiter)
-            props.setProperty(name, stringValue)
-            return
-        }
-        if (type == Point::class.java) {
-            val point = value as Point
-            val stringValue = point.x.toString() + defaultValueDelimiter + point.y
-
-            props.setProperty(name, stringValue)
-            return
-        }
-        if (type == Dimension::class.java) {
-            val dimension = value as Dimension
-            val stringValue = dimension.width.toString() + defaultValueDelimiter + dimension.height
-
-            props.setProperty(name, stringValue)
-            return
+        val stringValue = when (type) {
+            Color::class.java -> {
+                val color = value as Color
+                listOf(color.red, color.green, color.blue).joinToString(defaultValueDelimiter)
+            }
+            Point::class.java -> {
+                val point = value as Point
+                point.x.toString() + defaultValueDelimiter + point.y
+            }
+            Dimension::class.java -> {
+                val dimension = value as Dimension
+                dimension.width.toString() + defaultValueDelimiter + dimension.height
+            }
+            NativeKeyEventJson::class.java -> (value as NativeKeyEventJson).toJson()
+            else -> value.toString()
         }
 
-        props.setProperty(name, value.toString())
+        props.setProperty(name, stringValue)
     }
 
     private fun createNewPropertiesFile(): Boolean {

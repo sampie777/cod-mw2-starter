@@ -22,6 +22,7 @@ object CoD {
     }
 
     private val logger = LoggerFactory.getLogger(CoD::class.java)
+    var isLobbyPaused = false
 
     private fun loadProperties(): Ini {
         logger.info("Loading properties file")
@@ -66,6 +67,23 @@ object CoD {
     fun startClient() {
         logger.info("Starting client...")
         execute("client", Config.clientExePath, Config.clientExeFile)
+    }
+
+    fun pauseLobby() {
+        if (isLobbyPaused) {
+            logger.info("Unpausing lobby")
+            sendCommand(
+                "party_maxplayers ${Config.maxPlayers}; " +
+                        "party_minplayers ${Config.minPlayers}; "
+            )
+        } else {
+            logger.info("Pausing lobby")
+            sendCommand(
+                "party_maxplayers 64; " +
+                        "party_minplayers 64; "
+            )
+        }
+        isLobbyPaused = !isLobbyPaused
     }
 
     fun sendCommand(string: String) {

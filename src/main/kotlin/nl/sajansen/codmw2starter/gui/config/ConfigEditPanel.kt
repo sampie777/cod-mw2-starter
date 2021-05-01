@@ -1,9 +1,7 @@
 package nl.sajansen.codmw2starter.gui.config
 
 import nl.sajansen.codmw2starter.config.PropertyLoader
-import nl.sajansen.codmw2starter.gui.config.formcomponents.FormComponent
-import nl.sajansen.codmw2starter.gui.config.formcomponents.FormInput
-import nl.sajansen.codmw2starter.gui.config.formcomponents.TextFormComponent
+import nl.sajansen.codmw2starter.gui.config.formcomponents.*
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
@@ -24,6 +22,24 @@ class ConfigEditPanel : JPanel() {
     }
 
     private fun createFormInputs() {
+        formComponents.add(HeaderFormComponent("Game Execution"))
+        formComponents.add(StringFormInput("serverPropertiesFile", "alterIWnet properties file", false))
+        formComponents.add(StringFormInput("serverExeFile", "IWNetServer execution file", false))
+        formComponents.add(StringFormInput("serverExePath", "Directory of IWNetServer execution file", false))
+        formComponents.add(StringFormInput("clientExeFile", "MW2 multiplayer execution file", false))
+        formComponents.add(StringFormInput("clientExePath", "Directory MW2 multiplayer execution file", false))
+
+        formComponents.add(HeaderFormComponent("In-game Server"))
+        formComponents.add(NumberFormInput("sendPasteDelayMs", "Command paste delay", 0, 10000, 100))
+        formComponents.add(
+            NativeKeyEventFormInput(
+                "globalKeyEventPauseLobby",
+                "Global key for (un)pausing the lobby",
+                allowEmpty = true,
+                toolTipText = "Click the Assign button and hit your keys. Click again to clear."
+            )
+        )
+        formComponents.add(StringFormInput("codeTemplate", "Command template", true))
     }
 
     private fun createGui() {
