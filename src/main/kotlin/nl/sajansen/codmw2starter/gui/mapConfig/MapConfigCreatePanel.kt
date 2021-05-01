@@ -6,6 +6,7 @@ import nl.sajansen.codmw2starter.cod.Spectate
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.config.PropertyLoader
 import nl.sajansen.codmw2starter.gui.config.formcomponents.*
+import nl.sajansen.codmw2starter.gui.mapConfig.mapList.MapListFormInput
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
@@ -27,7 +28,7 @@ class MapConfigCreatePanel : JPanel() {
 
     private fun createFormInputs() {
         formComponents.add(HeaderFormComponent("Main"))
-        formComponents.add(SelectFormInput("map", "Map", MapName.values().toList()))
+        formComponents.add(MapListFormInput("map", "Map", MapName.values().toList()))
         formComponents.add(SelectFormInput("gameType", "Game type", GameType.values().toList()))
         formComponents.add(HeaderFormComponent("Extra"))
         formComponents.add(NumberFormInput("timeLimit", "Time limit", 1, 999, 1))

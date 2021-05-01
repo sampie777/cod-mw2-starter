@@ -6,7 +6,7 @@
 
     <artifactId>cod-mw2-starter</artifactId>
     <groupId>nl.sajansen</groupId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <packaging>jar</packaging>
 
     <name>Call of Duty Modern Warfare 2 Launcher</name>
@@ -237,7 +237,7 @@
                             <stayAlive>false</stayAlive>
                             <restartOnCrash>false</restartOnCrash>
                             <manifest/>
-                            <!-- <icon>src/main/resources/icon.ico</icon>-->
+                             <icon>src/main/resources/nl/sajansen/codmw2starter/images/icon.ico</icon>
                             <jre>
                                 <path/>
                                 <bundledJre64Bit>false</bundledJre64Bit>

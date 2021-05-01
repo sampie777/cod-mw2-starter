@@ -49,7 +49,7 @@ class MainFrame : JFrame(), Refreshable {
 
         jMenuBar = MenuBar()
         defaultCloseOperation = EXIT_ON_CLOSE
-        iconImage = loadIcon("/icon-512.png")
+        iconImage = loadIcon("images/icon-512.png")
         title = ApplicationInfo.name
     }
 
