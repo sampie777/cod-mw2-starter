@@ -74,7 +74,7 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
         }
     }
 
-    private fun startClient() {
+    fun startClient() {
         if (beforeStart.invoke()) {
             CoD.startClient()
             GUI.clientStarted()

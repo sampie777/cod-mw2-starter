@@ -232,7 +232,7 @@
                             <cmdLine/>
                             <chdir/>
                             <priority>normal</priority>
-                            <downloadUrl>${project.url}</downloadUrl>
+                            <downloadUrl></downloadUrl>
                             <supportUrl/>
                             <stayAlive>false</stayAlive>
                             <restartOnCrash>false</restartOnCrash>

@@ -11,7 +11,10 @@ import javax.swing.JTable
 import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableModel
 
-class IpScannerTable(private val onHostClick: ((host: String) -> Unit)) : JPanel() {
+class IpScannerTable(
+    private val onHostClick: ((host: String) -> Unit),
+    private val onHostDoubleClick: ((host: String) -> Unit)
+) : JPanel() {
 
     private val tableHeader = arrayOf("Name", "Address")
     val table = JTable(ReadOnlyTableModel(tableHeader, 0))
@@ -27,7 +30,12 @@ class IpScannerTable(private val onHostClick: ((host: String) -> Unit)) : JPanel
         table.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
                 val host = getSelectedValueAsAddress() ?: return
-                onHostClick.invoke(host)
+
+                if (e.clickCount >= 2) {
+                    onHostDoubleClick.invoke(host)
+                } else {
+                    onHostClick.invoke(host)
+                }
             }
         })
 

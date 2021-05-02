@@ -12,13 +12,13 @@ import java.awt.event.MouseEvent
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
-class HostPanel : JPanel(), Refreshable {
+class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
     private val logger = LoggerFactory.getLogger(HostPanel::class.java)
 
     private val currentHostLabel = JLabel()
     private val localHostsPanel = JPanel()
     private val localHostLabel = JLabel("Local host(s): ")
-    private val ipScannerPanel = IpScannerPanel { onHostClick(it) }
+    private val ipScannerPanel = IpScannerPanel({ onHostClick(it) }, { onHostDoubleClick(it) })
     private val customHostField = JTextField()
 
     init {
@@ -114,6 +114,11 @@ class HostPanel : JPanel(), Refreshable {
 
     private fun onHostClick(host: String) {
         customHostField.text = host
+    }
+
+    private fun onHostDoubleClick(host: String) {
+        customHostField.text = host
+        runClient.invoke()
     }
 
     fun getHost(): String {

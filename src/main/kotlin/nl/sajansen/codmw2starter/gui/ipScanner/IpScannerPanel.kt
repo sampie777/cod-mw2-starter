@@ -7,10 +7,11 @@ import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
 import javax.swing.JPanel
 
-open class IpScannerPanel(private val onHostClick: ((host: String) -> Unit)) : JPanel(), IpScannerInitiator {
+open class IpScannerPanel(onHostClick: ((host: String) -> Unit),
+                          onHostDoubleClick: ((host: String) -> Unit)) : JPanel(), IpScannerInitiator {
     private val logger = LoggerFactory.getLogger(IpScannerPanel::class.java.name)
 
-    private val ipScannerTable = IpScannerTable(onHostClick)
+    private val ipScannerTable = IpScannerTable(onHostClick, onHostDoubleClick)
     private val websocketScannerStatusPanel = WebsocketScannerStatusPanel()
     private lateinit var websocketScannerActionPanel: WebsocketScannerActionPanel
     private var worker: WebsocketScannerSwingWorker? = null

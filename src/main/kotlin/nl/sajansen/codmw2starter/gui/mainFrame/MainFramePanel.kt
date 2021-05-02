@@ -13,7 +13,8 @@ import javax.swing.JSplitPane
 class MainFramePanel : JSplitPane(), Refreshable {
     private val logger = LoggerFactory.getLogger(MainFramePanel::class.java.name)
 
-    private val hostPanel = HostPanel()
+    private val hostPanel = HostPanel { startClient() }
+    private val buttonPanel = ButtonPanel(MainFrame.getInstance()!!) { beforeStart() }
 
     init {
         GUI.register(this)
@@ -28,7 +29,7 @@ class MainFramePanel : JSplitPane(), Refreshable {
         layout = BorderLayout(10, 10)
 
         add(hostPanel, BorderLayout.CENTER)
-        add(ButtonPanel(MainFrame.getInstance()!!) { beforeStart() }, BorderLayout.PAGE_END)
+        add(buttonPanel, BorderLayout.PAGE_END)
     }
 
     override fun removeNotify() {
@@ -38,5 +39,9 @@ class MainFramePanel : JSplitPane(), Refreshable {
 
     private fun beforeStart(): Boolean {
         return CoD.setHost(hostPanel.getHost())
+    }
+
+    private fun startClient() {
+        buttonPanel.startClient()
     }
 }
