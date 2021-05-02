@@ -53,7 +53,12 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
 
         val customHostLabel = JLabel("Use host:")
         customHostLabel.font = Theme.boldFont
+
         customHostField.font = Theme.boldFont
+        customHostField.border = BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color(168, 168, 168)),
+            EmptyBorder(5, 10, 5, 7)
+        )
 
         val labelPanel = JPanel()
         labelPanel.alignmentX = Component.LEFT_ALIGNMENT
@@ -64,6 +69,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
 
         val customHostPanel = JPanel()
         customHostPanel.layout = BorderLayout(10, 10)
+        customHostPanel.border = EmptyBorder(15, 0, 10, 0)
         customHostPanel.add(customHostLabel, BorderLayout.LINE_START)
         customHostPanel.add(customHostField, BorderLayout.CENTER)
 
