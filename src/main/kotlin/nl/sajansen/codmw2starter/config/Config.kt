@@ -57,6 +57,7 @@ object Config {
 
     // Other
     var updatesCheckForUpdates: Boolean = true
+    var ipScannerTimeout: Int = 300
 
     fun load() {
         try {

@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.gui.ipScanner
 
+import nl.sajansen.codmw2starter.config.Config
 import org.slf4j.LoggerFactory
 import java.awt.Dimension
 import java.awt.Font
@@ -24,7 +25,7 @@ class WebsocketScannerActionPanel(private val panel: IpScannerPanel) : JPanel() 
         val timeoutLabel = JLabel("Timeout (ms): ")
         timeoutLabel.font = Font("Dialog", Font.PLAIN, 10)
 
-        timeoutSpinner.model = SpinnerNumberModel(500, 1, Int.MAX_VALUE, 100)
+        timeoutSpinner.model = SpinnerNumberModel(Config.ipScannerTimeout, 1, Int.MAX_VALUE, 100)
         timeoutSpinner.preferredSize = Dimension(60, 18)
         timeoutSpinner.toolTipText = "Adjust this value to increase the port scanning timeout if you are on a slow network"
         timeoutSpinner.font = timeoutLabel.font

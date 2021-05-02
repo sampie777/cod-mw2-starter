@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.gui.ipScanner
 
+import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.ipScanner.IpScannerInitiator
 import nl.sajansen.codmw2starter.ipScanner.ScanResult
 import nl.sajansen.codmw2starter.ipScanner.WebsocketScannerSwingWorker
@@ -37,6 +38,8 @@ open class IpScannerPanel(onHostClick: ((host: String) -> Unit),
         websocketScannerActionPanel.buttonsEnable(false)
 
         ipScannerTable.clearTable()
+        Config.ipScannerTimeout = timeout
+        Config.save()
 
         worker = WebsocketScannerSwingWorker(this, timeout)
         worker!!.execute()
