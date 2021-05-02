@@ -22,6 +22,10 @@ object CoD {
 
     private val logger = LoggerFactory.getLogger(CoD::class.java)
     var isLobbyPaused = false
+        set(value) {
+            field = value
+            CoDEventListenerSubscriber.onPauseChanged()
+        }
 
     private fun loadProperties(): Ini {
         logger.info("Loading properties file")
