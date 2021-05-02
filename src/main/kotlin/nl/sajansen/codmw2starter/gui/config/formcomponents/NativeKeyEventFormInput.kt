@@ -4,12 +4,12 @@ import keyEventToString
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.globalHooks.GlobalKeyboardHook
 import nl.sajansen.codmw2starter.globalHooks.NativeKeyEventJson
+import nl.sajansen.codmw2starter.gui.Theme
 import org.jnativehook.keyboard.NativeKeyEvent
 import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
 import java.awt.Component
 import java.awt.Dimension
-import java.awt.Font
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
@@ -31,12 +31,13 @@ class NativeKeyEventFormInput(
         keyEvent = configValue?.toEvent()
 
         val label = JLabel(labelText)
-        label.font = Font("Dialog", Font.PLAIN, 12)
+        label.font = Theme.normalFont
         label.toolTipText = toolTipText
 
         setButtonText()
         button.preferredSize = Dimension(200, 30)
         button.addActionListener { calibrate() }
+        button.font = Theme.buttonFont
 
         val panel = JPanel()
         panel.layout = BorderLayout(10, 10)

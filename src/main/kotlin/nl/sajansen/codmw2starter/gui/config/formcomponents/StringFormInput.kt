@@ -1,8 +1,12 @@
 package nl.sajansen.codmw2starter.gui.config.formcomponents
 
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.Theme
 import org.slf4j.LoggerFactory
-import java.awt.*
+import java.awt.BorderLayout
+import java.awt.Color
+import java.awt.Component
+import java.awt.Dimension
 import javax.swing.*
 
 class StringFormInput(
@@ -19,7 +23,7 @@ class StringFormInput(
         val configValue: String? = Config.get(key) as? String
 
         val label = JLabel(labelText)
-        label.font = Font("Dialog", Font.PLAIN, 12)
+        label.font = Theme.normalFont
         label.toolTipText = toolTipText
 
         input.text = configValue

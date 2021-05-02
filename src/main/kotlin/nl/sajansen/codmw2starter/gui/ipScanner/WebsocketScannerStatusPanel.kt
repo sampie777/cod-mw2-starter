@@ -1,6 +1,6 @@
 package nl.sajansen.codmw2starter.gui.ipScanner
 
-import java.awt.Font
+import nl.sajansen.codmw2starter.gui.Theme
 import javax.swing.JLabel
 import javax.swing.JPanel
 
@@ -13,7 +13,7 @@ class WebsocketScannerStatusPanel : JPanel() {
     }
 
     private fun createGui() {
-        statusLabel.font = Font("Dialog", Font.PLAIN, 12)
+        statusLabel.font = Theme.normalFont
         add(statusLabel)
     }
 

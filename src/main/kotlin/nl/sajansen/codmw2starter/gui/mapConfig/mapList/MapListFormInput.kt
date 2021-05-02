@@ -2,10 +2,14 @@ package nl.sajansen.codmw2starter.gui.mapConfig.mapList
 
 import nl.sajansen.codmw2starter.cod.MapName
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.Theme
 import nl.sajansen.codmw2starter.gui.config.formcomponents.FormInput
 import nl.sajansen.codmw2starter.gui.config.formcomponents.SelectFormInput
 import org.slf4j.LoggerFactory
-import java.awt.*
+import java.awt.BorderLayout
+import java.awt.Color
+import java.awt.Component
+import java.awt.Dimension
 import javax.swing.*
 
 class MapListFormInput(
@@ -20,13 +24,14 @@ class MapListFormInput(
     @Suppress("UNCHECKED_CAST")
     override fun component(): Component {
         val label = JLabel(labelText)
-        label.font = Font("Dialog", Font.PLAIN, 12)
+        label.font = Theme.normalFont
 
         selectBox.model = DefaultComboBoxModel(values.toTypedArray())
         selectBox.renderer = MapListRenderer()
         selectBox.selectedItem = values.find { it == Config.get(key) }
         selectBox.preferredSize = Dimension(250, 30)
         selectBox.border = BorderFactory.createLineBorder(Color(168, 168, 168))
+        selectBox.font = Theme.normalFont
 
         val panel = JPanel()
         panel.layout = BorderLayout(10, 10)

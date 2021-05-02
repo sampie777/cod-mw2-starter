@@ -3,6 +3,7 @@ package nl.sajansen.codmw2starter.gui.menu
 import nl.sajansen.codmw2starter.ApplicationInfo
 import nl.sajansen.codmw2starter.gui.ClickableLinkComponent
 import nl.sajansen.codmw2starter.gui.DefaultDialogKeyDispatcher
+import nl.sajansen.codmw2starter.gui.Theme
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.KeyboardFocusManager
@@ -43,13 +44,13 @@ class InfoFrame(private val parentFrame: JFrame?) : JDialog(parentFrame) {
                     "<p>Version: ${ApplicationInfo.version}</p>" +
                     "</html>"
         )
-        versionLabel.font = Font("Dialog", Font.PLAIN, 14)
+        versionLabel.font = Theme.mediumFont
 
         val sourceCodeLabel = ClickableLinkComponent("Source code (GitHub)", ApplicationInfo.url)
-        sourceCodeLabel.font = Font("Dialog", Font.PLAIN, 14)
+        sourceCodeLabel.font = Theme.mediumFont
 
         val donationLabel = ClickableLinkComponent("Donate to ${ApplicationInfo.name}", ApplicationInfo.donationUrl)
-        donationLabel.font = Font("Dialog", Font.PLAIN, 14)
+        donationLabel.font = Theme.mediumFont
 
         val applicationLoggingInfoLabel = JLabel("<html>Application log file location: ${Paths.get(System.getProperty("java.io.tmpdir"), "cod-mw2-starter.log")}</html>")
         applicationLoggingInfoLabel.font = Font("Dialog", Font.ITALIC, 12)

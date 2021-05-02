@@ -1,8 +1,12 @@
 package nl.sajansen.codmw2starter.gui.config.formcomponents
 
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.Theme
 import org.slf4j.LoggerFactory
-import java.awt.*
+import java.awt.BorderLayout
+import java.awt.Color
+import java.awt.Component
+import java.awt.Dimension
 import javax.swing.*
 
 class SelectFormInput<T : Any>(
@@ -18,13 +22,14 @@ class SelectFormInput<T : Any>(
     @Suppress("UNCHECKED_CAST")
     override fun component(): Component {
         val label = JLabel(labelText)
-        label.font = Font("Dialog", Font.PLAIN, 12)
+        label.font = Theme.normalFont
 
         val valuesArray = (values.toList() as ArrayList).toArray()
         selectBox.model = DefaultComboBoxModel(valuesArray)
         selectBox.selectedItem = values.find { it == Config.get(key) }
         selectBox.preferredSize = Dimension(150, 30)
         selectBox.border = BorderFactory.createLineBorder(Color(168, 168, 168))
+        selectBox.font = Theme.normalFont
 
         val panel = JPanel()
         panel.layout = BorderLayout(10, 10)

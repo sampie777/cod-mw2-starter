@@ -4,6 +4,7 @@ import getLocalNetworkIpAddresses
 import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.gui.GUI
 import nl.sajansen.codmw2starter.gui.Refreshable
+import nl.sajansen.codmw2starter.gui.Theme
 import nl.sajansen.codmw2starter.gui.ipScanner.IpScannerPanel
 import org.slf4j.LoggerFactory
 import java.awt.*
@@ -33,11 +34,11 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
 
         val currentHostTextLabel = JLabel("Current host: ")
         currentHostTextLabel.toolTipText = "Click to set host address"
-        currentHostTextLabel.font = Font("Dialog", Font.PLAIN, 12)
+        currentHostTextLabel.font = Theme.normalFont
 
         currentHostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
         currentHostLabel.toolTipText = "Click to set host address"
-        currentHostLabel.font = Font("Dialog", Font.PLAIN, 12)
+        currentHostLabel.font = Theme.normalFont
 
         val currentHostsPanel = JPanel()
         currentHostsPanel.layout = FlowLayout(FlowLayout.LEFT)
@@ -45,12 +46,14 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
         currentHostsPanel.add(currentHostLabel)
 
         localHostLabel.toolTipText = "Click to set host address"
-        localHostLabel.font = Font("Dialog", Font.PLAIN, 12)
+        localHostLabel.font = Theme.normalFont
 
         localHostsPanel.layout = FlowLayout(FlowLayout.LEFT)
         localHostsPanel.add(localHostLabel)
 
         val customHostLabel = JLabel("Use host:")
+        customHostLabel.font = Theme.boldFont
+        customHostField.font = Theme.boldFont
 
         val labelPanel = JPanel()
         labelPanel.alignmentX = Component.LEFT_ALIGNMENT
@@ -97,7 +100,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
                 hostLabel.text = hostLabel.text + ","
             }
             hostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
-            hostLabel.font = Font("Dialog", Font.PLAIN, 12)
+            hostLabel.font = Theme.normalFont
             hostLabel.toolTipText = "Click to set host address"
             hostLabel.addMouseListener(object : MouseAdapter() {
                 override fun mouseClicked(e: MouseEvent) {

@@ -1,9 +1,9 @@
 package nl.sajansen.codmw2starter.gui.ipScanner
 
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.Theme
 import org.slf4j.LoggerFactory
 import java.awt.Dimension
-import java.awt.Font
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
@@ -23,7 +23,7 @@ class WebsocketScannerActionPanel(private val panel: IpScannerPanel) : JPanel() 
         border = EmptyBorder(0, 10, 10, 10)
 
         val timeoutLabel = JLabel("Timeout (ms): ")
-        timeoutLabel.font = Font("Dialog", Font.PLAIN, 10)
+        timeoutLabel.font = Theme.smallFont
 
         timeoutSpinner.model = SpinnerNumberModel(Config.ipScannerTimeout, 1, Int.MAX_VALUE, 100)
         timeoutSpinner.preferredSize = Dimension(60, 18)
@@ -33,6 +33,7 @@ class WebsocketScannerActionPanel(private val panel: IpScannerPanel) : JPanel() 
         val scanButton = JButton("Scan")
         buttonsToEnable.add(scanButton)
         scanButton.addActionListener { panel.scan(timeoutSpinner.value as Int) }
+        scanButton.font = Theme.buttonFont
 
         add(Box.createHorizontalGlue())
         add(timeoutLabel)

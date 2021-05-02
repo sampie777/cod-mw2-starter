@@ -1,11 +1,11 @@
 package nl.sajansen.codmw2starter.gui.config.formcomponents
 
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.Theme
 import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
 import java.awt.Component
 import java.awt.Dimension
-import java.awt.Font
 import javax.swing.JCheckBox
 import javax.swing.JLabel
 import javax.swing.JPanel
@@ -24,7 +24,7 @@ class BooleanFormInput(
         val configValue: Boolean? = Config.get(key) as? Boolean
 
         val label = JLabel("<html>${labelText.replace("\n", "<br/>&nbsp;")}</html>")
-        label.font = Font("Dialog", Font.PLAIN, 12)
+        label.font = Theme.normalFont
         label.toolTipText = toolTipText
 
         input.isSelected = configValue ?: false

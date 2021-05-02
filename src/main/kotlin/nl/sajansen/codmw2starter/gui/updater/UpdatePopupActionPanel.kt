@@ -2,10 +2,10 @@ package nl.sajansen.codmw2starter.gui.updater
 
 import nl.sajansen.codmw2starter.ApplicationInfo
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.Theme
 import openWebURL
 import org.slf4j.LoggerFactory
 import java.awt.Dimension
-import java.awt.Font
 import java.awt.event.KeyEvent
 import javax.swing.*
 import javax.swing.border.EmptyBorder
@@ -25,7 +25,7 @@ class UpdatePopupActionPanel(private val frame: UpdatePopup) : JPanel() {
 
         disableUpdateCheckerCheckbox.text = "Don't check for future updates"
         disableUpdateCheckerCheckbox.toolTipText = "This can be re-enabled in the settings screen"
-        disableUpdateCheckerCheckbox.font = Font("Dialog", Font.PLAIN, 12)
+        disableUpdateCheckerCheckbox.font = Theme.normalFont
         disableUpdateCheckerCheckbox.isSelected = !Config.updatesCheckForUpdates
 
         val closeButton = JButton("Close")

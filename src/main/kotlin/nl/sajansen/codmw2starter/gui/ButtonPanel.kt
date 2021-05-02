@@ -26,24 +26,29 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
         val mapConfigButton = JButton("Maps")
         mapConfigButton.addActionListener { MapConfigFrame.createAndShow(getMainFrameComponent(this)) }
         mapConfigButton.addHotKeyMapping(HotKeysMapping.OpenMap)
+        mapConfigButton.font = Theme.buttonFont
 
         val startServerButton = JButton("Start server")
         startServerButton.addActionListener { startServer() }
         startServerButton.addHotKeyMapping(HotKeysMapping.StartServer)
+        startServerButton.font = Theme.buttonFont
 
         val executionerSelector = JComboBox(CoD.Executioner.values())
         executionerSelector.selectedItem = Config.executioner
         executionerSelector.toolTipText = "Select preferred executioner"
+        executionerSelector.font = Theme.normalFont
         executionerSelector.addActionListener { setExecutioner(it) }
 
         val startClientButton = JButton("Start client")
         startClientButton.addActionListener { startClient() }
         startClientButton.addHotKeyMapping(HotKeysMapping.StartClient)
+        startClientButton.font = Theme.primaryButtonFont
         frame.rootPane.defaultButton = startClientButton
 
         val quitButton = JButton("Quit")
         quitButton.addActionListener { exitApplication() }
         quitButton.addHotKeyMapping(HotKeysMapping.QuitApplication)
+        executionerSelector.font = Theme.buttonFont
 
 //        add(quitButton)
         add(mapConfigButton)

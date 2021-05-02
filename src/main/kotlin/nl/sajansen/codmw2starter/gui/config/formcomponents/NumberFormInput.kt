@@ -1,8 +1,12 @@
 package nl.sajansen.codmw2starter.gui.config.formcomponents
 
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.Theme
 import org.slf4j.LoggerFactory
-import java.awt.*
+import java.awt.BorderLayout
+import java.awt.Color
+import java.awt.Component
+import java.awt.Dimension
 import javax.swing.*
 
 class NumberFormInput<T : Number>(
@@ -21,11 +25,12 @@ class NumberFormInput<T : Number>(
         val configValue: T? = Config.get(key) as? T
 
         val label = JLabel(labelText)
-        label.font = Font("Dialog", Font.PLAIN, 12)
+        label.font = Theme.normalFont
 
         input.model = SpinnerNumberModel(configValue, min as? Comparable<T>, max as? Comparable<T>, step)
         input.preferredSize = Dimension(150, 20)
         input.border = BorderFactory.createLineBorder(Color(168, 168, 168))
+        input.font = Theme.normalFont
 
         val panel = JPanel()
         panel.layout = BorderLayout(10, 10)

@@ -2,9 +2,9 @@ package nl.sajansen.codmw2starter.gui.updater
 
 import nl.sajansen.codmw2starter.ApplicationInfo
 import nl.sajansen.codmw2starter.gui.ClickableLinkComponent
+import nl.sajansen.codmw2starter.gui.Theme
 import org.slf4j.LoggerFactory
 import java.awt.Dimension
-import java.awt.Font
 import javax.swing.Box
 import javax.swing.BoxLayout
 import javax.swing.JLabel
@@ -31,10 +31,10 @@ class UpdatePopupContent(val version: String) : JPanel() {
             </html>
         """.trimIndent()
         )
-        infoLabel.font = Font("Dialog", Font.PLAIN, 14)
+        infoLabel.font = Theme.mediumFont
 
         val releaseNotesLink = ClickableLinkComponent("Release notes", ApplicationInfo.updatesInfoUrl)
-        releaseNotesLink.font = Font("Dialog", Font.PLAIN, 14)
+        releaseNotesLink.font = Theme.mediumFont
 
         add(infoLabel)
         add(Box.createRigidArea(Dimension(0, 40)))

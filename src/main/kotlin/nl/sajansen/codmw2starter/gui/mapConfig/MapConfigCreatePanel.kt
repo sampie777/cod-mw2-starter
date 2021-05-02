@@ -30,12 +30,13 @@ class MapConfigCreatePanel : JPanel() {
         formComponents.add(HeaderFormComponent("Main"))
         formComponents.add(MapListFormInput("map", "Map", MapName.values().toList()))
         formComponents.add(SelectFormInput("gameType", "Game type", GameType.values().toList()))
+        formComponents.add(HeaderFormComponent(""))
         formComponents.add(HeaderFormComponent("Extra"))
         formComponents.add(NumberFormInput("timeLimit", "Time limit", 1, 999, 1))
         formComponents.add(NumberFormInput("scoreLimit", "Score limit", 1, 999999, 50))
         formComponents.add(NumberFormInput("minPlayers", "Min. players", 1, 999, 1))
         formComponents.add(NumberFormInput("maxPlayers", "Max. players", 1, 999, 1))
-        formComponents.add(BooleanFormInput("killcam", "Kill cam"))
+        formComponents.add(BooleanFormInput("killcam", "Kill-cam"))
         formComponents.add(SelectFormInput("spectate", "Spectate", Spectate.values().toList()))
     }
 

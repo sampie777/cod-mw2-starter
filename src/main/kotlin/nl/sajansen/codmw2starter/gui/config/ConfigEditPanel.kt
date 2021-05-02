@@ -27,6 +27,7 @@ class ConfigEditPanel : JPanel() {
         formComponents.add(StringFormInput("serverExeFile", "IWNetServer execution file", false))
         formComponents.add(StringFormInput("clientExeFile", "MW2 multiplayer execution file", false))
 
+        formComponents.add(HeaderFormComponent(""))
         formComponents.add(HeaderFormComponent("In-game Server"))
         formComponents.add(NumberFormInput("sendPasteDelayMs", "Command paste delay (ms)", 0, 10000, 100))
         formComponents.add(NumberFormInput("pauseSetPlayers", "Pause lobby by setting players to", 1, 999, 1))
@@ -51,6 +52,7 @@ class ConfigEditPanel : JPanel() {
             )
         )
 
+        formComponents.add(HeaderFormComponent(""))
         formComponents.add(HeaderFormComponent("Other"))
         formComponents.add(BooleanFormInput("updatesCheckForUpdates", "Check for updates"))
     }
