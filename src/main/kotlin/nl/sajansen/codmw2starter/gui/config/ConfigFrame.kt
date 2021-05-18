@@ -22,7 +22,7 @@ class ConfigFrame(private val parentFrame: JFrame?) : JDialog(parentFrame) {
     }
 
     private fun createGui() {
-        val mainPanel = JPanel(BorderLayout(10, 10))
+        val mainPanel = JPanel(BorderLayout(10, 0))
         add(mainPanel)
 
         val configActionPanel = ConfigActionPanel(this)
@@ -34,7 +34,7 @@ class ConfigFrame(private val parentFrame: JFrame?) : JDialog(parentFrame) {
         configActionPanel.saveButton.requestFocusInWindow()
 
         title = "Settings"
-        setSize(560, 520)
+        setSize(560, 525)
         setLocationRelativeTo(parentFrame)
         modalityType = ModalityType.APPLICATION_MODAL
         isVisible = true

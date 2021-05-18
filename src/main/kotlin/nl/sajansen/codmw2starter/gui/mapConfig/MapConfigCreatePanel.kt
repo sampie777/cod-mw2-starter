@@ -29,7 +29,7 @@ class MapConfigCreatePanel : JPanel() {
     private fun createFormInputs() {
         formComponents.add(HeaderFormComponent("Main"))
         formComponents.add(MapListFormInput("map", "Map", MapName.values().toList()))
-        formComponents.add(SelectFormInput("gameType", "Game type", GameType.values().toList()))
+        formComponents.add(SelectFormInput("gameType", "Game type", GameType.values()))
         formComponents.add(HeaderFormComponent(""))
         formComponents.add(HeaderFormComponent("Extra"))
         formComponents.add(NumberFormInput("timeLimit", "Time limit", 1, 999, 1))
@@ -37,7 +37,7 @@ class MapConfigCreatePanel : JPanel() {
         formComponents.add(NumberFormInput("minPlayers", "Min. players", 1, 999, 1))
         formComponents.add(NumberFormInput("maxPlayers", "Max. players", 1, 999, 1))
         formComponents.add(BooleanFormInput("killcam", "Kill-cam"))
-        formComponents.add(SelectFormInput("spectate", "Spectate", Spectate.values().toList()))
+        formComponents.add(SelectFormInput("spectate", "Spectate", Spectate.values()))
     }
 
     private fun createGui() {

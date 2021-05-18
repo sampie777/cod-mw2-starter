@@ -5,11 +5,9 @@ import nl.sajansen.codmw2starter.gui.HotKeysMapping
 import nl.sajansen.codmw2starter.gui.Theme
 import nl.sajansen.codmw2starter.utils.addHotKeyMapping
 import org.slf4j.LoggerFactory
+import java.awt.Color
 import java.awt.Dimension
-import javax.swing.Box
-import javax.swing.BoxLayout
-import javax.swing.JButton
-import javax.swing.JPanel
+import javax.swing.*
 import javax.swing.border.EmptyBorder
 
 class ConfigActionPanel(private val frame: ConfigFrame) : JPanel() {
@@ -23,7 +21,10 @@ class ConfigActionPanel(private val frame: ConfigFrame) : JPanel() {
 
     private fun createGui() {
         layout = BoxLayout(this, BoxLayout.LINE_AXIS)
-        border = EmptyBorder(0, 10, 10, 10)
+        border = BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY),
+            EmptyBorder(10, 10, 10, 10)
+        )
 
         saveButton.addActionListener { saveConfigAndClose() }
         saveButton.addHotKeyMapping(HotKeysMapping.Save)

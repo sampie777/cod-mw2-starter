@@ -12,7 +12,7 @@ import javax.swing.*
 class SelectFormInput<T : Any>(
     override val key: String,
     private val labelText: String,
-    private val values: List<T>
+    private val values: Array<T>
 ) : FormInput {
 
     private val logger = LoggerFactory.getLogger(SelectFormInput::class.java.name)
@@ -24,8 +24,7 @@ class SelectFormInput<T : Any>(
         val label = JLabel(labelText)
         label.font = Theme.normalFont
 
-        val valuesArray = (values.toList() as ArrayList).toArray()
-        selectBox.model = DefaultComboBoxModel(valuesArray)
+        selectBox.model = DefaultComboBoxModel(values)
         selectBox.selectedItem = values.find { it == Config.get(key) }
         selectBox.preferredSize = Dimension(150, 30)
         selectBox.border = BorderFactory.createLineBorder(Color(168, 168, 168))

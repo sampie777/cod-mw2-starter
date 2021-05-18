@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.gui.config
 
+import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.config.PropertyLoader
 import nl.sajansen.codmw2starter.gui.config.formcomponents.*
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
@@ -26,6 +27,7 @@ class ConfigEditPanel : JPanel() {
         formComponents.add(StringFormInput("serverPropertiesFile", "alterIWnet properties file", false))
         formComponents.add(StringFormInput("serverExeFile", "IWNetServer execution file", false))
         formComponents.add(StringFormInput("clientExeFile", "MW2 multiplayer execution file", false))
+        formComponents.add(SelectFormInput("executioner", "Execution method", CoD.Executioner.values()))
 
         formComponents.add(HeaderFormComponent(""))
         formComponents.add(HeaderFormComponent("In-game Server"))
