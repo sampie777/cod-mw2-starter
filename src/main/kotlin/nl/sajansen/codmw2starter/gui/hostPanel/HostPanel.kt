@@ -30,9 +30,9 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
 
     private fun createGui() {
         layout = BorderLayout(10, 10)
-        border = EmptyBorder(10, 10, 10, 10)
+        border = EmptyBorder(0, 0, 10, 0)
 
-        val currentHostTextLabel = JLabel("Current host: ")
+        val currentHostTextLabel = JLabel("Last used: ")
         currentHostTextLabel.toolTipText = "Click to set host address"
         currentHostTextLabel.font = Theme.normalFont
 
@@ -63,13 +63,17 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
         val labelPanel = JPanel()
         labelPanel.alignmentX = Component.LEFT_ALIGNMENT
         labelPanel.layout = BoxLayout(labelPanel, BoxLayout.PAGE_AXIS)
+        labelPanel.border = EmptyBorder(0, 10, 0, 10)
         labelPanel.add(currentHostsPanel)
         labelPanel.add(Box.createRigidArea(Dimension(0, 5)))
         labelPanel.add(localHostsPanel)
 
+        ipScannerPanel.border = EmptyBorder(0, 10, 0, 10)
+
         val customHostPanel = JPanel()
         customHostPanel.layout = BorderLayout(10, 10)
-        customHostPanel.border = EmptyBorder(15, 0, 10, 0)
+        customHostPanel.border = EmptyBorder(15, 10, 15, 10)
+        customHostPanel.background = Theme.highlightPanelColor
         customHostPanel.add(customHostLabel, BorderLayout.LINE_START)
         customHostPanel.add(customHostField, BorderLayout.CENTER)
 
