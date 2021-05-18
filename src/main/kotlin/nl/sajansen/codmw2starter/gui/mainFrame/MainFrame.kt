@@ -40,7 +40,7 @@ class MainFrame : JFrame(), Refreshable {
     }
 
     private fun initGUI() {
-        setSize(580, 400)
+        setSize(580, 450)
         setLocationRelativeTo(null)
 
         add(MainFramePanel())

@@ -82,6 +82,8 @@ object CoD {
             Notifications.popup("Failed to save nickname to file: ${e.localizedMessage}", "CoD")
             return false
         }
+
+        CoDEventListenerSubscriber.onNicknameChanged()
         return true
     }
 

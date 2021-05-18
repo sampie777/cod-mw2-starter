@@ -14,6 +14,10 @@ Also note that this is just a quick and dirty hobby project, so things might not
 
 Other server IP's (hosts) can be used. Click Scan to scan the local area network for other computers (increase timeout time if hosts are missing). Then click the desired host and start the client.
 
+## Nickname
+
+Your nickname can be changed by clicking on your nickname. A popup will be shown in which you can type your newly desired nickname. 
+
 ## Custom folder
 
 When placed in another folder than the Modern Warfare 2 folder, you can specify the path to the Modern Warfare 2 files in the .properties file.

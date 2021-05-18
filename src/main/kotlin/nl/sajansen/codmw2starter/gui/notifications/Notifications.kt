@@ -47,7 +47,10 @@ object Notifications {
 
         JOptionPane.showMessageDialog(
             MainFrame.getInstance(),
-            "<html>${notification.message}</html>",
+            "<html>${
+                notification.message
+                    .replace("\n", "<br/>")
+            }</html>",
             notification.subject,
             JOptionPane.PLAIN_MESSAGE
         )
