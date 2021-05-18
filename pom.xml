@@ -6,7 +6,7 @@
 
     <artifactId>cod-mw2-starter</artifactId>
     <groupId>nl.sajansen</groupId>
-    <version>0.4.0-SNAPSHOT</version>
+    <version>0.4.0</version>
     <packaging>jar</packaging>
 
     <name>Call of Duty Modern Warfare 2 Launcher</name>
