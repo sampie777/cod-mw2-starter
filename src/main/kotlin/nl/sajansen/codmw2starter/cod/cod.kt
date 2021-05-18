@@ -32,7 +32,7 @@ object CoD {
         val file = File(Config.serverPropertiesFile)
 
         if (!file.exists()) {
-            Notifications.popup("No server configuration file found (alterIWnet.ini) in current directory")
+            Notifications.popup("No server configuration file found: (${File(Config.serverPropertiesFile).name})")
             exitApplication()
         }
 
@@ -57,6 +57,29 @@ object CoD {
             logger.error("Failed to save host to file")
             e.printStackTrace()
             Notifications.popup("Failed to save host to file: ${e.localizedMessage}", "CoD")
+            return false
+        }
+        return true
+    }
+
+    fun getNickname(): String? {
+        val properties = loadProperties()
+        return properties["Configuration"]?.get("Nickname")
+    }
+
+    fun setNickname(Nickname: String): Boolean {
+        logger.info("Saving new nickname to file: $Nickname")
+
+        val properties = loadProperties()
+        properties["Configuration"]?.set("Nickname", Nickname)
+
+        val file = File(Config.serverPropertiesFile)
+        try {
+            properties.store(file)
+        } catch (e: Exception) {
+            logger.error("Failed to save nickname to file")
+            e.printStackTrace()
+            Notifications.popup("Failed to save nickname to file: ${e.localizedMessage}", "CoD")
             return false
         }
         return true

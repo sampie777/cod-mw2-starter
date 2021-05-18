@@ -24,6 +24,13 @@ When you've configured your settings and click Send, the application will try to
 
 Note that this config uses console commands to communicate the settings to Modern Warfare 2. 
 
+## Links
+
+See https://www.mpgh.net/forum/showthread.php?t=195158&p=2710678&viewfull=1#post2710678 for a whole list of commands.
+
+https://www.mpgh.net/forum/showthread.php?t=123599&p=1646767&viewfull=1#post1646767 holds map and game type command names.
+
+Map images were found on http://www.themodernwarfare2.com/mw2/multiplayer/maps/.
 
 # Donation
 
