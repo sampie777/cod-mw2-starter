@@ -2,8 +2,8 @@ package nl.sajansen.codmw2starter.gui.hostPanel
 
 import getLocalNetworkIpAddresses
 import nl.sajansen.codmw2starter.cod.CoD
-import nl.sajansen.codmw2starter.gui.GUI
-import nl.sajansen.codmw2starter.gui.Refreshable
+import nl.sajansen.codmw2starter.cod.CoDEventListener
+import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
 import nl.sajansen.codmw2starter.gui.Theme
 import nl.sajansen.codmw2starter.gui.ipScanner.IpScannerPanel
 import org.slf4j.LoggerFactory
@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
-class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
+class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListener {
     private val logger = LoggerFactory.getLogger(HostPanel::class.java)
 
     private val currentHostLabel = JLabel()
@@ -23,7 +23,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
     private val customHostField = JTextField()
 
     init {
-        GUI.register(this)
+        CoDEventListenerSubscriber.register(this)
         createGui()
         refreshHosts()
     }
@@ -83,11 +83,11 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
     }
 
     private fun refreshHosts() {
-        refreshCurrentHost()
+        onHostChanged()
         refreshLocalHost()
     }
 
-    private fun refreshCurrentHost() {
+    override fun onHostChanged() {
         val host = CoD.getHost()
         customHostField.text = host
 
@@ -100,6 +100,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
     }
 
     private fun refreshLocalHost() {
+        logger.info("Refreshing local hosts")
         localHostsPanel.removeAll()
         localHostsPanel.add(localHostLabel)
 
@@ -122,8 +123,8 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), Refreshable {
         }
     }
 
-    override fun serverStarted() = refreshHosts()
-    override fun clientStarted() = refreshHosts()
+    override fun onServerStarted() = refreshLocalHost()
+    override fun onClientStarted() = refreshLocalHost()
 
     private fun onHostClick(host: String) {
         customHostField.text = host

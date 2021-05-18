@@ -59,6 +59,8 @@ object CoD {
             Notifications.popup("Failed to save host to file: ${e.localizedMessage}", "CoD")
             return false
         }
+
+        CoDEventListenerSubscriber.onHostChanged()
         return true
     }
 
@@ -90,11 +92,13 @@ object CoD {
     fun startServer() {
         logger.info("Starting server...")
         execute("server", Config.serverExeFile)
+        CoDEventListenerSubscriber.onServerStarted()
     }
 
     fun startClient() {
         logger.info("Starting client...")
         execute("client", Config.clientExeFile)
+        CoDEventListenerSubscriber.onClientStarted()
     }
 
     fun pauseLobby() {

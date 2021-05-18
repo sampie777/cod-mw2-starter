@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory
 interface CoDEventListener {
     fun onPauseChanged() {}
     fun onNicknameChanged() {}
+    fun onHostChanged() {}
+    fun onServerStarted() {}
+    fun onClientStarted() {}
 }
 
 object CoDEventListenerSubscriber {
@@ -22,6 +25,27 @@ object CoDEventListenerSubscriber {
         val componentsCopy = components.toTypedArray()
         for (component in componentsCopy) {
             component.onNicknameChanged()
+        }
+    }
+
+    fun onHostChanged() {
+        val componentsCopy = components.toTypedArray()
+        for (component in componentsCopy) {
+            component.onHostChanged()
+        }
+    }
+
+    fun onServerStarted() {
+        val componentsCopy = components.toTypedArray()
+        for (component in componentsCopy) {
+            component.onServerStarted()
+        }
+    }
+
+    fun onClientStarted() {
+        val componentsCopy = components.toTypedArray()
+        for (component in componentsCopy) {
+            component.onClientStarted()
         }
     }
 

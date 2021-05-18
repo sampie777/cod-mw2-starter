@@ -18,20 +18,6 @@ object GUI {
         }
     }
 
-    fun serverStarted() {
-        val componentsCopy = components.toTypedArray()
-        for (component in componentsCopy) {
-            component.serverStarted()
-        }
-    }
-
-    fun clientStarted() {
-        val componentsCopy = components.toTypedArray()
-        for (component in componentsCopy) {
-            component.clientStarted()
-        }
-    }
-
     fun windowClosing(window: Component?) {
         val componentsCopy = components.toTypedArray()
         for (component in componentsCopy) {

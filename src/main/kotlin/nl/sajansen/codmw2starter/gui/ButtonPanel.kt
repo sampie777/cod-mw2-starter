@@ -75,14 +75,12 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
     private fun startServer() {
         if (beforeStart.invoke()) {
             CoD.startServer()
-            GUI.serverStarted()
         }
     }
 
     fun startClient() {
         if (beforeStart.invoke()) {
             CoD.startClient()
-            GUI.clientStarted()
         }
     }
 }
