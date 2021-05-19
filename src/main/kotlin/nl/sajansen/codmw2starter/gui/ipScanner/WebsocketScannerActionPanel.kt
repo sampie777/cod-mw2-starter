@@ -30,7 +30,7 @@ class WebsocketScannerActionPanel(private val panel: IpScannerPanel) : JPanel() 
         timeoutSpinner.toolTipText = "Adjust this value to increase the port scanning timeout if you are on a slow network"
         timeoutSpinner.font = timeoutLabel.font
 
-        val scanButton = JButton("Scan")
+        val scanButton = JButton("Scan network")
         buttonsToEnable.add(scanButton)
         scanButton.addActionListener { panel.scan(timeoutSpinner.value as Int) }
         scanButton.font = Theme.buttonFont

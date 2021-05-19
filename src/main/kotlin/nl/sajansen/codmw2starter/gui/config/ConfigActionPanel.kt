@@ -1,6 +1,7 @@
 package nl.sajansen.codmw2starter.gui.config
 
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.GUI
 import nl.sajansen.codmw2starter.gui.HotKeysMapping
 import nl.sajansen.codmw2starter.gui.Theme
 import nl.sajansen.codmw2starter.utils.addHotKeyMapping
@@ -54,6 +55,7 @@ class ConfigActionPanel(private val frame: ConfigFrame) : JPanel() {
         }
 
         Config.save()
+        GUI.onConfigSettingsSaved()
         frame.dispose()
     }
 }

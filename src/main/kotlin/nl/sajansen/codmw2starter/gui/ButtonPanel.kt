@@ -31,7 +31,7 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
         startServerButton.addHotKeyMapping(HotKeysMapping.StartServer)
         startServerButton.font = Theme.buttonFont
 
-        val startClientButton = JButton("Start client")
+        val startClientButton = JButton("Play game")
         startClientButton.addActionListener { startClient() }
         startClientButton.addHotKeyMapping(HotKeysMapping.StartClient)
         startClientButton.font = Theme.primaryButtonFont

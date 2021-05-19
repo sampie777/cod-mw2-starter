@@ -31,12 +31,12 @@ class MapConfigButtonPanel(private val frame: JDialog, private val getCommand: (
         pauseLobbyButton.addActionListener { CoD.pauseLobby() }
         pauseLobbyButton.font = Theme.buttonFont
 
-        val cancelButton = JButton("Cancel")
+        val cancelButton = JButton("Close")
         cancelButton.addHotKeyMapping(HotKeysMapping.Close)
         cancelButton.addActionListener { frame.dispose() }
         cancelButton.font = Theme.buttonFont
 
-        val sendButton = JButton("Send")
+        val sendButton = JButton("Apply")
         sendButton.addActionListener { sendConfig() }
         sendButton.addHotKeyMapping(HotKeysMapping.SendMapConfig)
         sendButton.font = Theme.primaryButtonFont

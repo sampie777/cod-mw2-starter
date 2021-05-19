@@ -18,6 +18,13 @@ object GUI {
         }
     }
 
+    fun onConfigSettingsSaved() {
+        val componentsCopy = components.toTypedArray()
+        for (component in componentsCopy) {
+            component.onConfigSettingsSaved()
+        }
+    }
+
     fun windowClosing(window: Component?) {
         val componentsCopy = components.toTypedArray()
         for (component in componentsCopy) {
