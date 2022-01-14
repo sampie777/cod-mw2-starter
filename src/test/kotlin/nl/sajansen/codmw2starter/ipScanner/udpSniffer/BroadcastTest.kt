@@ -1,42 +1,38 @@
 package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 
-import org.junit.Ignore
 import org.junit.Test
 import java.net.InetAddress
-import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.concurrent.schedule
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class BroadcastTest {
-    @Ignore
-    @Test
-    fun test() {
-        val isRunning = AtomicBoolean(true)
-        val broadcast = Broadcast()
-        val stopTimer = Timer()
-        broadcast.start()
-        broadcast.onNicknameReceived = { _, _ ->
-            broadcast.stop()
-            isRunning.set(false)
-            stopTimer.cancel()
-            stopTimer.purge()
-        }
-
-        stopTimer.schedule(800) {
-            broadcast.stop()
-            isRunning.set(false)
-        }
-
-        // When
-        Timer().schedule(500) {
-            broadcast.send()
-        }
-
-        while (isRunning.get()) {
-        }
-    }
+//    @Ignore
+//    @Test
+//    fun test() {
+//        val isRunning = AtomicBoolean(true)
+//        val broadcast = Broadcast()
+//        val stopTimer = Timer()
+//        broadcast.start()
+//        broadcast.onNicknameReceived = { _, _ ->
+//            broadcast.stop()
+//            isRunning.set(false)
+//            stopTimer.cancel()
+//            stopTimer.purge()
+//        }
+//
+//        stopTimer.schedule(800) {
+//            broadcast.stop()
+//            isRunning.set(false)
+//        }
+//
+//        // When
+//        Timer().schedule(500) {
+//            broadcast.send()
+//        }
+//
+//        while (isRunning.get()) {
+//        }
+//    }
 
     @Test
     fun `test handle receiving message with type but no payload gives no error`() {
