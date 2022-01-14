@@ -1,4 +1,4 @@
-package nl.sajansen.codmw2starter.ipScanner
+package nl.sajansen.codmw2starter.ipScanner.portSniffer
 
 interface IpScannerInitiator {
     fun processScanStatus(status: String)

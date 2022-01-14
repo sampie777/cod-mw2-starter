@@ -1,6 +1,5 @@
-package nl.sajansen.codmw2starter.ipScanner
+package nl.sajansen.codmw2starter.ipScanner.portSniffer
 
-import getLocalNetworkIpAddresses
 import org.slf4j.LoggerFactory
 import java.net.InetAddress
 import java.util.concurrent.Callable

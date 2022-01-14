@@ -1,6 +1,7 @@
-package nl.sajansen.codmw2starter.gui.ipScanner
+package nl.sajansen.codmw2starter.gui.ipScanner.udpSniffer
 
-import nl.sajansen.codmw2starter.ipScanner.ScanResult
+import nl.sajansen.codmw2starter.ipScanner.udpSniffer.Other
+import nl.sajansen.codmw2starter.utils.ReadOnlyTableModel
 import java.awt.BorderLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
@@ -11,12 +12,12 @@ import javax.swing.JTable
 import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableModel
 
-class IpScannerTable(
+class Table(
     private val onHostClick: ((host: String) -> Unit),
     private val onHostDoubleClick: ((host: String) -> Unit)
 ) : JPanel() {
 
-    private val tableHeader = arrayOf("Name", "Address")
+    private val tableHeader = arrayOf("Player", "Address", "PC")
     val table = JTable(ReadOnlyTableModel(tableHeader, 0))
 
     init {
@@ -47,18 +48,11 @@ class IpScannerTable(
         model().rowCount = 0
     }
 
-    fun model(): DefaultTableModel = table.model as DefaultTableModel
+    private fun model(): DefaultTableModel = table.model as DefaultTableModel
 
-    fun setScanResults(scanResults: List<ScanResult>) {
-        clearTable()
-
-        scanResults.forEach {
-            addScanResult(it)
-        }
-    }
-
-    fun addScanResult(scanResult: ScanResult) {
-        model().addRow(arrayOf(scanResult.hostName, scanResult.ip))
+    fun addScanResult(other: Other) {
+        val hostName = if (other.hostName == other.hostAddress) "" else other.hostName
+        model().addRow(arrayOf(other.nickname, other.hostAddress, hostName))
     }
 
     fun getSelectedValueAsAddress(): String? {

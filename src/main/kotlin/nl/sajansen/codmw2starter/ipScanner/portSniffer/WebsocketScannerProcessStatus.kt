@@ -1,4 +1,4 @@
-package nl.sajansen.codmw2starter.ipScanner
+package nl.sajansen.codmw2starter.ipScanner.portSniffer
 
 import java.beans.PropertyChangeListener
 import java.beans.PropertyChangeSupport

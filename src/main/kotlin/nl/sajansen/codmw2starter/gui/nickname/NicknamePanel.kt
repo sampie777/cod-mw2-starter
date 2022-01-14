@@ -54,7 +54,7 @@ class NicknamePanel : JPanel(), CoDEventListener {
             }
         })
 
-        val instructionsLabel = JLabel(", click any IP to set it as host.")
+        val instructionsLabel = JLabel(", (double) click any IP to connect to its server.")
         instructionsLabel.font = Theme.italicFont
 
         add(textLabel)

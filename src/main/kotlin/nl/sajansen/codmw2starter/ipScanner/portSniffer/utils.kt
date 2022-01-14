@@ -1,3 +1,5 @@
+package nl.sajansen.codmw2starter.ipScanner.portSniffer
+
 import org.slf4j.LoggerFactory
 import java.net.NetworkInterface
 
