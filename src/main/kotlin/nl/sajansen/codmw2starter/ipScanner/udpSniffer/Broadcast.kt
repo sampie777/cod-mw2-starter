@@ -1,11 +1,9 @@
 package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 
 import nl.sajansen.codmw2starter.cod.CoD
+import nl.sajansen.codmw2starter.ipScanner.portSniffer.getLocalNetworkIpAddresses
 import org.slf4j.LoggerFactory
-import java.net.DatagramPacket
-import java.net.DatagramSocket
-import java.net.InetAddress
-import java.net.SocketTimeoutException
+import java.net.*
 import java.util.*
 
 class Broadcast {
@@ -16,10 +14,28 @@ class Broadcast {
 
     companion object {
         const val port = 2302
-        const val broadCastAddress = "255.255.255.255"
         const val receiveAddress = "0.0.0.0"
+
+        private fun getBroadCastAddresses(): Set<String> {
+            val addresses = hashSetOf<String>()
+
+            getLocalNetworkIpAddresses()
+                .flatMap { localAddress ->
+                    val networkInterface = NetworkInterface.getByInetAddress(InetAddress.getByName(localAddress))
+                        ?: return@flatMap listOf("255.255.255.255")
+
+                    networkInterface.interfaceAddresses
+                        .filter { it.broadcast != null }
+                        .map { it.broadcast.hostAddress }
+                }
+                .filter { it != null && it.isNotBlank() }
+                .forEach { addresses.add(it) }
+
+            return addresses
+        }
     }
 
+    var onRequestReceived: ((address: InetAddress, requestId: String?) -> Unit)? = null
     var onNicknameReceived: ((address: InetAddress, name: String) -> Unit)? = null
     private val logger = LoggerFactory.getLogger(this::class.java.name)
     private var requestId: String? = null
@@ -35,10 +51,12 @@ class Broadcast {
 
     fun send() {
         requestId = generateRequestId()
-        val address = InetAddress.getByName(broadCastAddress)
-        val message = createMessage(MessageType.Request, requestId)
-        sendClientInfo(address, broadcast = true)
-        sendTo(address, message, broadcast = true)
+        getBroadCastAddresses().forEach { broadcastAddress ->
+            val address = InetAddress.getByName(broadcastAddress)
+            val message = createMessage(MessageType.Request, requestId)
+            sendClientInfo(address, broadcast = true)
+            sendTo(address, message, broadcast = true)
+        }
     }
 
     private fun receive() {
@@ -122,10 +140,11 @@ class Broadcast {
         if (requestId != null && data == requestId) {
             logger.debug("Ignoring own request")
             requestId = null
-            return
+        } else {
+            sendClientInfo(address)
         }
 
-        sendClientInfo(address)
+        onRequestReceived?.let { it(address, data) }
     }
 
     private fun processNickname(address: InetAddress, data: String?) {
