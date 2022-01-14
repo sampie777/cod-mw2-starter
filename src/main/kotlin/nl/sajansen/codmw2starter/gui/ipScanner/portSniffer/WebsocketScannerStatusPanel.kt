@@ -1,4 +1,4 @@
-package nl.sajansen.codmw2starter.gui.ipScanner
+package nl.sajansen.codmw2starter.gui.ipScanner.portSniffer
 
 import nl.sajansen.codmw2starter.gui.Theme
 import javax.swing.JLabel

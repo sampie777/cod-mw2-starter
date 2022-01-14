@@ -1,4 +1,4 @@
-package nl.sajansen.codmw2starter.ipScanner.broadcast
+package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 
 import nl.sajansen.codmw2starter.cod.CoD
 import org.slf4j.LoggerFactory
@@ -20,6 +20,7 @@ class Broadcast {
         const val receiveAddress = "0.0.0.0"
     }
 
+    var onNicknameReceived: ((address: InetAddress, name: String) -> Unit)? = null
     private val logger = LoggerFactory.getLogger(this::class.java.name)
     private var requestId: String? = null
     private var stopListening = false
@@ -36,6 +37,7 @@ class Broadcast {
         requestId = generateRequestId()
         val address = InetAddress.getByName(broadCastAddress)
         val message = createMessage(MessageType.Request, requestId)
+        sendClientInfo(address, broadcast = true)
         sendTo(address, message, broadcast = true)
     }
 
@@ -110,7 +112,7 @@ class Broadcast {
 
         when (type) {
             MessageType.Request -> handleRequestMessage(address, data)
-            MessageType.Nickname -> storeNickname(address, data)
+            MessageType.Nickname -> processNickname(address, data)
             else -> return false
         }
         return true
@@ -126,18 +128,18 @@ class Broadcast {
         sendClientInfo(address)
     }
 
-    private fun storeNickname(address: InetAddress, data: String?) {
+    private fun processNickname(address: InetAddress, data: String?) {
         if (data == null) {
-            logger.info("Cannot store empty nickname")
+            logger.info("Cannot process empty nickname")
             return
         }
 
-        logger.debug("Received nickname: $data from ${address.hostAddress}")
+        onNicknameReceived?.let { it(address, data) }
     }
 
-    private fun sendClientInfo(address: InetAddress) {
+    private fun sendClientInfo(address: InetAddress, broadcast: Boolean = false) {
         val message = createMessage(MessageType.Nickname, CoD.getNickname() ?: "unknown")
-        sendTo(address, message)
+        sendTo(address, message, broadcast = broadcast)
     }
 
     private fun sendTo(address: InetAddress, message: String, broadcast: Boolean = false) {

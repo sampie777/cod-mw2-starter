@@ -1,16 +1,18 @@
-package nl.sajansen.codmw2starter.gui.ipScanner
+package nl.sajansen.codmw2starter.gui.ipScanner.portSniffer
 
 import nl.sajansen.codmw2starter.config.Config
-import nl.sajansen.codmw2starter.ipScanner.IpScannerInitiator
-import nl.sajansen.codmw2starter.ipScanner.ScanResult
-import nl.sajansen.codmw2starter.ipScanner.WebsocketScannerSwingWorker
+import nl.sajansen.codmw2starter.ipScanner.portSniffer.IpScannerInitiator
+import nl.sajansen.codmw2starter.ipScanner.portSniffer.ScanResult
+import nl.sajansen.codmw2starter.ipScanner.portSniffer.WebsocketScannerSwingWorker
 import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
 import javax.swing.JPanel
 
-open class IpScannerPanel(onHostClick: ((host: String) -> Unit),
-                          onHostDoubleClick: ((host: String) -> Unit)) : JPanel(), IpScannerInitiator {
-    private val logger = LoggerFactory.getLogger(IpScannerPanel::class.java.name)
+open class IpScannerPanel(
+    onHostClick: ((host: String) -> Unit),
+    onHostDoubleClick: ((host: String) -> Unit)
+) : JPanel(), IpScannerInitiator {
+    private val logger = LoggerFactory.getLogger(this::class.java.name)
 
     private val ipScannerTable = IpScannerTable(onHostClick, onHostDoubleClick)
     private val websocketScannerStatusPanel = WebsocketScannerStatusPanel()

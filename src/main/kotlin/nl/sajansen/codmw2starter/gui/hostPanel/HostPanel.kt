@@ -1,11 +1,11 @@
 package nl.sajansen.codmw2starter.gui.hostPanel
 
-import getLocalNetworkIpAddresses
 import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.cod.CoDEventListener
 import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
 import nl.sajansen.codmw2starter.gui.Theme
-import nl.sajansen.codmw2starter.gui.ipScanner.IpScannerPanel
+import nl.sajansen.codmw2starter.gui.ipScanner.NetworkingPanel
+import nl.sajansen.codmw2starter.ipScanner.portSniffer.getLocalNetworkIpAddresses
 import org.slf4j.LoggerFactory
 import java.awt.*
 import java.awt.event.MouseAdapter
@@ -19,7 +19,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
     private val currentHostLabel = JLabel()
     private val localHostsPanel = JPanel()
     private val localHostLabel = JLabel("Local host(s): ")
-    private val ipScannerPanel = IpScannerPanel({ onHostClick(it) }, { onHostDoubleClick(it) })
+    private val networkingPanel = NetworkingPanel(::onHostClick, ::onHostDoubleClick)
     private val customHostField = JTextField()
 
     init {
@@ -33,11 +33,11 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
         border = EmptyBorder(0, 0, 10, 0)
 
         val currentHostTextLabel = JLabel("Last used: ")
-        currentHostTextLabel.toolTipText = "Click to set host address"
+        currentHostTextLabel.toolTipText = "Click to use as server"
         currentHostTextLabel.font = Theme.normalFont
 
         currentHostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
-        currentHostLabel.toolTipText = "Click to set host address"
+        currentHostLabel.toolTipText = "Click to use as server"
         currentHostLabel.font = Theme.normalFont
 
         val currentHostsPanel = JPanel()
@@ -45,13 +45,13 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
         currentHostsPanel.add(currentHostTextLabel)
         currentHostsPanel.add(currentHostLabel)
 
-        localHostLabel.toolTipText = "Click to set host address"
+        localHostLabel.toolTipText = "Click to use as server"
         localHostLabel.font = Theme.normalFont
 
         localHostsPanel.layout = FlowLayout(FlowLayout.LEFT)
         localHostsPanel.add(localHostLabel)
 
-        val customHostLabel = JLabel("Use host:")
+        val customHostLabel = JLabel("Play on server:")
         customHostLabel.font = Theme.boldFont
 
         customHostField.font = Theme.boldFont
@@ -68,7 +68,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
         labelPanel.add(Box.createRigidArea(Dimension(0, 5)))
         labelPanel.add(localHostsPanel)
 
-        ipScannerPanel.border = EmptyBorder(0, 10, 0, 10)
+        networkingPanel.border = EmptyBorder(0, 10, 0, 10)
 
         val customHostPanel = JPanel()
         customHostPanel.layout = BorderLayout(10, 10)
@@ -78,7 +78,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
         customHostPanel.add(customHostField, BorderLayout.CENTER)
 
         add(labelPanel, BorderLayout.PAGE_START)
-        add(ipScannerPanel, BorderLayout.CENTER)
+        add(networkingPanel, BorderLayout.CENTER)
         add(customHostPanel, BorderLayout.PAGE_END)
     }
 
@@ -112,7 +112,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
             }
             hostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
             hostLabel.font = Theme.normalFont
-            hostLabel.toolTipText = "Click to set host address"
+            hostLabel.toolTipText = "Click to use as server"
             hostLabel.addMouseListener(object : MouseAdapter() {
                 override fun mouseClicked(e: MouseEvent) {
                     customHostField.text = it

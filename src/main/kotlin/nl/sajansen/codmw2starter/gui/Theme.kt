@@ -14,5 +14,6 @@ object Theme {
     val italicBoldFont = Font("Dialog", Font.ITALIC + Font.BOLD, 12)
     val mediumFont = Font("Dialog", Font.PLAIN, 14)
 
+    val defaultPanelColor = Color(237, 237, 237)
     val highlightPanelColor = Color(210, 210, 210)
 }

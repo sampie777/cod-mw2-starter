@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage
 import java.net.URL
 import javax.swing.*
 import javax.swing.plaf.basic.BasicSplitPaneDivider
+import javax.swing.table.DefaultTableModel
 
 private val logger = LoggerFactory.getLogger("utils.gui")
 
@@ -131,4 +132,8 @@ fun AbstractButton.addHotKey(hotKey: Int?) {
     }
 
     mnemonic = hotKey
+}
+
+class ReadOnlyTableModel(headers: Array<String>, columnCount: Int) : DefaultTableModel(headers, columnCount) {
+    override fun isCellEditable(p0: Int, p1: Int): Boolean = false
 }
