@@ -2,6 +2,7 @@ package nl.sajansen.codmw2starter
 
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.GUI
+import nl.sajansen.codmw2starter.gui.Theme
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFrame
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
@@ -24,6 +25,9 @@ fun main(args: Array<String>) {
     Config.enableWriteToFile(!ApplicationRuntimeSettings.virtualConfig && !ApplicationRuntimeSettings.testing)
     Config.load()
     Config.save()
+
+    // Init theme
+    Theme
 
     EventQueue.invokeLater {
         MainFrame.createAndShow()

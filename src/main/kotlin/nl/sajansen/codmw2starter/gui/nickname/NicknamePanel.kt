@@ -6,6 +6,7 @@ import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
 import nl.sajansen.codmw2starter.gui.Theme
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFrame
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
+import nl.sajansen.codmw2starter.utils.Icon
 import nl.sajansen.codmw2starter.utils.ValidationError
 import org.slf4j.LoggerFactory
 import java.awt.Color
@@ -54,11 +55,23 @@ class NicknamePanel : JPanel(), CoDEventListener {
             }
         })
 
+        val editIcon = Icon("\uf303", size = 12f).also {
+            it.toolTipText = "Click to set nickname"
+            it.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+            it.border = EmptyBorder(0, 4, 0, 0)
+            it.addMouseListener(object : MouseAdapter() {
+                override fun mouseClicked(e: MouseEvent) {
+                    showNicknameModal()
+                }
+            })
+        }
+
         val instructionsLabel = JLabel(", (double) click any IP to connect to its server.")
         instructionsLabel.font = Theme.italicFont
 
         add(textLabel)
         add(nicknameLabel)
+        add(editIcon)
         add(instructionsLabel)
     }
 

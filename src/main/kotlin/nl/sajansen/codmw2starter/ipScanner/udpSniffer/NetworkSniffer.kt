@@ -22,6 +22,12 @@ object NetworkSniffer {
         broadcast.send()
     }
 
+    fun ping() {
+        logger.info("Resending broadcast")
+        broadcast.onNicknameReceived = ::addNickname
+        broadcast.send()
+    }
+
     private fun addNickname(address: InetAddress, name: String) {
         logger.debug("Received nickname: $name from ${address.hostAddress}")
         val other = Other(address.hostAddress, address.hostName, name)
