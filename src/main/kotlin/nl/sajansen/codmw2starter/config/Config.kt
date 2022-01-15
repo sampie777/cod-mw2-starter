@@ -58,6 +58,8 @@ object Config {
     // Other
     var updatesCheckForUpdates: Boolean = true
     var ipScannerTimeout: Int = 300
+    var localIpPrefix = "192.168."
+    var udpSnifferPort = 2302
 
     fun load() {
         try {

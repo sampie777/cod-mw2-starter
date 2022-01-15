@@ -52,5 +52,6 @@ class UdpSnifferPanel(
 
     private fun search() {
         NetworkSniffer.findOthers()
+        updateTable(null)
     }
 }

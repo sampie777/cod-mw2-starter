@@ -1,6 +1,7 @@
 package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 
 import nl.sajansen.codmw2starter.cod.CoD
+import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.ipScanner.portSniffer.getLocalNetworkIpAddresses
 import org.slf4j.LoggerFactory
 import java.net.*
@@ -13,7 +14,6 @@ class Broadcast {
     }
 
     companion object {
-        const val port = 2302
         const val receiveAddress = "0.0.0.0"
 
         private fun getBroadCastAddresses(): Set<String> {
@@ -63,12 +63,12 @@ class Broadcast {
         val address = InetAddress.getByName(receiveAddress)
 
         val socket = try {
-            DatagramSocket(port, address).also {
+            DatagramSocket(Config.udpSnifferPort, address).also {
                 it.broadcast = true
                 it.soTimeout = 2000
             }
         } catch (e: Exception) {
-            logger.error("Failed to open socket for listening: $receiveAddress:$port")
+            logger.error("Failed to open socket for listening: $receiveAddress:${Config.udpSnifferPort}")
             e.printStackTrace()
             return
         }
@@ -85,7 +85,7 @@ class Broadcast {
     }
 
     private fun listenOnSocket(socket: DatagramSocket) {
-        logger.info("Listening on $receiveAddress:$port...")
+        logger.info("Listening on $receiveAddress:${Config.udpSnifferPort}...")
         while (!socket.isClosed && !stopListening) {
             val packet = try {
                 val buffer = ByteArray(255)
@@ -166,9 +166,9 @@ class Broadcast {
             val socket = DatagramSocket()
             socket.broadcast = broadcast
             val data = message.toByteArray()
-            val packet = DatagramPacket(data, data.size, address, port)
+            val packet = DatagramPacket(data, data.size, address, Config.udpSnifferPort)
 
-            logger.debug("Sending packet to ${address.hostAddress}:$port")
+            logger.debug("Sending packet to ${address.hostAddress}:${Config.udpSnifferPort}")
             socket.send(packet)
         } catch (e: Exception) {
             logger.error("Failed to send message: '$message' to address: ${address.hostAddress} with broadcast=$broadcast")

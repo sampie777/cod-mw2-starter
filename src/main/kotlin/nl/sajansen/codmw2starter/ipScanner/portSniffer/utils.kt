@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.ipScanner.portSniffer
 
+import nl.sajansen.codmw2starter.config.Config
 import org.slf4j.LoggerFactory
 import java.net.NetworkInterface
 
@@ -24,7 +25,7 @@ fun getLocalNetworkIpAddresses(): List<String> {
     val networkIpAddresses = getNetworkIpAddresses()
 
     val localNetworkIpAddresses = networkIpAddresses
-        .filter { it.startsWith("192.168.") }
+        .filter { it.startsWith(Config.localIpPrefix) }
         .distinct()
     return localNetworkIpAddresses
 }
