@@ -1,26 +1,28 @@
 package nl.sajansen.codmw2starter.gui.mainFrame
 
-import nl.sajansen.codmw2starter.cod.CoD
-import nl.sajansen.codmw2starter.gui.ButtonPanel
 import nl.sajansen.codmw2starter.gui.GUI
 import nl.sajansen.codmw2starter.gui.Refreshable
-import nl.sajansen.codmw2starter.gui.hostPanel.HostPanel
-import nl.sajansen.codmw2starter.gui.nickname.NicknamePanel
+import nl.sajansen.codmw2starter.gui.gamePlayChooser.GamePlayChooserPanel
+import nl.sajansen.codmw2starter.gui.serverBrowser.ServerBrowserPanel
 import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
 import javax.swing.JSplitPane
 
 
 class MainFramePanel : JSplitPane(), Refreshable {
-    private val logger = LoggerFactory.getLogger(MainFramePanel::class.java.name)
+    enum class Panel {
+        GamePlayChooser,
+        ServerBrowser
+    }
 
-    private val hostPanel = HostPanel { startClient() }
-    private val buttonPanel = ButtonPanel(MainFrame.getInstance()!!) { beforeStart() }
+    private val logger = LoggerFactory.getLogger(MainFramePanel::class.java.name)
+    private var activePanel = Panel.GamePlayChooser
 
     init {
         GUI.register(this)
 
         createGui()
+        reloadGui()
 
         refreshNotifications()
     }
@@ -28,10 +30,18 @@ class MainFramePanel : JSplitPane(), Refreshable {
     private fun createGui() {
         border = null
         layout = BorderLayout(10, 10)
+    }
 
-        add(NicknamePanel(), BorderLayout.PAGE_START)
-        add(hostPanel, BorderLayout.CENTER)
-        add(buttonPanel, BorderLayout.PAGE_END)
+    private fun reloadGui() {
+        removeAll()
+
+        logger.info("Reloading")
+        val panel = when(activePanel) {
+            Panel.GamePlayChooser -> GamePlayChooserPanel()
+            Panel.ServerBrowser -> ServerBrowserPanel()
+        }
+
+        add(panel, BorderLayout.CENTER)
     }
 
     override fun removeNotify() {
@@ -39,11 +49,12 @@ class MainFramePanel : JSplitPane(), Refreshable {
         GUI.unregister(this)
     }
 
-    private fun beforeStart(): Boolean {
-        return CoD.setHost(hostPanel.getHost())
-    }
-
-    private fun startClient() {
-        buttonPanel.startClient()
+    fun activatePanel(panel: Panel) {
+        logger.info("activatePanel: $panel")
+        activePanel = panel
+        reloadGui()
+        invalidate()
+        revalidate()
+        repaint()
     }
 }

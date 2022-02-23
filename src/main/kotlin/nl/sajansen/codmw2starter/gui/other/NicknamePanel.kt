@@ -1,4 +1,4 @@
-package nl.sajansen.codmw2starter.gui.nickname
+package nl.sajansen.codmw2starter.gui.other
 
 import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.cod.CoDEventListener
@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
-class NicknamePanel : JPanel(), CoDEventListener {
+class NicknamePanel(private val instructions: String = "") : JPanel(), CoDEventListener {
     private val logger = LoggerFactory.getLogger(NicknamePanel::class.java)
 
     private val nicknameLabel = JLabel("unknown nickname")
@@ -66,7 +66,7 @@ class NicknamePanel : JPanel(), CoDEventListener {
             })
         }
 
-        val instructionsLabel = JLabel(", (double) click any IP to connect to its server.")
+        val instructionsLabel = JLabel(instructions)
         instructionsLabel.font = Theme.italicFont
 
         add(textLabel)

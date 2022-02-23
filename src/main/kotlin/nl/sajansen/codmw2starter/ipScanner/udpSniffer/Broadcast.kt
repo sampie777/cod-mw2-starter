@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 
+import nl.sajansen.codmw2starter.can.CAN
 import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.ipScanner.portSniffer.getLocalNetworkIpAddresses
@@ -50,6 +51,7 @@ class Broadcast {
     }
 
     fun send() {
+        return
         requestId = generateRequestId()
         getBroadCastAddresses().forEach { broadcastAddress ->
             val address = InetAddress.getByName(broadcastAddress)
@@ -88,7 +90,7 @@ class Broadcast {
         logger.info("Listening on $receiveAddress:${Config.udpSnifferPort}...")
         while (!socket.isClosed && !stopListening) {
             val packet = try {
-                val buffer = ByteArray(255)
+                val buffer = ByteArray(512)
                 DatagramPacket(buffer, buffer.size).also {
                     socket.receive(it)
                 }
@@ -102,6 +104,15 @@ class Broadcast {
 
             if (stopListening) {
                 break
+            }
+
+            try {
+                if (CAN.handleMessage(packet.data)) {
+                    continue
+                }
+            } catch (e: Exception) {
+                logger.error("Failed to handle CAN message")
+                e.printStackTrace()
             }
 
             val data = bufferToString(packet.data).trim()

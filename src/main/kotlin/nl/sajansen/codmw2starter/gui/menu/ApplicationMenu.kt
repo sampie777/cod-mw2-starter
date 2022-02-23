@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.gui.menu
 
+import nl.sajansen.codmw2starter.can.CAN
 import nl.sajansen.codmw2starter.exitApplication
 import nl.sajansen.codmw2starter.gui.HotKeysMapping
 import nl.sajansen.codmw2starter.gui.config.ConfigFrame
@@ -28,6 +29,8 @@ class ApplicationMenu : JMenu("Application") {
         val settingsItem = JMenuItem("Settings")
         val infoItem = JMenuItem("Info")
         val quitItem = JMenuItem("Quit")
+        val saveItem = JMenuItem("Save")
+        val readItem = JMenuItem("Read")
 
         // Set alt keys
         settingsItem.addHotKeyMapping(HotKeysMapping.ShowConfig)
@@ -35,11 +38,16 @@ class ApplicationMenu : JMenu("Application") {
         quitItem.addHotKeyMapping(HotKeysMapping.QuitApplication)
         quitItem.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK)
 
+        add(saveItem)
+        add(readItem)
+        addSeparator()
         add(settingsItem)
         addSeparator()
         add(infoItem)
         add(quitItem)
 
+        saveItem.addActionListener { CAN.saveData() }
+        readItem.addActionListener { CAN.readFile() }
         settingsItem.addActionListener { ConfigFrame(getMainFrameComponent(this)) }
         infoItem.addActionListener { InfoFrame.createAndShow(getMainFrameComponent(this)) }
         quitItem.addActionListener { exitApplication() }

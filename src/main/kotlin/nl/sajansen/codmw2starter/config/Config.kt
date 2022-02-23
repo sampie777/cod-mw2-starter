@@ -28,6 +28,7 @@ object Config {
     // Execution
     val availableExecutioners: String = CoD.Executioner.values().joinToString(";")
     var executioner: CoD.Executioner = CoD.Executioner.Desktop
+    var delayBetweenServerStartAndClientStart = 2000L
 
     // Map config
     var consoleTitle: String = "IW4 Console"
@@ -58,7 +59,7 @@ object Config {
     // Other
     var updatesCheckForUpdates: Boolean = true
     var ipScannerTimeout: Int = 300
-    var localIpPrefix = "192.168."
+    var localIpPrefix = ""
     var udpSnifferPort = 2302
 
     fun load() {
