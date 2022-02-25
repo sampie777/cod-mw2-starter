@@ -31,6 +31,7 @@ class ApplicationMenu : JMenu("Application") {
         val quitItem = JMenuItem("Quit")
         val saveItem = JMenuItem("Save")
         val readItem = JMenuItem("Read")
+        val convertItem = JMenuItem("Export as CSV")
 
         // Set alt keys
         settingsItem.addHotKeyMapping(HotKeysMapping.ShowConfig)
@@ -40,6 +41,7 @@ class ApplicationMenu : JMenu("Application") {
 
         add(saveItem)
         add(readItem)
+        add(convertItem)
         addSeparator()
         add(settingsItem)
         addSeparator()
@@ -48,6 +50,7 @@ class ApplicationMenu : JMenu("Application") {
 
         saveItem.addActionListener { CAN.saveData() }
         readItem.addActionListener { CAN.readFile() }
+        convertItem.addActionListener { CAN.convertData() }
         settingsItem.addActionListener { ConfigFrame(getMainFrameComponent(this)) }
         infoItem.addActionListener { InfoFrame.createAndShow(getMainFrameComponent(this)) }
         quitItem.addActionListener { exitApplication() }
