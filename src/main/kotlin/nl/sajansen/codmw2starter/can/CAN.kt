@@ -12,7 +12,7 @@ object CAN {
 
     private val outputStream = ByteArrayOutputStream()
     private var logData = false
-    val outputFileName = "output.txt"
+    private const val outputFileName = "output.bin"
 
     data class Message(
         val timestamp: Int,
