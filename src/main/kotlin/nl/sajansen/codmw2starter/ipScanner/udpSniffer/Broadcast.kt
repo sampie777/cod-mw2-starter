@@ -1,7 +1,7 @@
 package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 
-import nl.sajansen.codmw2starter.can.CAN
 import nl.sajansen.codmw2starter.cod.CoD
+import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.ipScanner.portSniffer.getLocalNetworkIpAddresses
 import org.slf4j.LoggerFactory
@@ -51,7 +51,7 @@ class Broadcast {
     }
 
     fun send() {
-        return
+        CoDEventListenerSubscriber.onUdpPingSending()
         requestId = generateRequestId()
         getBroadCastAddresses().forEach { broadcastAddress ->
             val address = InetAddress.getByName(broadcastAddress)
@@ -59,6 +59,7 @@ class Broadcast {
             sendClientInfo(address, broadcast = true)
             sendTo(address, message, broadcast = true)
         }
+        CoDEventListenerSubscriber.onUdpPingSent()
     }
 
     private fun receive() {
@@ -90,7 +91,7 @@ class Broadcast {
         logger.info("Listening on $receiveAddress:${Config.udpSnifferPort}...")
         while (!socket.isClosed && !stopListening) {
             val packet = try {
-                val buffer = ByteArray(512)
+                val buffer = ByteArray(255)
                 DatagramPacket(buffer, buffer.size).also {
                     socket.receive(it)
                 }
@@ -104,15 +105,6 @@ class Broadcast {
 
             if (stopListening) {
                 break
-            }
-
-            try {
-                if (CAN.handleMessage(packet.data)) {
-                    continue
-                }
-            } catch (e: Exception) {
-                logger.error("Failed to handle CAN message")
-                e.printStackTrace()
             }
 
             val data = bufferToString(packet.data).trim()

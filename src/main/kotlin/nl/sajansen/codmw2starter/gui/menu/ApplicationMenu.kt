@@ -1,6 +1,5 @@
 package nl.sajansen.codmw2starter.gui.menu
 
-import nl.sajansen.codmw2starter.can.CAN
 import nl.sajansen.codmw2starter.exitApplication
 import nl.sajansen.codmw2starter.gui.HotKeysMapping
 import nl.sajansen.codmw2starter.gui.config.ConfigFrame
@@ -48,9 +47,6 @@ class ApplicationMenu : JMenu("Application") {
         add(infoItem)
         add(quitItem)
 
-        saveItem.addActionListener { CAN.saveData() }
-        readItem.addActionListener { CAN.readFile() }
-        convertItem.addActionListener { CAN.convertData() }
         settingsItem.addActionListener { ConfigFrame(getMainFrameComponent(this)) }
         infoItem.addActionListener { InfoFrame.createAndShow(getMainFrameComponent(this)) }
         quitItem.addActionListener { exitApplication() }

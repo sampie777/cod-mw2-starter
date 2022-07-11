@@ -9,14 +9,14 @@ import javax.swing.JTabbedPane
 import javax.swing.border.EmptyBorder
 
 class NetworkingPanel(
-    onHostClick: ((host: String) -> Unit),
-    onHostDoubleClick: ((host: String) -> Unit)
+    setHost: ((host: String) -> Unit),
+    runWithHost: ((host: String) -> Unit),
 ) : JTabbedPane() {
 
     private val logger = LoggerFactory.getLogger(this::class.java.name)
-    private val ipScannerPanel = IpScannerPanel(onHostClick, onHostDoubleClick)
-    private val udpSnifferPanel = UdpSnifferPanel(onHostClick, onHostDoubleClick)
-    private val manualIpPanel = ManualIpPanel(onHostClick, onHostDoubleClick)
+    private val ipScannerPanel = IpScannerPanel(setHost, runWithHost)
+    private val udpSnifferPanel = UdpSnifferPanel(setHost, runWithHost)
+    private val manualIpPanel = ManualIpPanel(setHost, runWithHost)
 
     init {
         createGui()

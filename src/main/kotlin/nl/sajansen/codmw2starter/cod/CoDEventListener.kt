@@ -8,6 +8,8 @@ interface CoDEventListener {
     fun onHostChanged() {}
     fun onServerStarted() {}
     fun onClientStarted() {}
+    fun onUdpPingSending() {}
+    fun onUdpPingSent() {}
 }
 
 object CoDEventListenerSubscriber {
@@ -46,6 +48,20 @@ object CoDEventListenerSubscriber {
         val componentsCopy = components.toTypedArray()
         for (component in componentsCopy) {
             component.onClientStarted()
+        }
+    }
+
+    fun onUdpPingSending() {
+        val componentsCopy = components.toTypedArray()
+        for (component in componentsCopy) {
+            component.onUdpPingSending()
+        }
+    }
+
+    fun onUdpPingSent() {
+        val componentsCopy = components.toTypedArray()
+        for (component in componentsCopy) {
+            component.onUdpPingSent()
         }
     }
 

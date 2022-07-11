@@ -13,11 +13,11 @@ import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableModel
 
 class IpScannerTable(
-    private val onHostClick: ((host: String) -> Unit),
-    private val onHostDoubleClick: ((host: String) -> Unit)
+    private val setHost: ((host: String) -> Unit),
+    private val runWithHost: ((host: String) -> Unit)
 ) : JPanel() {
 
-    private val tableHeader = arrayOf("PC", "Address")
+    private val tableHeader = arrayOf("Address", "PC")
     private val table = JTable(ReadOnlyTableModel(tableHeader, 0))
 
     init {
@@ -33,9 +33,9 @@ class IpScannerTable(
                 val host = getSelectedValueAsAddress() ?: return
 
                 if (e.clickCount >= 2) {
-                    onHostDoubleClick.invoke(host)
+                    runWithHost.invoke(host)
                 } else {
-                    onHostClick.invoke(host)
+                    setHost.invoke(host)
                 }
             }
         })
@@ -59,7 +59,7 @@ class IpScannerTable(
     }
 
     fun addScanResult(scanResult: ScanResult) {
-        model().addRow(arrayOf(scanResult.hostName, scanResult.ip))
+        model().addRow(arrayOf(scanResult.ip, scanResult.hostName))
     }
 
     fun getSelectedValueAsAddress(): String? {
@@ -74,6 +74,6 @@ class IpScannerTable(
             return null
         }
 
-        return row[1].toString()
+        return row[0].toString()
     }
 }

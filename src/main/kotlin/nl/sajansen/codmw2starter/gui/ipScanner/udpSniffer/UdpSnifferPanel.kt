@@ -1,8 +1,10 @@
 package nl.sajansen.codmw2starter.gui.ipScanner.udpSniffer
 
+import nl.sajansen.codmw2starter.cod.CoDEventListener
+import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
 import nl.sajansen.codmw2starter.gui.Theme
+import nl.sajansen.codmw2starter.gui.ipScanner.portSniffer.WebsocketScannerStatusPanel
 import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
-import nl.sajansen.codmw2starter.ipScanner.udpSniffer.Other
 import nl.sajansen.codmw2starter.utils.faSolidFont
 import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
@@ -12,30 +14,30 @@ import javax.swing.*
 import javax.swing.border.EmptyBorder
 
 class UdpSnifferPanel(
-    onHostClick: ((host: String) -> Unit),
-    onHostDoubleClick: ((host: String) -> Unit)
-) : JPanel() {
+    setHost: ((host: String) -> Unit),
+    runWithHost: ((host: String) -> Unit)
+) : JPanel(), CoDEventListener {
     private val logger = LoggerFactory.getLogger(this::class.java.name)
 
-    private val table = Table(onHostClick, onHostDoubleClick)
+    private val table = Table(setHost, runWithHost)
+    private val websocketScannerStatusPanel = WebsocketScannerStatusPanel()
 
     init {
         createGui()
 
-        updateTable(null)
+        updateTable()
         NetworkSniffer.onOtherAdded = ::updateTable
+        CoDEventListenerSubscriber.register(this)
     }
 
     private fun createGui() {
         layout = BorderLayout(5, 5)
 
-        val bottomPanel = JPanel()
-        bottomPanel.layout = BoxLayout(bottomPanel, BoxLayout.LINE_AXIS)
-
-        bottomPanel.add(Box.createHorizontalGlue())
+        val bottomActionPanel = JPanel()
+        bottomActionPanel.layout = BoxLayout(bottomActionPanel, BoxLayout.LINE_AXIS)
 
         JButton("\uf2ce").also {
-            bottomPanel.add(it)
+            bottomActionPanel.add(it)
             it.addActionListener { ping() }
             it.border = BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY),
@@ -46,10 +48,10 @@ class UdpSnifferPanel(
             it.toolTipText = "Re-search network without clearing current results"
         }
 
-        bottomPanel.add(Box.createRigidArea(Dimension(5, 0)))
+        bottomActionPanel.add(Box.createRigidArea(Dimension(5, 0)))
 
         JButton("\uf2f1").also {
-            bottomPanel.add(it)
+            bottomActionPanel.add(it)
             it.addActionListener { search() }
             it.border = BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY),
@@ -60,11 +62,15 @@ class UdpSnifferPanel(
             it.toolTipText = "Re-search network and clear current results"
         }
 
+        val bottomPanel = JPanel(BorderLayout(10, 10))
+        bottomPanel.add(websocketScannerStatusPanel, BorderLayout.LINE_START)
+        bottomPanel.add(bottomActionPanel, BorderLayout.LINE_END)
+
         add(table, BorderLayout.CENTER)
         add(bottomPanel, BorderLayout.PAGE_END)
     }
 
-    private fun updateTable(other: Other?) {
+    private fun updateTable() {
         table.clearTable()
         NetworkSniffer.others.values.forEach(table::addScanResult)
     }
@@ -75,6 +81,13 @@ class UdpSnifferPanel(
 
     private fun search() {
         NetworkSniffer.findOthers()
-        updateTable(null)
+        updateTable()
+    }
+
+    override fun onUdpPingSending() {
+        websocketScannerStatusPanel.updateStatus("Sending ping...", 4000)
+    }
+    override fun onUdpPingSent() {
+        websocketScannerStatusPanel.updateStatus("Ping sent", 4000)
     }
 }

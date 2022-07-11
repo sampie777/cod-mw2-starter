@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import java.net.InetAddress
 
 object NetworkSniffer {
-    var onOtherAdded: ((other: Other) -> Unit)? = null
+    var onOtherAdded: (() -> Unit)? = null
     val others = hashMapOf<String, Other>()
     private val broadcast = Broadcast()
 
@@ -32,6 +32,6 @@ object NetworkSniffer {
         logger.debug("Received nickname: $name from ${address.hostAddress}")
         val other = Other(address.hostAddress, address.hostName, name)
         others[address.hostAddress] = other
-        onOtherAdded?.let { it(other) }
+        onOtherAdded?.invoke()
     }
 }

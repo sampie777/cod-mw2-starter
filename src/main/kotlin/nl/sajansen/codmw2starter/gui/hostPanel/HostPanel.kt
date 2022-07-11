@@ -19,7 +19,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
     private val currentHostLabel = JLabel()
     private val localHostsPanel = JPanel()
     private val localHostLabel = JLabel("Local host(s): ")
-    private val networkingPanel = NetworkingPanel(::onHostClick, ::onHostDoubleClick)
+    private val networkingPanel = NetworkingPanel(::setHost, ::runWithHost)
     private val customHostField = JTextField()
 
     init {
@@ -126,11 +126,11 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
     override fun onServerStarted() = refreshLocalHost()
     override fun onClientStarted() = refreshLocalHost()
 
-    private fun onHostClick(host: String) {
+    private fun setHost(host: String) {
         customHostField.text = host
     }
 
-    private fun onHostDoubleClick(host: String) {
+    private fun runWithHost(host: String) {
         customHostField.text = host
         runClient.invoke()
     }
