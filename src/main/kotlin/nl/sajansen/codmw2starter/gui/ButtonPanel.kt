@@ -24,7 +24,13 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
         layout = BoxLayout(this, BoxLayout.LINE_AXIS)
         border = EmptyBorder(0, 10, 10, 10)
 
-        val gamePlayChooserButton = JButton("Back").also {
+        val gamePlayChooserButton = JButton().also {
+            it.layout = BoxLayout(it, BoxLayout.LINE_AXIS)
+            it.add(Icon("\uf060", size = 14f)
+                .also { icon -> icon.border = EmptyBorder(1, 0, 0, 8) })
+            it.add(JLabel("Back")
+                .also { label -> label.font = Theme.buttonFont })
+
             it.font = Theme.buttonFont
             it.addActionListener(::openGamePlayChooser)
         }
@@ -42,7 +48,7 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
 
         val startClientButton = JButton().also {
             it.layout = BoxLayout(it, BoxLayout.LINE_AXIS)
-            it.add(Icon("\uf04b", size = 18f)
+            it.add(Icon("\uf04b", size = 20f)
                 .also { icon -> icon.border = EmptyBorder(3, 0, 0, 8) })
             it.add(JLabel("Join")
                 .also { label -> label.font = Theme.primaryButtonFont })

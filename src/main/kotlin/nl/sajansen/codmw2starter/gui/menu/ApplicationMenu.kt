@@ -28,9 +28,6 @@ class ApplicationMenu : JMenu("Application") {
         val settingsItem = JMenuItem("Settings")
         val infoItem = JMenuItem("Info")
         val quitItem = JMenuItem("Quit")
-        val saveItem = JMenuItem("Save")
-        val readItem = JMenuItem("Read")
-        val convertItem = JMenuItem("Export as CSV")
 
         // Set alt keys
         settingsItem.addHotKeyMapping(HotKeysMapping.ShowConfig)
@@ -38,10 +35,6 @@ class ApplicationMenu : JMenu("Application") {
         quitItem.addHotKeyMapping(HotKeysMapping.QuitApplication)
         quitItem.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK)
 
-        add(saveItem)
-        add(readItem)
-        add(convertItem)
-        addSeparator()
         add(settingsItem)
         addSeparator()
         add(infoItem)
