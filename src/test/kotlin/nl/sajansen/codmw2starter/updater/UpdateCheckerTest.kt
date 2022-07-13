@@ -1,11 +1,13 @@
 package nl.sajansen.codmw2starter.updater
 
 import nl.sajansen.codmw2starter.ApplicationInfo
+import nl.sajansen.codmw2starter.ApplicationRuntimeSettings
+import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import org.junit.Test
 import org.mockito.Matchers.anyString
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import java.net.MalformedURLException
 import kotlin.test.*
 
@@ -13,6 +15,8 @@ class UpdateCheckerTest {
 
     @BeforeTest
     fun before() {
+        ApplicationRuntimeSettings.testing = true
+        Config.gameDirectory = javaClass.classLoader.getResource("nl/sajansen/codmw2starter")!!.file
         Notifications.clear()
         UpdateChecker().updateLatestKnownVersion(ApplicationInfo.version)
     }

@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.cod
 
+import nl.sajansen.codmw2starter.ApplicationRuntimeSettings
 import nl.sajansen.codmw2starter.config.Config
 import java.io.File
 import java.nio.file.Files
@@ -10,6 +11,7 @@ import kotlin.test.assertEquals
 class CoDTest {
     @BeforeTest
     fun before() {
+        ApplicationRuntimeSettings.testing = true
         Config.gameDirectory = javaClass.classLoader.getResource("nl/sajansen/codmw2starter")!!.file
     }
 

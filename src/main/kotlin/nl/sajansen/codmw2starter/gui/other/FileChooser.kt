@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.gui.other
 
+import nl.sajansen.codmw2starter.ApplicationRuntimeSettings
 import org.slf4j.LoggerFactory
 import java.io.File
 import javax.swing.JFileChooser
@@ -21,6 +22,10 @@ class FileChooser(
     }
 
     fun prompt(): File? {
+        if (ApplicationRuntimeSettings.testing) {
+            return null
+        }
+
         val chooser = createFileChooser(file)
         chooser.dialogTitle = title
         chooser.fileSelectionMode = selectionMode
