@@ -104,7 +104,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
         localHostsPanel.removeAll()
         localHostsPanel.add(localHostLabel)
 
-        val localNetworkIpAddresses = getLocalNetworkIpAddresses()
+        val localNetworkIpAddresses = getLocalNetworkIpAddresses().sortedDescending()
         localNetworkIpAddresses.forEach {
             val hostLabel = JLabel(it)
             if (localNetworkIpAddresses.size > 1 && localNetworkIpAddresses.last() != it) {

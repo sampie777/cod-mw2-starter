@@ -58,6 +58,7 @@ class ConfigEditPanel : JPanel() {
         formComponents.add(HeaderFormComponent("Other"))
         formComponents.add(BooleanFormInput("updatesCheckForUpdates", "Check for updates"))
         formComponents.add(NumberFormInput("udpSnifferPort", "UDP broadcast port", 1, 65535, 1))
+        formComponents.add(BooleanFormInput("udpSnifferFilterOutLocalIps", "UDP filter out local IPs"))
         formComponents.add(StringFormInput("localIpPrefix", "Local IP prefix", true, toolTipText = "The prefix local IPs should start with"))
     }
 

@@ -24,8 +24,7 @@ fun getNetworkIpAddresses(): List<String> {
 fun getLocalNetworkIpAddresses(): List<String> {
     val networkIpAddresses = getNetworkIpAddresses()
 
-    val localNetworkIpAddresses = networkIpAddresses
+    return networkIpAddresses
         .filter { it.startsWith(Config.localIpPrefix) }
         .distinct()
-    return localNetworkIpAddresses
 }

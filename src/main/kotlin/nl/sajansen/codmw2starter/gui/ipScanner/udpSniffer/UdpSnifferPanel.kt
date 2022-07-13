@@ -2,8 +2,10 @@ package nl.sajansen.codmw2starter.gui.ipScanner.udpSniffer
 
 import nl.sajansen.codmw2starter.cod.CoDEventListener
 import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
+import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.Theme
 import nl.sajansen.codmw2starter.gui.ipScanner.portSniffer.WebsocketScannerStatusPanel
+import nl.sajansen.codmw2starter.ipScanner.portSniffer.getLocalNetworkIpAddresses
 import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
 import nl.sajansen.codmw2starter.utils.faSolidFont
 import org.slf4j.LoggerFactory
@@ -71,8 +73,11 @@ class UdpSnifferPanel(
     }
 
     private fun updateTable() {
+        val localIpAddresses = getLocalNetworkIpAddresses()
         table.clearTable()
-        NetworkSniffer.others.values.forEach(table::addScanResult)
+        NetworkSniffer.others.values
+            .filter { !Config.udpSnifferFilterOutLocalIps || !localIpAddresses.contains(it.hostAddress) }
+            .forEach(table::addScanResult)
     }
 
     private fun ping() {

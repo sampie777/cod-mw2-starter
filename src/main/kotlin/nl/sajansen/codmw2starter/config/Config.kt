@@ -61,6 +61,7 @@ object Config {
     var ipScannerTimeout: Int = 300
     var localIpPrefix = ""
     var udpSnifferPort = 2302
+    var udpSnifferFilterOutLocalIps = true
 
     fun load() {
         try {

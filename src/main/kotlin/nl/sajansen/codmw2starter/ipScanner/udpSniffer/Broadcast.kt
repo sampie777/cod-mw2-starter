@@ -142,7 +142,7 @@ class Broadcast {
     private fun handleRequestMessage(address: InetAddress, data: String?) {
         if (requestId != null && data == requestId) {
             logger.debug("Ignoring own request")
-            requestId = null
+            return
         } else {
             sendClientInfo(address)
         }
