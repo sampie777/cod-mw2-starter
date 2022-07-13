@@ -1,16 +1,13 @@
 package nl.sajansen.codmw2starter.config
 
-import nl.sajansen.codmw2starter.ApplicationInfo
 import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.cod.GameType
 import nl.sajansen.codmw2starter.cod.MapName
 import nl.sajansen.codmw2starter.cod.Spectate
 import nl.sajansen.codmw2starter.globalHooks.NativeKeyEventJson
-import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
 import org.slf4j.LoggerFactory
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
-import java.nio.file.Paths
 
 object Config {
     private val logger = LoggerFactory.getLogger(Config.toString())
@@ -21,9 +18,7 @@ object Config {
     var mainWindowAlwaysOnTop: Boolean = false
 
     // File paths
-    var serverPropertiesFile: String = Paths.get(getCurrentJarDirectory(ApplicationInfo).absolutePath, "alterIWnet.ini").toString()
-    var serverExeFile: String = Paths.get(getCurrentJarDirectory(ApplicationInfo).absolutePath, "IWNetServer.exe").toString()
-    var clientExeFile: String = Paths.get(getCurrentJarDirectory(ApplicationInfo).absolutePath, "iw4mp.exe").toString()
+    var gameDirectory: String = "path/to/game/directory"
 
     // Execution
     val availableExecutioners: String = CoD.Executioner.values().joinToString(";")

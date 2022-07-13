@@ -30,10 +30,9 @@ fun main(args: Array<String>) {
     Theme
 
     EventQueue.invokeLater {
+        NetworkSniffer.start()  // Put here because when no CoD properties file is found, the user will be prompted and these prompts must be in the event queue
         MainFrame.createAndShow()
     }
-
-    NetworkSniffer.start()
 
     if ("--clear-update-history" in args) {
         UpdateChecker().clearUpdateHistory()

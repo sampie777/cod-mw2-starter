@@ -24,9 +24,7 @@ class ConfigEditPanel : JPanel() {
 
     private fun createFormInputs() {
         formComponents.add(HeaderFormComponent("Game Execution"))
-        formComponents.add(StringFormInput("serverPropertiesFile", "alterIWnet properties file", false))
-        formComponents.add(StringFormInput("serverExeFile", "IWNetServer execution file", false))
-        formComponents.add(StringFormInput("clientExeFile", "MW2 multiplayer execution file", false))
+        formComponents.add(StringFormInput("gameDirectory", "Game directory", false))
         formComponents.add(SelectFormInput("executioner", "Execution method", CoD.Executioner.values()))
 
         formComponents.add(HeaderFormComponent(""))

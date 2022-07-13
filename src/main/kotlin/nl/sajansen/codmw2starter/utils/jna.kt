@@ -5,6 +5,8 @@ import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinUser
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
+import nl.sajansen.codmw2starter.utils.OS
+import nl.sajansen.codmw2starter.utils.getOS
 import org.slf4j.LoggerFactory
 import java.awt.Desktop
 import java.awt.Robot
@@ -41,7 +43,7 @@ class WindowFinder(private val windowTitle: String) : WinUser.WNDENUMPROC {
 }
 
 fun findWindowHandle(windowTitle: String): WinDef.HWND? {
-    if (!System.getProperty("os.name").toLowerCase().contains("win")) {
+    if (getOS() != OS.Windows) {
         logger.warn("Must run on Windows to find the window")
         Notifications.popup("Must run on Windows operating system", "KeyStroke")
         return null

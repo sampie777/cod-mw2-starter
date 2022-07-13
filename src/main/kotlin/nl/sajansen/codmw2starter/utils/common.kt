@@ -53,3 +53,28 @@ fun getFileExtension(file: File): String {
 
 fun Date.format(format: String): String? = SimpleDateFormat(format).format(this)
 fun LocalTime.format(format: String): String = this.format(DateTimeFormatter.ofPattern(format))
+
+enum class OS {
+    Unknown,
+    Windows,
+    Linux,
+    Mac,
+    Solaris
+}
+
+fun getOS(): OS {
+    val osName = System.getProperty("os.name").toLowerCase()
+    if (osName.contains("win")) {
+        return OS.Windows
+    }
+    if (osName.contains("nix") || osName.contains("nux")) {
+        return OS.Linux
+    }
+    if (osName.contains("sunos")) {
+        return OS.Mac
+    }
+    if (osName.contains("mac")) {
+        return OS.Solaris
+    }
+    return OS.Unknown
+}
