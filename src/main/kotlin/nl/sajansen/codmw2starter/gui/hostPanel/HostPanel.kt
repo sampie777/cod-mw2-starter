@@ -104,23 +104,27 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
         localHostsPanel.removeAll()
         localHostsPanel.add(localHostLabel)
 
-        val localNetworkIpAddresses = getLocalNetworkIpAddresses().sortedDescending()
-        localNetworkIpAddresses.forEach {
-            val hostLabel = JLabel(it)
-            if (localNetworkIpAddresses.size > 1 && localNetworkIpAddresses.last() != it) {
-                hostLabel.text = hostLabel.text + ","
-            }
-            hostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
-            hostLabel.font = Theme.normalFont
-            hostLabel.toolTipText = "Click to use as server"
-            hostLabel.addMouseListener(object : MouseAdapter() {
-                override fun mouseClicked(e: MouseEvent) {
-                    customHostField.text = it
+        val localNetworkIpAddresses = getLocalNetworkIpAddresses()
+            .sortedDescending()
+            .filter { it.isNotEmpty() }
+            .filter { it[0].isDigit() && !it.contains(":") }
+        localNetworkIpAddresses
+            .forEach {
+                val hostLabel = JLabel(it)
+                if (localNetworkIpAddresses.size > 1 && localNetworkIpAddresses.last() != it) {
+                    hostLabel.text = hostLabel.text + ","
                 }
-            })
+                hostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+                hostLabel.font = Theme.normalFont
+                hostLabel.toolTipText = "Click to use as server"
+                hostLabel.addMouseListener(object : MouseAdapter() {
+                    override fun mouseClicked(e: MouseEvent) {
+                        customHostField.text = it
+                    }
+                })
 
-            localHostsPanel.add(hostLabel)
-        }
+                localHostsPanel.add(hostLabel)
+            }
     }
 
     override fun onServerStarted() = refreshLocalHost()
