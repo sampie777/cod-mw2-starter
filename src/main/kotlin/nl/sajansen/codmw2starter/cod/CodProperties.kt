@@ -9,6 +9,7 @@ import nl.sajansen.codmw2starter.utils.OS
 import nl.sajansen.codmw2starter.utils.getOS
 import org.ini4j.Ini
 import org.slf4j.LoggerFactory
+import java.awt.EventQueue
 import java.io.File
 import java.nio.file.Paths
 import javax.swing.JFileChooser
@@ -132,7 +133,15 @@ object CodProperties {
         val possibleGameDirectoryNames = listOf(
             "Modern Warfare 2",
             "Call of Duty - Modern Warfare 2",
-            "Call of Duty: Modern Warfare 2",
+            "Call of Duty Modern Warfare 2",
+            "CoD - Modern Warfare 2",
+            "CoD Modern Warfare 2",
+            Paths.get("Modern Warfare 2", "Multiplayer").toString(),
+            Paths.get("Call of Duty - Modern Warfare 2", "Multiplayer").toString(),
+            Paths.get("Call of Duty Modern Warfare 2", "Multiplayer").toString(),
+            Paths.get("CoD - Modern Warfare 2", "Multiplayer").toString(),
+            Paths.get("CoD Modern Warfare 2", "Multiplayer").toString(),
+            "Multiplayer",
         )
 
         val homeDirectory = System.getProperty("user.home")
@@ -162,12 +171,16 @@ object CodProperties {
 
     private fun promptForGameLocation(): File? {
         logger.info("Prompting user for game location")
-        return FileChooser(
-            file = System.getProperty("user.home"),
-            title = "Select game directory",
-            type = FileChooser.Type.Open,
-            selectionMode = JFileChooser.DIRECTORIES_ONLY,
-        ).prompt()
+        var file: File? = null
+        EventQueue.invokeAndWait {
+            file = FileChooser(
+                file = System.getProperty("user.home"),
+                title = "Select game directory",
+                type = FileChooser.Type.Open,
+                selectionMode = JFileChooser.DIRECTORIES_ONLY,
+            ).prompt()
+        }
+        return file
     }
 
     private fun directoryContainsGameFiles(directory: File): Boolean {
@@ -251,5 +264,14 @@ object CodProperties {
 
         CoDEventListenerSubscriber.onNicknameChanged()
         return true
+    }
+
+    fun initialize() {
+        try {
+            fetch()
+        } catch (e: PropertiesFileError) {
+            Notifications.popup(e.localizedMessage, "File not found")
+            exitApplication()
+        }
     }
 }

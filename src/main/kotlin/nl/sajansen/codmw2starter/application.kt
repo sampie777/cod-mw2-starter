@@ -1,11 +1,11 @@
 package nl.sajansen.codmw2starter
 
+import nl.sajansen.codmw2starter.cod.CodProperties
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.GUI
 import nl.sajansen.codmw2starter.gui.Theme
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFrame
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
-import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
 import nl.sajansen.codmw2starter.updater.UpdateChecker
 import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
 import org.slf4j.LoggerFactory
@@ -29,8 +29,9 @@ fun main(args: Array<String>) {
     // Init theme
     Theme
 
+    CodProperties.initialize()
+
     EventQueue.invokeLater {
-        NetworkSniffer.start()  // Put here because when no CoD properties file is found, the user will be prompted and these prompts must be in the event queue
         MainFrame.createAndShow()
     }
 

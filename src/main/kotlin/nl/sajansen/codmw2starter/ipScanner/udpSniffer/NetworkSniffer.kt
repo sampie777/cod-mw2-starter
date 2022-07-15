@@ -11,8 +11,14 @@ object NetworkSniffer {
     private val logger = LoggerFactory.getLogger(this::class.java.name)
 
     fun start() {
-        broadcast.start()
-        findOthers()
+        try {
+            broadcast.start()
+            findOthers()
+        } catch (t: Throwable) {
+            logger.error("Failed to start network sniffing")
+            t.printStackTrace()
+            Notifications.popup("Failed to start network sniffing: ${t.localizedMessage}")
+        }
     }
 
     fun findOthers() {
