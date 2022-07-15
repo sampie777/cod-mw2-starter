@@ -19,7 +19,7 @@ object CodProperties {
 
     private fun fetch(): Ini? {
         val file = File(CoD.getServerPropertiesFile())
-        logger.info("Loading CoD properties file: '${file.absolutePath}'")
+        logger.debug("Loading CoD properties file: '${file.absolutePath}'")
 
         if (file.exists()) {
             return Ini(file)

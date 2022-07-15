@@ -198,7 +198,7 @@ class Broadcast {
             val data = message.toByteArray()
             val packet = DatagramPacket(data, data.size, address, Config.udpSnifferPort)
 
-            logger.debug("Sending packet to ${address.hostAddress}:${Config.udpSnifferPort}")
+            logger.debug("Sending packet '$message' to ${address.hostAddress}:${Config.udpSnifferPort}")
             socket.send(packet)
         } catch (e: Exception) {
             logger.error("Failed to send message: '$message' to address: ${address.hostAddress} with broadcast=$broadcast")
