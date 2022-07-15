@@ -26,13 +26,13 @@ object NetworkSniffer {
         logger.info("Finding for others...")
         broadcast.onNicknameReceived = ::addNickname
         others.clear()
-        broadcast.send()
+        Thread { broadcast.send() }.start()
     }
 
     fun ping() {
         logger.info("Resending broadcast")
         broadcast.onNicknameReceived = ::addNickname
-        broadcast.send()
+        Thread { broadcast.send() }.start()
     }
 
     fun sendImHostingPing() {
