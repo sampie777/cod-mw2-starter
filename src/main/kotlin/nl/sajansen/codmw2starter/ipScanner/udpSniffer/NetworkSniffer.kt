@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 
+import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import org.slf4j.LoggerFactory
 import java.net.InetAddress
 
@@ -34,9 +35,15 @@ object NetworkSniffer {
         broadcast.send()
     }
 
-    private fun addNickname(address: InetAddress, name: String) {
+    fun sendImHostingPing() {
+        logger.info("Sending Iam Hosting broadcast")
+        broadcast.onNicknameReceived = ::addNickname
+        broadcast.sendIamHostingPing()
+    }
+
+    private fun addNickname(address: InetAddress, name: String, isHosting: Boolean) {
         logger.debug("Received nickname: $name from ${address.hostAddress}")
-        val other = Other(address.hostAddress, address.hostName, name)
+        val other = Other(address.hostAddress, address.hostName, name, isHosting)
         others[address.hostAddress] = other
         onOtherAdded?.invoke()
     }

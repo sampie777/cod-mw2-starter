@@ -52,7 +52,11 @@ class Table(
 
     fun addScanResult(other: Other) {
         val hostName = if (other.hostName == other.hostAddress) "" else other.hostName
-        model().addRow(arrayOf(other.nickname, other.hostAddress, hostName))
+        var displayNickName = other.nickname
+        if (other.isHosting) {
+            displayNickName = "$displayNickName (hosting)"
+        }
+        model().addRow(arrayOf(displayNickName, other.hostAddress, hostName))
     }
 
     fun getSelectedValueAsAddress(): String? {

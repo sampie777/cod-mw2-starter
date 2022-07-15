@@ -3,6 +3,7 @@ package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import nl.sajansen.codmw2starter.ipScanner.portSniffer.getLocalNetworkIpAddresses
 import org.slf4j.LoggerFactory
 import java.net.*
@@ -12,6 +13,7 @@ class Broadcast {
     enum class MessageType {
         Request,
         Nickname,
+        Hosting,
     }
 
     companion object {
@@ -37,7 +39,7 @@ class Broadcast {
     }
 
     var onRequestReceived: ((address: InetAddress, requestId: String?) -> Unit)? = null
-    var onNicknameReceived: ((address: InetAddress, name: String) -> Unit)? = null
+    var onNicknameReceived: ((address: InetAddress, name: String, isHosting: Boolean) -> Unit)? = null
     private val logger = LoggerFactory.getLogger(this::class.java.name)
     private var requestId: String? = null
     private var stopListening = false
@@ -62,6 +64,16 @@ class Broadcast {
         CoDEventListenerSubscriber.onUdpPingSent()
     }
 
+    fun sendIamHostingPing() {
+        CoDEventListenerSubscriber.onUdpPingSending()
+        getBroadCastAddresses().forEach { broadcastAddress ->
+            val address = InetAddress.getByName(broadcastAddress)
+            val message = createMessage(MessageType.Hosting, CoD.getNickname() ?: "unknown")
+            sendTo(address, message, broadcast = true)
+        }
+        CoDEventListenerSubscriber.onUdpPingSent()
+    }
+
     private fun receive() {
         val address = InetAddress.getByName(receiveAddress)
 
@@ -70,6 +82,11 @@ class Broadcast {
                 it.broadcast = true
                 it.soTimeout = 2000
             }
+        } catch (e: BindException) {
+            logger.error("Failed to open socket for listening: $receiveAddress:${Config.udpSnifferPort}")
+            e.printStackTrace()
+            Notifications.popup("Port ${Config.udpSnifferPort} already in use")
+            return
         } catch (e: Exception) {
             logger.error("Failed to open socket for listening: $receiveAddress:${Config.udpSnifferPort}")
             e.printStackTrace()
@@ -134,6 +151,7 @@ class Broadcast {
         when (type) {
             MessageType.Request -> handleRequestMessage(address, data)
             MessageType.Nickname -> processNickname(address, data)
+            MessageType.Hosting -> processIamHosting(address, data)
             else -> return false
         }
         return true
@@ -156,7 +174,16 @@ class Broadcast {
             return
         }
 
-        onNicknameReceived?.let { it(address, data) }
+        onNicknameReceived?.let { it(address, data, false) }
+    }
+
+    private fun processIamHosting(address: InetAddress, data: String?) {
+        if (data == null) {
+            logger.info("Cannot process empty nickname for IamHosting message")
+            return
+        }
+
+        onNicknameReceived?.let { it(address, data, true) }
     }
 
     private fun sendClientInfo(address: InetAddress, broadcast: Boolean = false) {

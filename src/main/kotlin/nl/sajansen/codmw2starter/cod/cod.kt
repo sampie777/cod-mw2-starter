@@ -4,6 +4,7 @@ import copyString
 import focusWindow
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
+import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
 import org.slf4j.LoggerFactory
 import pasteText
 import java.awt.Desktop
@@ -41,6 +42,7 @@ object CoD {
 
     fun startServer() {
         logger.info("Starting server...")
+        NetworkSniffer.sendImHostingPing()
         execute("server", getServerExeFile())
         CoDEventListenerSubscriber.onServerStarted()
     }

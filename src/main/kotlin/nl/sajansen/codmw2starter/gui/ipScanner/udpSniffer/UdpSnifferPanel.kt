@@ -77,6 +77,7 @@ class UdpSnifferPanel(
         table.clearTable()
         NetworkSniffer.others.values
             .filter { !Config.udpSnifferFilterOutLocalIps || !localIpAddresses.contains(it.hostAddress) }
+            .sortedBy { it.isHosting }
             .forEach(table::addScanResult)
     }
 
