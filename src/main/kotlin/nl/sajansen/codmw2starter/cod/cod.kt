@@ -49,7 +49,6 @@ object CoD {
 
     fun startClient() {
         logger.info("Starting client...")
-        NetworkSniffer.sendImHostingPing(false)
         execute("client", getClientExeFile())
         CoDEventListenerSubscriber.onClientStarted()
     }

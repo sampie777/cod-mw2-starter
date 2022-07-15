@@ -4,6 +4,7 @@ import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFrame
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFramePanel
 import nl.sajansen.codmw2starter.gui.mapConfig.MapConfigFrame
+import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
 import nl.sajansen.codmw2starter.utils.Icon
 import nl.sajansen.codmw2starter.utils.addHotKeyMapping
 import nl.sajansen.codmw2starter.utils.getMainFrameComponent
@@ -67,6 +68,8 @@ class ButtonPanel(private val frame: JFrame, private val beforeStart: (() -> Boo
     }
 
     fun startClient() {
+        NetworkSniffer.sendImHostingPing(false)
+
         if (beforeStart.invoke()) {
             CoD.startClient()
         }
