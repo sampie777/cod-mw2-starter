@@ -4,6 +4,7 @@ import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFrame
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFramePanel
+import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
 import org.slf4j.LoggerFactory
 import java.awt.Dimension
 import java.awt.event.ActionEvent
@@ -36,6 +37,7 @@ class GameModesPanel : JPanel() {
     }
 
     private fun joinAServer(e: ActionEvent) {
+        NetworkSniffer.sendImHostingPing(false)
         MainFrame.getInstance()?.activatePanel(MainFramePanel.Panel.ServerBrowser)
     }
 }
