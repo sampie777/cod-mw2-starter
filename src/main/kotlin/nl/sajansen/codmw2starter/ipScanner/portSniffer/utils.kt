@@ -25,7 +25,6 @@ fun getLocalNetworkIpAddresses(): List<String> {
     val networkIpAddresses = getNetworkIpAddresses()
 
     return networkIpAddresses
-        .filter { it.startsWith(Config.localIpPrefix) }
         .filter { !Config.useIpv4Only || isIpv4(it) }
         .distinct()
 }

@@ -51,13 +51,16 @@ object Config {
     // Key bindings
     var globalKeyEventPauseLobby: NativeKeyEventJson? = null
 
-    // Other
-    var updatesCheckForUpdates: Boolean = true
+    // Player detection
     var ipScannerTimeout: Int = 300
-    var localIpPrefix = ""
     var udpSnifferPort = 2302
     var udpSnifferFilterOutLocalIps = true
     var useIpv4Only = true
+    var minNicknameBroadcastTimeout: Long = 3000
+    var maxNicknameBroadcastTimeout: Long = 30000
+
+    // Other
+    var updatesCheckForUpdates: Boolean = true
 
     fun load() {
         try {

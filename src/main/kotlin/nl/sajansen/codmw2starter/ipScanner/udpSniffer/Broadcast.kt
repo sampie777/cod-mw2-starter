@@ -57,8 +57,9 @@ class Broadcast {
         requestId = generateRequestId()
         getBroadCastAddresses().forEach { broadcastAddress ->
             val address = InetAddress.getByName(broadcastAddress)
-            val message = createMessage(MessageType.Request, requestId)
             sendClientInfo(address, broadcast = true)
+
+            val message = createMessage(MessageType.Request, requestId)
             sendTo(address, message, broadcast = true)
         }
         CoDEventListenerSubscriber.onUdpPingSent()
@@ -72,6 +73,13 @@ class Broadcast {
             sendTo(address, message, broadcast = true)
         }
         CoDEventListenerSubscriber.onUdpPingSent()
+    }
+
+    fun broadcastNickname() {
+        getBroadCastAddresses().forEach { broadcastAddress ->
+            val address = InetAddress.getByName(broadcastAddress)
+            sendClientInfo(address, broadcast = true)
+        }
     }
 
     private fun receive() {

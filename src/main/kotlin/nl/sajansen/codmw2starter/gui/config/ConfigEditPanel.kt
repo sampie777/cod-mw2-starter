@@ -53,12 +53,14 @@ class ConfigEditPanel : JPanel() {
         )
 
         formComponents.add(HeaderFormComponent(""))
+        formComponents.add(HeaderFormComponent("Player detection"))
+        formComponents.add(BooleanFormInput("useIpv4Only", "Use ipv4 addresses only"))
+        formComponents.add(NumberFormInput("udpSnifferPort", "UDP broadcast port", 1, 65535, 1))
+        formComponents.add(NumberFormInput("minNicknameBroadcastTimeout", "Min. nickname broadcast interval (ms)", 1, 65535, 1))
+        formComponents.add(NumberFormInput("maxNicknameBroadcastTimeout", "Max. nickname broadcast interval (ms)", 1, 65535, 1))
+        formComponents.add(BooleanFormInput("udpSnifferFilterOutLocalIps", "UDP filter out local IPs"))
         formComponents.add(HeaderFormComponent("Other"))
         formComponents.add(BooleanFormInput("updatesCheckForUpdates", "Check for updates"))
-        formComponents.add(NumberFormInput("udpSnifferPort", "UDP broadcast port", 1, 65535, 1))
-        formComponents.add(BooleanFormInput("useIpv4Only", "Use ipv4 addresses only"))
-        formComponents.add(BooleanFormInput("udpSnifferFilterOutLocalIps", "UDP filter out local IPs"))
-        formComponents.add(StringFormInput("localIpPrefix", "Local IP prefix", true, toolTipText = "The prefix local IPs should start with"))
     }
 
     private fun createGui() {
