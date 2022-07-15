@@ -22,7 +22,7 @@ object Config {
 
     // Execution
     val availableExecutioners: String = CoD.Executioner.values().joinToString(";")
-    var executioner: CoD.Executioner = CoD.Executioner.Desktop
+    var executioner: CoD.Executioner = CoD.Executioner.Auto
     var delayBetweenServerStartAndClientStart = 2000L
 
     // Map config

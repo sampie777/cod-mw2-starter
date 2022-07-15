@@ -5,6 +5,7 @@ import focusWindow
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
+import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
 import org.slf4j.LoggerFactory
 import pasteText
 import java.awt.Desktop
@@ -14,6 +15,7 @@ import java.nio.file.Paths
 
 object CoD {
     enum class Executioner {
+        Auto,
         Desktop,
         Runtime,
         ProcessBuilder1,
@@ -81,9 +83,10 @@ object CoD {
         try {
             val file = File(exeFile)
             val directory = file.parentFile
+            val executioner = getExecutioner(file)
 
-            logger.info("Using executioner: ${Config.executioner} for file '${file.name}' in '${directory.absolutePath}'")
-            when (Config.executioner) {
+            logger.info("Using executioner: $executioner for file '${file.name}' in '${directory.absolutePath}'")
+            when (executioner) {
                 Executioner.Runtime -> Runtime.getRuntime().exec(file.toString(), null, directory)
                 Executioner.Desktop -> Desktop.getDesktop().open(file)
                 Executioner.ProcessBuilder1 -> {
@@ -100,4 +103,14 @@ object CoD {
             Notifications.popup("Failed to start $type: ${t.localizedMessage}", "CoD")
         }
     }
+
+    private fun getExecutioner(file: File) =
+        if (Config.executioner == Executioner.Auto && file.parentFile.absolutePath == getCurrentJarDirectory(this).parentFile.absolutePath) {
+            // Use desktop if this program runs from the same directory as the .exe file to be executed.
+            Executioner.Desktop
+        } else if (Config.executioner == Executioner.Auto) {
+            Executioner.Runtime
+        } else {
+            Config.executioner
+        }
 }
