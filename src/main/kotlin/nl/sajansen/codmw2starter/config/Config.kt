@@ -57,6 +57,7 @@ object Config {
     var localIpPrefix = ""
     var udpSnifferPort = 2302
     var udpSnifferFilterOutLocalIps = true
+    var useIpv4Only = true
 
     fun load() {
         try {

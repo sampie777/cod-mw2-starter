@@ -106,8 +106,6 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
 
         val localNetworkIpAddresses = getLocalNetworkIpAddresses()
             .sortedDescending()
-            .filter { it.isNotEmpty() }
-            .filter { it[0].isDigit() && !it.contains(":") }
         localNetworkIpAddresses
             .forEach {
                 val hostLabel = JLabel(it)

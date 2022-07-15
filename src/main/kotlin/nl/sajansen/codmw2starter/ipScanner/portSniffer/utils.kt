@@ -26,5 +26,8 @@ fun getLocalNetworkIpAddresses(): List<String> {
 
     return networkIpAddresses
         .filter { it.startsWith(Config.localIpPrefix) }
+        .filter { !Config.useIpv4Only || isIpv4(it) }
         .distinct()
 }
+
+fun isIpv4(it: String): Boolean = it.isNotEmpty() && it[0].isDigit() && !it.contains(":")
