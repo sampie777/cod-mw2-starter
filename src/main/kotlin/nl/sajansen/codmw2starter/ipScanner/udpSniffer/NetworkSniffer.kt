@@ -47,16 +47,19 @@ object NetworkSniffer : CoDEventListener {
         Thread { broadcast.send() }.start()
     }
 
-    fun sendImHostingPing() {
-        logger.info("Sending Iam Hosting broadcast")
+    fun sendImHostingPing(value: Boolean) {
+        logger.info("Sending Iam ${if (!value) "not " else ""}Hosting broadcast")
         broadcast.onNicknameReceived = ::addNickname
-        broadcast.sendIamHostingPing()
+        broadcast.sendIamHostingPing(value)
     }
 
-    private fun addNickname(address: InetAddress, name: String, isHosting: Boolean) {
-        logger.debug("Received nickname: $name from ${address.hostAddress}")
-        val other = Other(address.hostAddress, address.hostName, name, isHosting)
-        others[address.hostAddress] = other
+    private fun addNickname(address: InetAddress, name: String, isHosting: Boolean? = null) {
+        logger.debug("Received nickname: $name from ${address.hostAddress} with isHosting=${isHosting}")
+
+        val newOther = Other(address.hostAddress, address.hostName, name, false)
+        newOther.isHosting = isHosting ?: others[address.hostAddress]?.isHosting ?: false
+
+        others[address.hostAddress] = newOther
         onOtherAdded?.invoke()
     }
 

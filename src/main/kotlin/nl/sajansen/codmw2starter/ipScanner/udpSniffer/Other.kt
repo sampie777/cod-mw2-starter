@@ -4,5 +4,5 @@ data class Other(
     val hostAddress: String,
     val hostName: String,
     val nickname: String,
-    val isHosting: Boolean,
+    var isHosting: Boolean,
 )

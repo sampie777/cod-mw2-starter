@@ -14,6 +14,7 @@ class Broadcast {
         Request,
         Nickname,
         Hosting,
+        NotHosting,
     }
 
     companion object {
@@ -39,7 +40,7 @@ class Broadcast {
     }
 
     var onRequestReceived: ((address: InetAddress, requestId: String?) -> Unit)? = null
-    var onNicknameReceived: ((address: InetAddress, name: String, isHosting: Boolean) -> Unit)? = null
+    var onNicknameReceived: ((address: InetAddress, name: String, isHosting: Boolean?) -> Unit)? = null
     private val logger = LoggerFactory.getLogger(this::class.java.name)
     private var requestId: String? = null
     private var stopListening = false
@@ -65,11 +66,11 @@ class Broadcast {
         CoDEventListenerSubscriber.onUdpPingSent()
     }
 
-    fun sendIamHostingPing() {
+    fun sendIamHostingPing(value: Boolean) {
         CoDEventListenerSubscriber.onUdpPingSending()
         getBroadCastAddresses().forEach { broadcastAddress ->
             val address = InetAddress.getByName(broadcastAddress)
-            val message = createMessage(MessageType.Hosting, CoD.getNickname() ?: "unknown")
+            val message = createMessage(if (value) MessageType.Hosting else MessageType.NotHosting, CoD.getNickname() ?: "unknown")
             sendTo(address, message, broadcast = true)
         }
         CoDEventListenerSubscriber.onUdpPingSent()
@@ -160,6 +161,7 @@ class Broadcast {
             MessageType.Request -> handleRequestMessage(address, data)
             MessageType.Nickname -> processNickname(address, data)
             MessageType.Hosting -> processIamHosting(address, data)
+            MessageType.NotHosting -> processIamNotHosting(address, data)
             else -> return false
         }
         return true
@@ -182,7 +184,7 @@ class Broadcast {
             return
         }
 
-        onNicknameReceived?.let { it(address, data, false) }
+        onNicknameReceived?.let { it(address, data, null) }
     }
 
     private fun processIamHosting(address: InetAddress, data: String?) {
@@ -192,6 +194,15 @@ class Broadcast {
         }
 
         onNicknameReceived?.let { it(address, data, true) }
+    }
+
+    private fun processIamNotHosting(address: InetAddress, data: String?) {
+        if (data == null) {
+            logger.info("Cannot process empty nickname for IamNotHosting message")
+            return
+        }
+
+        onNicknameReceived?.let { it(address, data, false) }
     }
 
     private fun sendClientInfo(address: InetAddress, broadcast: Boolean = false) {

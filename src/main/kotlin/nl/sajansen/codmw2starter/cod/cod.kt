@@ -42,13 +42,14 @@ object CoD {
 
     fun startServer() {
         logger.info("Starting server...")
-        NetworkSniffer.sendImHostingPing()
+        NetworkSniffer.sendImHostingPing(true)
         execute("server", getServerExeFile())
         CoDEventListenerSubscriber.onServerStarted()
     }
 
     fun startClient() {
         logger.info("Starting client...")
+        NetworkSniffer.sendImHostingPing(false)
         execute("client", getClientExeFile())
         CoDEventListenerSubscriber.onClientStarted()
     }
