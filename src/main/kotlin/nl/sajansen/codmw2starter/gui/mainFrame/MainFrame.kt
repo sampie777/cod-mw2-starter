@@ -10,8 +10,6 @@ import javax.swing.JFrame
 
 
 class MainFrame : JFrame() {
-    private val logger = LoggerFactory.getLogger(MainFrame::class.java.name)
-
     companion object {
         private var instance: MainFrame? = null
         fun getInstance() = instance
@@ -24,6 +22,9 @@ class MainFrame : JFrame() {
             return frame
         }
     }
+
+    private val logger = LoggerFactory.getLogger(MainFrame::class.java.name)
+    private val mainFramePanel = MainFramePanel()
 
     init {
         instance = this
@@ -39,7 +40,7 @@ class MainFrame : JFrame() {
         setSize(580, 450)
         setLocationRelativeTo(null)
 
-        add(MainFramePanel())
+        add(mainFramePanel)
 
         isAlwaysOnTop = Config.mainWindowAlwaysOnTop
 
@@ -51,4 +52,6 @@ class MainFrame : JFrame() {
 
     fun saveWindowPosition() {
     }
+
+    fun activatePanel(panel: MainFramePanel.Panel) = mainFramePanel.activatePanel(panel)
 }

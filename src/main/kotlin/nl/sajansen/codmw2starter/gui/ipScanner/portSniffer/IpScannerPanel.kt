@@ -9,12 +9,12 @@ import java.awt.BorderLayout
 import javax.swing.JPanel
 
 open class IpScannerPanel(
-    onHostClick: ((host: String) -> Unit),
-    onHostDoubleClick: ((host: String) -> Unit)
+    setHost: ((host: String) -> Unit),
+    runWithHost: ((host: String) -> Unit)
 ) : JPanel(), IpScannerInitiator {
     private val logger = LoggerFactory.getLogger(this::class.java.name)
 
-    private val ipScannerTable = IpScannerTable(onHostClick, onHostDoubleClick)
+    private val ipScannerTable = IpScannerTable(setHost, runWithHost)
     private val websocketScannerStatusPanel = WebsocketScannerStatusPanel()
     private lateinit var websocketScannerActionPanel: WebsocketScannerActionPanel
     private var worker: WebsocketScannerSwingWorker? = null

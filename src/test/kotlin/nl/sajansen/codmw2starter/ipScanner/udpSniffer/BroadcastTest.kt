@@ -1,15 +1,24 @@
 package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 
+import nl.sajansen.codmw2starter.ApplicationRuntimeSettings
+import nl.sajansen.codmw2starter.config.Config
 import org.junit.Ignore
 import org.junit.Test
 import java.net.InetAddress
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.schedule
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class BroadcastTest {
+    @BeforeTest
+    fun before() {
+        ApplicationRuntimeSettings.testing = true
+        Config.gameDirectory = javaClass.classLoader.getResource("nl/sajansen/codmw2starter")!!.file
+    }
+
     @Ignore
     @Test
     fun test() {

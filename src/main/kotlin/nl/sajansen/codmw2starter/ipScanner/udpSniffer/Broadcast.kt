@@ -1,7 +1,9 @@
 package nl.sajansen.codmw2starter.ipScanner.udpSniffer
 
 import nl.sajansen.codmw2starter.cod.CoD
+import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
 import nl.sajansen.codmw2starter.config.Config
+import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import nl.sajansen.codmw2starter.ipScanner.portSniffer.getLocalNetworkIpAddresses
 import org.slf4j.LoggerFactory
 import java.net.*
@@ -11,6 +13,8 @@ class Broadcast {
     enum class MessageType {
         Request,
         Nickname,
+        Hosting,
+        NotHosting,
     }
 
     companion object {
@@ -36,7 +40,7 @@ class Broadcast {
     }
 
     var onRequestReceived: ((address: InetAddress, requestId: String?) -> Unit)? = null
-    var onNicknameReceived: ((address: InetAddress, name: String) -> Unit)? = null
+    var onNicknameReceived: ((address: InetAddress, name: String, isHosting: Boolean?) -> Unit)? = null
     private val logger = LoggerFactory.getLogger(this::class.java.name)
     private var requestId: String? = null
     private var stopListening = false
@@ -50,12 +54,32 @@ class Broadcast {
     }
 
     fun send() {
+        CoDEventListenerSubscriber.onUdpPingSending()
         requestId = generateRequestId()
         getBroadCastAddresses().forEach { broadcastAddress ->
             val address = InetAddress.getByName(broadcastAddress)
-            val message = createMessage(MessageType.Request, requestId)
             sendClientInfo(address, broadcast = true)
+
+            val message = createMessage(MessageType.Request, requestId)
             sendTo(address, message, broadcast = true)
+        }
+        CoDEventListenerSubscriber.onUdpPingSent()
+    }
+
+    fun sendIamHostingPing(value: Boolean) {
+        CoDEventListenerSubscriber.onUdpPingSending()
+        getBroadCastAddresses().forEach { broadcastAddress ->
+            val address = InetAddress.getByName(broadcastAddress)
+            val message = createMessage(if (value) MessageType.Hosting else MessageType.NotHosting, CoD.getNickname() ?: "unknown")
+            sendTo(address, message, broadcast = true)
+        }
+        CoDEventListenerSubscriber.onUdpPingSent()
+    }
+
+    fun broadcastNickname() {
+        getBroadCastAddresses().forEach { broadcastAddress ->
+            val address = InetAddress.getByName(broadcastAddress)
+            sendClientInfo(address, broadcast = true)
         }
     }
 
@@ -67,6 +91,11 @@ class Broadcast {
                 it.broadcast = true
                 it.soTimeout = 2000
             }
+        } catch (e: BindException) {
+            logger.error("Failed to open socket for listening: $receiveAddress:${Config.udpSnifferPort}")
+            e.printStackTrace()
+            Notifications.popup("Port ${Config.udpSnifferPort} already in use")
+            return
         } catch (e: Exception) {
             logger.error("Failed to open socket for listening: $receiveAddress:${Config.udpSnifferPort}")
             e.printStackTrace()
@@ -131,6 +160,8 @@ class Broadcast {
         when (type) {
             MessageType.Request -> handleRequestMessage(address, data)
             MessageType.Nickname -> processNickname(address, data)
+            MessageType.Hosting -> processIamHosting(address, data)
+            MessageType.NotHosting -> processIamNotHosting(address, data)
             else -> return false
         }
         return true
@@ -139,7 +170,7 @@ class Broadcast {
     private fun handleRequestMessage(address: InetAddress, data: String?) {
         if (requestId != null && data == requestId) {
             logger.debug("Ignoring own request")
-            requestId = null
+            return
         } else {
             sendClientInfo(address)
         }
@@ -153,7 +184,25 @@ class Broadcast {
             return
         }
 
-        onNicknameReceived?.let { it(address, data) }
+        onNicknameReceived?.let { it(address, data, null) }
+    }
+
+    private fun processIamHosting(address: InetAddress, data: String?) {
+        if (data == null) {
+            logger.info("Cannot process empty nickname for IamHosting message")
+            return
+        }
+
+        onNicknameReceived?.let { it(address, data, true) }
+    }
+
+    private fun processIamNotHosting(address: InetAddress, data: String?) {
+        if (data == null) {
+            logger.info("Cannot process empty nickname for IamNotHosting message")
+            return
+        }
+
+        onNicknameReceived?.let { it(address, data, false) }
     }
 
     private fun sendClientInfo(address: InetAddress, broadcast: Boolean = false) {
@@ -168,7 +217,7 @@ class Broadcast {
             val data = message.toByteArray()
             val packet = DatagramPacket(data, data.size, address, Config.udpSnifferPort)
 
-            logger.debug("Sending packet to ${address.hostAddress}:${Config.udpSnifferPort}")
+            logger.debug("Sending packet '$message' to ${address.hostAddress}:${Config.udpSnifferPort}")
             socket.send(packet)
         } catch (e: Exception) {
             logger.error("Failed to send message: '$message' to address: ${address.hostAddress} with broadcast=$broadcast")

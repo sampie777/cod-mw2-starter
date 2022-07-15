@@ -3,17 +3,19 @@ package nl.sajansen.codmw2starter.cod
 import copyString
 import focusWindow
 import nl.sajansen.codmw2starter.config.Config
-import nl.sajansen.codmw2starter.exitApplication
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
-import org.ini4j.Ini
+import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
+import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
 import org.slf4j.LoggerFactory
 import pasteText
 import java.awt.Desktop
 import java.io.File
+import java.nio.file.Paths
 
 
 object CoD {
     enum class Executioner {
+        Auto,
         Desktop,
         Runtime,
         ProcessBuilder1,
@@ -27,77 +29,29 @@ object CoD {
             CoDEventListenerSubscriber.onPauseChanged()
         }
 
-    private fun loadProperties(): Ini {
-        logger.info("Loading properties file")
-        val file = File(Config.serverPropertiesFile)
+    const val serverPropertiesFileName = "alterIWnet.ini"
+    const val serverExeFileName = "IWNetServer.exe"
+    const val clientExeFileName = "iw4mp.exe"
+    fun getServerPropertiesFile() = Paths.get(Config.gameDirectory, serverPropertiesFileName).toString()
+    fun getServerExeFile() = Paths.get(Config.gameDirectory, serverExeFileName).toString()
+    fun getClientExeFile() = Paths.get(Config.gameDirectory, clientExeFileName).toString()
 
-        if (!file.exists()) {
-            Notifications.popup("No server configuration file found: (${File(Config.serverPropertiesFile).name})")
-            exitApplication()
-        }
+    fun getHost(): String? = CodProperties.getHost()
+    fun setHost(host: String) = CodProperties.setHost(host)
 
-        return Ini(file)
-    }
-
-    fun getHost(): String? {
-        val properties = loadProperties()
-        return properties["Configuration"]?.get("Server")
-    }
-
-    fun setHost(host: String): Boolean {
-        logger.info("Saving new host to file: $host")
-
-        val properties = loadProperties()
-        properties["Configuration"]?.set("Server", host)
-
-        val file = File(Config.serverPropertiesFile)
-        try {
-            properties.store(file)
-        } catch (e: Exception) {
-            logger.error("Failed to save host to file")
-            e.printStackTrace()
-            Notifications.popup("Failed to save host to file: ${e.localizedMessage}", "CoD")
-            return false
-        }
-
-        CoDEventListenerSubscriber.onHostChanged()
-        return true
-    }
-
-    fun getNickname(): String? {
-        val properties = loadProperties()
-        return properties["Configuration"]?.get("Nickname")
-    }
-
-    fun setNickname(Nickname: String): Boolean {
-        logger.info("Saving new nickname to file: $Nickname")
-
-        val properties = loadProperties()
-        properties["Configuration"]?.set("Nickname", Nickname)
-
-        val file = File(Config.serverPropertiesFile)
-        try {
-            properties.store(file)
-        } catch (e: Exception) {
-            logger.error("Failed to save nickname to file")
-            e.printStackTrace()
-            Notifications.popup("Failed to save nickname to file: ${e.localizedMessage}", "CoD")
-            return false
-        }
-
-        CoDEventListenerSubscriber.onNicknameChanged()
-        return true
-    }
+    fun getNickname() = CodProperties.getNickname()
+    fun setNickname(name: String) = CodProperties.setNickname(name)
 
     fun startServer() {
         logger.info("Starting server...")
-        execute("server", Config.serverExeFile)
+        NetworkSniffer.sendImHostingPing(true)
+        execute("server", getServerExeFile())
         CoDEventListenerSubscriber.onServerStarted()
     }
 
     fun startClient() {
         logger.info("Starting client...")
-        execute("client", Config.clientExeFile)
+        execute("client", getClientExeFile())
         CoDEventListenerSubscriber.onClientStarted()
     }
 
@@ -129,9 +83,10 @@ object CoD {
         try {
             val file = File(exeFile)
             val directory = file.parentFile
+            val executioner = getExecutioner(file)
 
-            logger.info("Using executioner: ${Config.executioner} for file '${file.name}' in '${directory.absolutePath}'")
-            when (Config.executioner) {
+            logger.info("Using executioner: $executioner for file '${file.name}' in '${directory.absolutePath}'")
+            when (executioner) {
                 Executioner.Runtime -> Runtime.getRuntime().exec(file.toString(), null, directory)
                 Executioner.Desktop -> Desktop.getDesktop().open(file)
                 Executioner.ProcessBuilder1 -> {
@@ -148,4 +103,14 @@ object CoD {
             Notifications.popup("Failed to start $type: ${t.localizedMessage}", "CoD")
         }
     }
+
+    private fun getExecutioner(file: File) =
+        if (Config.executioner == Executioner.Auto && file.parentFile.absolutePath == getCurrentJarDirectory(this).parentFile.absolutePath) {
+            // Use desktop if this program runs from the same directory as the .exe file to be executed.
+            Executioner.Desktop
+        } else if (Config.executioner == Executioner.Auto) {
+            Executioner.Runtime
+        } else {
+            Config.executioner
+        }
 }

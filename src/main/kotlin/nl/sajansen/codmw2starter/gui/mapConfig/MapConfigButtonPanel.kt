@@ -6,6 +6,7 @@ import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.HotKeysMapping
 import nl.sajansen.codmw2starter.gui.Theme
+import nl.sajansen.codmw2starter.utils.Icon
 import nl.sajansen.codmw2starter.utils.addHotKeyMapping
 import org.slf4j.LoggerFactory
 import java.awt.Dimension
@@ -15,7 +16,7 @@ import javax.swing.border.EmptyBorder
 class MapConfigButtonPanel(private val frame: JDialog, private val getCommand: (() -> String?)) : JPanel(), CoDEventListener {
     private val logger = LoggerFactory.getLogger(MapConfigButtonPanel::class.java)
 
-    private val pauseLobbyButton = JButton("Pause")
+    private val pauseLobbyButton = JButton()
 
     init {
         createGui()
@@ -27,19 +28,44 @@ class MapConfigButtonPanel(private val frame: JDialog, private val getCommand: (
         layout = BoxLayout(this, BoxLayout.LINE_AXIS)
         border = EmptyBorder(0, 10, 10, 10)
 
-        pauseLobbyButton.addHotKeyMapping(HotKeysMapping.PauseLobby)
-        pauseLobbyButton.addActionListener { CoD.pauseLobby() }
-        pauseLobbyButton.font = Theme.buttonFont
+        pauseLobbyButton.also {
+            it.layout = BoxLayout(it, BoxLayout.LINE_AXIS)
+            it.add(
+                Icon("\uf04c", size = 10f)
+                    .also { icon -> icon.border = EmptyBorder(1, 0, 0, 8) })
+            it.add(JLabel("Pause lobby")
+                .also { label -> label.font = Theme.buttonFont })
 
-        val cancelButton = JButton("Close")
-        cancelButton.addHotKeyMapping(HotKeysMapping.Close)
-        cancelButton.addActionListener { frame.dispose() }
-        cancelButton.font = Theme.buttonFont
+            it.font = Theme.buttonFont
+            it.addHotKeyMapping(HotKeysMapping.PauseLobby)
+            it.addActionListener { CoD.pauseLobby() }
+        }
 
-        val sendButton = JButton("Apply")
-        sendButton.addActionListener { sendConfig() }
-        sendButton.addHotKeyMapping(HotKeysMapping.SendMapConfig)
-        sendButton.font = Theme.primaryButtonFont
+        val cancelButton = JButton().also {
+            it.layout = BoxLayout(it, BoxLayout.LINE_AXIS)
+            it.add(
+                Icon("\uf00d", size = 10f)
+                    .also { icon -> icon.border = EmptyBorder(1, 0, 0, 8) })
+            it.add(JLabel("Close")
+                .also { label -> label.font = Theme.buttonFont })
+
+            it.font = Theme.buttonFont
+            it.addHotKeyMapping(HotKeysMapping.Close)
+            it.addActionListener { frame.dispose() }
+        }
+
+        val sendButton = JButton().also {
+            it.layout = BoxLayout(it, BoxLayout.LINE_AXIS)
+            it.add(
+                Icon("\uf064", size = 16f)
+                    .also { icon -> icon.border = EmptyBorder(1, 0, 0, 8) })
+            it.add(JLabel("Apply")
+                .also { label -> label.font = Theme.buttonFont })
+
+            it.font = Theme.primaryButtonFont
+            it.addActionListener { sendConfig() }
+            it.addHotKeyMapping(HotKeysMapping.SendMapConfig)
+        }
         frame.rootPane.defaultButton = sendButton
 
         add(cancelButton)

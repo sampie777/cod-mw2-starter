@@ -19,7 +19,7 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
     private val currentHostLabel = JLabel()
     private val localHostsPanel = JPanel()
     private val localHostLabel = JLabel("Local host(s): ")
-    private val networkingPanel = NetworkingPanel(::onHostClick, ::onHostDoubleClick)
+    private val networkingPanel = NetworkingPanel(::setHost, ::runWithHost)
     private val customHostField = JTextField()
 
     init {
@@ -105,32 +105,34 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
         localHostsPanel.add(localHostLabel)
 
         val localNetworkIpAddresses = getLocalNetworkIpAddresses()
-        localNetworkIpAddresses.forEach {
-            val hostLabel = JLabel(it)
-            if (localNetworkIpAddresses.size > 1 && localNetworkIpAddresses.last() != it) {
-                hostLabel.text = hostLabel.text + ","
-            }
-            hostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
-            hostLabel.font = Theme.normalFont
-            hostLabel.toolTipText = "Click to use as server"
-            hostLabel.addMouseListener(object : MouseAdapter() {
-                override fun mouseClicked(e: MouseEvent) {
-                    customHostField.text = it
+            .sortedDescending()
+        localNetworkIpAddresses
+            .forEach {
+                val hostLabel = JLabel(it)
+                if (localNetworkIpAddresses.size > 1 && localNetworkIpAddresses.last() != it) {
+                    hostLabel.text = hostLabel.text + ","
                 }
-            })
+                hostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+                hostLabel.font = Theme.normalFont
+                hostLabel.toolTipText = "Click to use as server"
+                hostLabel.addMouseListener(object : MouseAdapter() {
+                    override fun mouseClicked(e: MouseEvent) {
+                        customHostField.text = it
+                    }
+                })
 
-            localHostsPanel.add(hostLabel)
-        }
+                localHostsPanel.add(hostLabel)
+            }
     }
 
     override fun onServerStarted() = refreshLocalHost()
     override fun onClientStarted() = refreshLocalHost()
 
-    private fun onHostClick(host: String) {
+    private fun setHost(host: String) {
         customHostField.text = host
     }
 
-    private fun onHostDoubleClick(host: String) {
+    private fun runWithHost(host: String) {
         customHostField.text = host
         runClient.invoke()
     }

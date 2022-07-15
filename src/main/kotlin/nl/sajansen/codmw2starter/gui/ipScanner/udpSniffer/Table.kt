@@ -13,8 +13,8 @@ import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableModel
 
 class Table(
-    private val onHostClick: ((host: String) -> Unit),
-    private val onHostDoubleClick: ((host: String) -> Unit)
+    private val setHost: ((host: String) -> Unit),
+    private val runWithHost: ((host: String) -> Unit)
 ) : JPanel() {
 
     private val tableHeader = arrayOf("Player", "Address", "PC")
@@ -33,9 +33,9 @@ class Table(
                 val host = getSelectedValueAsAddress() ?: return
 
                 if (e.clickCount >= 2) {
-                    onHostDoubleClick.invoke(host)
+                    runWithHost.invoke(host)
                 } else {
-                    onHostClick.invoke(host)
+                    setHost.invoke(host)
                 }
             }
         })
@@ -52,7 +52,11 @@ class Table(
 
     fun addScanResult(other: Other) {
         val hostName = if (other.hostName == other.hostAddress) "" else other.hostName
-        model().addRow(arrayOf(other.nickname, other.hostAddress, hostName))
+        var displayNickName = other.nickname
+        if (other.isHosting) {
+            displayNickName = "$displayNickName (hosting)"
+        }
+        model().addRow(arrayOf(displayNickName, other.hostAddress, hostName))
     }
 
     fun getSelectedValueAsAddress(): String? {

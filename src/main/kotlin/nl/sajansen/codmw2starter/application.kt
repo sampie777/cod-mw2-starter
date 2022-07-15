@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter
 
+import nl.sajansen.codmw2starter.cod.CodProperties
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.GUI
 import nl.sajansen.codmw2starter.gui.Theme
@@ -28,6 +29,8 @@ fun main(args: Array<String>) {
 
     // Init theme
     Theme
+
+    CodProperties.initialize()
 
     EventQueue.invokeLater {
         MainFrame.createAndShow()

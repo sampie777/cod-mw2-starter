@@ -11,3 +11,5 @@ out/
 releases/
 *.xcf
 *.db
+output*.csv
+output*.txt
