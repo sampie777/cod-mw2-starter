@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter
 
+import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.cod.CodProperties
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.GUI
@@ -46,6 +47,8 @@ fun main(args: Array<String>) {
 
 fun exitApplication() {
     logger.info("Shutting down application")
+
+    CoD.stopServer()
 
     MainFrame.getInstance()?.saveWindowPosition()
 
