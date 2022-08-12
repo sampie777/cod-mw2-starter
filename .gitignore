@@ -13,3 +13,4 @@ releases/
 *.db
 output*.csv
 output*.txt
+IWNetServer.log

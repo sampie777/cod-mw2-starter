@@ -5,7 +5,9 @@ import focusWindow
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
+import nl.sajansen.codmw2starter.utils.OS
 import nl.sajansen.codmw2starter.utils.getCurrentJarDirectory
+import nl.sajansen.codmw2starter.utils.getOS
 import org.slf4j.LoggerFactory
 import pasteText
 import java.awt.Desktop
@@ -90,11 +92,22 @@ object CoD {
                 Executioner.Runtime -> Runtime.getRuntime().exec(file.toString(), null, directory)
                 Executioner.Desktop -> Desktop.getDesktop().open(file)
                 Executioner.ProcessBuilder1 -> {
-                    val processBuilder = ProcessBuilder(exeFile)
+                    val processBuilder =
+                        if (Config.useWineOnUnix && (getOS() == OS.Linux || getOS() == OS.Mac || getOS() == OS.Solaris)) {
+                            ProcessBuilder("wine", exeFile)
+                        } else {
+                            ProcessBuilder(exeFile)
+                        }
                     processBuilder.directory(directory)
                     processBuilder.start()
                 }
-                Executioner.ProcessBuilder2 -> ProcessBuilder(file.toString()).start()
+                Executioner.ProcessBuilder2 -> {
+                    if (Config.useWineOnUnix && (getOS() == OS.Linux || getOS() == OS.Mac || getOS() == OS.Solaris)) {
+                        ProcessBuilder("wine", file.toString()).start()
+                    } else {
+                        ProcessBuilder(file.toString()).start()
+                    }
+                }
                 else -> throw IllegalArgumentException("Invalid executioner defined: ${Config.executioner}")
             }
         } catch (t: Throwable) {
@@ -105,7 +118,9 @@ object CoD {
     }
 
     private fun getExecutioner(file: File) =
-        if (Config.executioner == Executioner.Auto && file.parentFile.absolutePath == getCurrentJarDirectory(this).parentFile.absolutePath) {
+        if (Config.executioner == Executioner.Auto && getOS() == OS.Linux) {
+            Executioner.ProcessBuilder1
+        } else if (Config.executioner == Executioner.Auto && file.parentFile.absolutePath == getCurrentJarDirectory(this).parentFile.absolutePath) {
             // Use desktop if this program runs from the same directory as the .exe file to be executed.
             Executioner.Desktop
         } else if (Config.executioner == Executioner.Auto) {

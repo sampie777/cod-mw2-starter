@@ -24,6 +24,7 @@ object Config {
     val availableExecutioners: String = CoD.Executioner.values().joinToString(";")
     var executioner: CoD.Executioner = CoD.Executioner.Auto
     var delayBetweenServerStartAndClientStart = 2000L
+    var useWineOnUnix = true
 
     // Map config
     var consoleTitle: String = "IW4 Console"

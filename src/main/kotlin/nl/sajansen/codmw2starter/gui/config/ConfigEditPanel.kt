@@ -4,6 +4,8 @@ import nl.sajansen.codmw2starter.cod.CoD
 import nl.sajansen.codmw2starter.config.PropertyLoader
 import nl.sajansen.codmw2starter.gui.config.formcomponents.*
 import nl.sajansen.codmw2starter.gui.notifications.Notifications
+import nl.sajansen.codmw2starter.utils.OS
+import nl.sajansen.codmw2starter.utils.getOS
 import org.slf4j.LoggerFactory
 import java.awt.BorderLayout
 import java.awt.GridLayout
@@ -26,6 +28,9 @@ class ConfigEditPanel : JPanel() {
         formComponents.add(HeaderFormComponent("Game Execution"))
         formComponents.add(StringFormInput("gameDirectory", "Game directory", false))
         formComponents.add(SelectFormInput("executioner", "Execution method", CoD.Executioner.values()))
+        if (getOS() == OS.Linux || getOS() == OS.Mac || getOS() == OS.Solaris) {
+            formComponents.add(BooleanFormInput("useWineOnUnix", "Use Wine"))
+        }
 
         formComponents.add(HeaderFormComponent(""))
         formComponents.add(HeaderFormComponent("In-game Server"))
