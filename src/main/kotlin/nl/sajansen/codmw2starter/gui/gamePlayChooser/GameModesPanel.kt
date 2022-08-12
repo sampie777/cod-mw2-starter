@@ -1,6 +1,8 @@
 package nl.sajansen.codmw2starter.gui.gamePlayChooser
 
 import nl.sajansen.codmw2starter.cod.CoD
+import nl.sajansen.codmw2starter.cod.CoDEventListener
+import nl.sajansen.codmw2starter.cod.CoDEventListenerSubscriber
 import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFrame
 import nl.sajansen.codmw2starter.gui.mainFrame.MainFramePanel
@@ -13,17 +15,37 @@ import javax.swing.Box
 import javax.swing.JPanel
 import kotlin.concurrent.schedule
 
-class GameModesPanel : JPanel() {
+class GameModesPanel : JPanel(), CoDEventListener {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     init {
+        CoDEventListenerSubscriber.register(this)
         createGui()
     }
 
+    override fun removeNotify() {
+        super.removeNotify()
+        CoDEventListenerSubscriber.unregister(this)
+    }
+
     private fun createGui() {
-        add(GameModeButton("Host", ::playAsHost))
+        reloadGui()
+    }
+
+    private fun reloadGui() {
+        removeAll()
+
+        if (CoD.isServerRunning()) {
+            add(GameModeButton("Stop hosting", ::stopHosting))
+        } else {
+            add(GameModeButton("Host", ::playAsHost))
+        }
         add(Box.createRigidArea(Dimension(5, 0)))
         add(GameModeButton("Join", ::joinAServer))
+
+        invalidate()
+        revalidate()
+        repaint()
     }
 
     private fun playAsHost(e: ActionEvent) {
@@ -39,5 +61,17 @@ class GameModesPanel : JPanel() {
     private fun joinAServer(e: ActionEvent) {
         NetworkSniffer.sendImHostingPing(false)
         MainFrame.getInstance()?.activatePanel(MainFramePanel.Panel.ServerBrowser)
+    }
+
+    private fun stopHosting(e: ActionEvent) {
+        Thread { CoD.stopServer() }.start()
+    }
+
+    override fun onServerStarted() {
+        reloadGui()
+    }
+
+    override fun onServerStopped() {
+        reloadGui()
     }
 }

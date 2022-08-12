@@ -25,6 +25,9 @@ object CoD {
     }
 
     private val logger = LoggerFactory.getLogger(CoD::class.java)
+    private var process: Process? = null
+    fun isServerRunning() = process != null
+
     var isLobbyPaused = false
         set(value) {
             field = value
@@ -45,6 +48,7 @@ object CoD {
     fun setNickname(name: String) = CodProperties.setNickname(name)
 
     fun startServer() {
+        stopServer()
         logger.info("Starting server...")
         NetworkSniffer.sendImHostingPing(true)
         execute("server", getServerExeFile())
@@ -81,6 +85,24 @@ object CoD {
         }
     }
 
+    fun stopServer() {
+        CoDEventListenerSubscriber.onServerStopping()
+        if (process == null) {
+            CoDEventListenerSubscriber.onServerStopped()
+            return
+        }
+        logger.info("Killing current server process...")
+        try {
+            process?.destroy()
+            logger.info("Current server process killed")
+            process = null
+        } catch (t: Throwable) {
+            logger.error("Failed to kill current server process")
+            t.printStackTrace()
+        }
+        CoDEventListenerSubscriber.onServerStopped()
+    }
+
     private fun execute(type: String, exeFile: String) {
         try {
             val file = File(exeFile)
@@ -89,7 +111,7 @@ object CoD {
 
             logger.info("Using executioner: $executioner for file '${file.name}' in '${directory.absolutePath}'")
             when (executioner) {
-                Executioner.Runtime -> Runtime.getRuntime().exec(file.toString(), null, directory)
+                Executioner.Runtime -> process = Runtime.getRuntime().exec(file.toString(), null, directory)
                 Executioner.Desktop -> Desktop.getDesktop().open(file)
                 Executioner.ProcessBuilder1 -> {
                     val processBuilder =
@@ -99,10 +121,10 @@ object CoD {
                             ProcessBuilder(exeFile)
                         }
                     processBuilder.directory(directory)
-                    processBuilder.start()
+                    process = processBuilder.start()
                 }
                 Executioner.ProcessBuilder2 -> {
-                    if (Config.useWineOnUnix && (getOS() == OS.Linux || getOS() == OS.Mac || getOS() == OS.Solaris)) {
+                    process = if (Config.useWineOnUnix && (getOS() == OS.Linux || getOS() == OS.Mac || getOS() == OS.Solaris)) {
                         ProcessBuilder("wine", file.toString()).start()
                     } else {
                         ProcessBuilder(file.toString()).start()
