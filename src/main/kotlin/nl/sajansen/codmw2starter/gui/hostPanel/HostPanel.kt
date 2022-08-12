@@ -39,6 +39,9 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
         currentHostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
         currentHostLabel.toolTipText = "Click to use as server"
         currentHostLabel.font = Theme.normalFont
+        currentHostLabel.isOpaque = true
+        currentHostLabel.border = EmptyBorder(3, 6, 3, 6)
+        currentHostLabel.background = Color(250, 250, 250)
 
         val currentHostsPanel = JPanel()
         currentHostsPanel.layout = FlowLayout(FlowLayout.LEFT)
@@ -109,12 +112,12 @@ class HostPanel(private val runClient: (() -> Unit)) : JPanel(), CoDEventListene
         localNetworkIpAddresses
             .forEach {
                 val hostLabel = JLabel(it)
-                if (localNetworkIpAddresses.size > 1 && localNetworkIpAddresses.last() != it) {
-                    hostLabel.text = hostLabel.text + ","
-                }
                 hostLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
                 hostLabel.font = Theme.normalFont
                 hostLabel.toolTipText = "Click to use as server"
+                hostLabel.isOpaque = true
+                hostLabel.border = EmptyBorder(3, 6, 3, 6)
+                hostLabel.background = Color(250, 250, 250)
                 hostLabel.addMouseListener(object : MouseAdapter() {
                     override fun mouseClicked(e: MouseEvent) {
                         customHostField.text = it
