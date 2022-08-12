@@ -1,5 +1,6 @@
 package nl.sajansen.codmw2starter.gui.ipScanner.portSniffer
 
+import nl.sajansen.codmw2starter.config.Config
 import nl.sajansen.codmw2starter.ipScanner.portSniffer.ScanResult
 import nl.sajansen.codmw2starter.utils.ReadOnlyTableModel
 import java.awt.BorderLayout
@@ -59,6 +60,14 @@ class IpScannerTable(
     }
 
     fun addScanResult(scanResult: ScanResult) {
+        if (Config.udpSnifferFilterOutLocalIps) {
+            if (scanResult.ip.startsWith("127.0.0.")
+                || scanResult.ip.startsWith("0.0.0.")
+            ) {
+                return;
+            }
+        }
+
         model().addRow(arrayOf(scanResult.ip, scanResult.hostName))
     }
 
