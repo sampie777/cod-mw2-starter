@@ -9,6 +9,7 @@ import nl.sajansen.codmw2starter.gui.mainFrame.MainFramePanel
 import nl.sajansen.codmw2starter.ipScanner.udpSniffer.NetworkSniffer
 import org.slf4j.LoggerFactory
 import java.awt.Dimension
+import java.awt.Font
 import java.awt.event.ActionEvent
 import java.util.*
 import javax.swing.Box
@@ -36,12 +37,21 @@ class GameModesPanel : JPanel(), CoDEventListener {
         removeAll()
 
         if (CoD.isServerRunning()) {
-            add(GameModeButton("Stop hosting", ::stopHosting))
+            add(GameModeButton("Stop hosting", ::stopHosting).also {
+                it.font =Font("Dialog", Font.PLAIN, 28)
+                it.toolTipText = "Stop the current running server"
+            })
         } else {
-            add(GameModeButton("Host", ::playAsHost))
+            add(GameModeButton("Host", ::playAsHost).also {
+                it.font =Font("Dialog", Font.PLAIN, 30)
+                it.toolTipText = "Start a server and join it"
+            })
         }
         add(Box.createRigidArea(Dimension(5, 0)))
-        add(GameModeButton("Join", ::joinAServer))
+        add(GameModeButton("Join", ::joinAServer).also {
+            it.font = Font("Dialog", Font.BOLD, 30)
+            it.toolTipText = "Search for other servers to join"
+        })
 
         invalidate()
         revalidate()
