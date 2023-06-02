@@ -7,6 +7,7 @@ import nl.sajansen.codmw2starter.gui.notifications.Notifications
 import nl.sajansen.codmw2starter.gui.other.FileChooser
 import nl.sajansen.codmw2starter.utils.OS
 import nl.sajansen.codmw2starter.utils.getOS
+import nl.sajansen.codmw2starter.utils.tryOrLog
 import org.ini4j.Ini
 import org.slf4j.LoggerFactory
 import java.awt.EventQueue
@@ -34,7 +35,10 @@ object CodProperties {
             } catch (e: PropertiesFileError) {
                 logger.error(e.localizedMessage)
                 e.printStackTrace()
-                Notifications.popup("Failed to initialize alterIWnet.ini properties file.\n\n${e.localizedMessage}", "File not found")
+                Notifications.popup(
+                    "Failed to initialize alterIWnet.ini properties file.\n\n${e.localizedMessage}",
+                    "File not found"
+                )
                 exitApplication()
                 return null
             }
@@ -148,22 +152,22 @@ object CodProperties {
         val currentDirectory = System.getProperty("user.dir")
         val configuredDirectory = Config.gameDirectory
         list.add(currentDirectory)
-        list.add(Paths.get(File(currentDirectory).parentFile.absolutePath).toString())
-        list.add(Paths.get(File(configuredDirectory).parentFile.absolutePath).toString())
+        tryOrLog { list.add(Paths.get(File(currentDirectory).parentFile.absolutePath).toString()) }
+        tryOrLog { list.add(Paths.get(File(configuredDirectory).parentFile.absolutePath).toString()) }
 
         val os = getOS()
         possibleGameDirectoryNames.forEach {
-            list.add(Paths.get(currentDirectory, it).toString())
-            list.add(Paths.get(File(currentDirectory).parentFile.absolutePath, it).toString())
-            list.add(Paths.get(File(configuredDirectory).parentFile.absolutePath, it).toString())
-            list.add(Paths.get(homeDirectory, it).toString())
-            list.add(Paths.get(homeDirectory, "Documents", it).toString())
-            list.add(Paths.get(homeDirectory, "Downloads", it).toString())
-            list.add(Paths.get(homeDirectory, "Saved Games", it).toString())
+            tryOrLog { list.add(Paths.get(currentDirectory, it).toString()) }
+            tryOrLog { list.add(Paths.get(File(currentDirectory).parentFile.absolutePath, it).toString()) }
+            tryOrLog { list.add(Paths.get(File(configuredDirectory).parentFile.absolutePath, it).toString()) }
+            tryOrLog { list.add(Paths.get(homeDirectory, it).toString()) }
+            tryOrLog { list.add(Paths.get(homeDirectory, "Documents", it).toString()) }
+            tryOrLog { list.add(Paths.get(homeDirectory, "Downloads", it).toString()) }
+            tryOrLog { list.add(Paths.get(homeDirectory, "Saved Games", it).toString()) }
 
             if (os == OS.Windows) {
-                list.add(Paths.get(System.getenv("ProgramFiles"), it).toString())
-                list.add(Paths.get(System.getenv("ProgramFiles(X86)"), it).toString())
+                tryOrLog { list.add(Paths.get(System.getenv("ProgramFiles"), it).toString()) }
+                tryOrLog { list.add(Paths.get(System.getenv("ProgramFiles(X86)"), it).toString()) }
             }
         }
         return list
@@ -271,6 +275,11 @@ object CodProperties {
             fetch()
         } catch (e: PropertiesFileError) {
             Notifications.popup(e.localizedMessage, "File not found")
+            exitApplication()
+        } catch (e: Exception) {
+            logger.error("Could not load properties from file")
+            e.printStackTrace()
+            Notifications.popup(e.localizedMessage ?: e.message ?: e.toString(), "Could not load properties")
             exitApplication()
         }
     }

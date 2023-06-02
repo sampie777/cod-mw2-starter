@@ -33,10 +33,12 @@ fun getReadableFileSize(file: File): String {
             val fileSize = file.length().toDouble() / (1024 * 1024)
             String.format("%.2f MB", fileSize)
         }
+
         file.length() > 1024 -> {
             val fileSize = file.length().toDouble() / 1024
             String.format("%.2f kB", fileSize)
         }
+
         else -> {
             String.format("%d bytes", file.length())
         }
@@ -78,3 +80,11 @@ fun getOS(): OS {
     }
     return OS.Unknown
 }
+
+fun <T> tryOrLog(failSilent: Boolean = true, fn: (() -> T)): T? =
+    try {
+        fn.invoke()
+    } catch (e: Exception) {
+        if (!failSilent) e.printStackTrace()
+        null
+    }
