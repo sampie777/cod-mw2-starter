@@ -17,6 +17,16 @@ import kotlin.system.exitProcess
 private val logger = LoggerFactory.getLogger("Application")
 
 fun main(args: Array<String>) {
+    try {
+        initApplication(args)
+    } catch (e: Exception) {
+        logger.error("Failed to start application")
+        e.printStackTrace()
+        Notifications.popup(e.localizedMessage ?: e.message ?: e.toString(), "Could not start application")
+    }
+}
+
+fun initApplication(args: Array<String>) {
     ApplicationRuntimeSettings.testing = false
 
     logger.info("Starting application ${ApplicationInfo.artifactId}:${ApplicationInfo.version}")
